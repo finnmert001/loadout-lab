@@ -61,6 +61,10 @@ app.get("/edit-profile", (req, res) => {
   res.render("edit-profile", { user });
 });
 
+app.get("/explore", (req, res) => {
+  res.render("explore"); // Render the explore.pug template
+});
+
 export function redirectToLogin(req, res) {
   res.redirect("/login");
 }

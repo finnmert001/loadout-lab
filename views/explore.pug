@@ -1,0 +1,33 @@
+extends layouts/layout
+
+block title
+    title Loadout Lab - Home
+
+block content
+    .container.explore-page
+        h1 Find Your Next Loadout!
+
+        form(style='margin-top: 60px;')
+            p 
+                strong Coming soon! 
+            p This is where you'll be able to discover and view other users' loadouts and classes.  
+            p Stay tuned for exciting updates!
+
+            button.btn-intro-home(type='button', onclick="window.location.href='/index'") Return to Home Page
+    
+    footer
+      .footer-container
+        .footer-left
+          ul
+            li: a(href='/about') About
+            li: a(href='/contact') Contact
+            li: a(href='/terms') Terms of Service
+            li: a(href='/privacy') Privacy Policy
+            p(style='margin-left: 80px;') &copy; 2025 Loadout Lab. All rights reserved.
+        .footer-right
+          a(href='https://www.facebook.com') 
+            img(src='/images/facebook.png',target='_blank', alt='Facebook', class='social-icon')
+          a(href='https://www.instagram.com') 
+            img(src='/images/instagram.png', alt='Instagram', class='social-icon')
+          a(href='https://www.x.com') 
+            img(src='/images/twitter.png', alt='X', class='social-icon')

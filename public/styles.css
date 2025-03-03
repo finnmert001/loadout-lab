@@ -188,7 +188,15 @@ body.no-padding {
     flex-direction: column; /* Stack the logo and form */
     align-items: center; /* Center align the content */
     margin-bottom: 250px;
-    padding-top: 0;
+}
+
+.container.explore-page {
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+    flex-direction: column; /* Stack the logo and form */
+    align-items: center; /* Center align the content */
+    margin-bottom: 335px;
 }
 
 .container.edit-profile {

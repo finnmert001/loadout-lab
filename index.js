@@ -35,11 +35,11 @@ export function redirectToLogin(req, res) {
 }
 
 export function renderIndex(req, res) {
-  res.render("index");
+  res.render("index", { hideNavbar: false });
 }
 
 export function renderLogin(req, res) {
-  res.render("login");
+  res.render("login", { hideNavbar: true });
 }
 
 export async function loginUser(req, res) {
@@ -67,7 +67,7 @@ export async function loginUser(req, res) {
 }
 
 export function renderSignUp(req, res) {
-  res.render("sign-up");
+  res.render("sign-up", { hideNavbar: true });
 }
 
 export async function signUpUser(req, res) {

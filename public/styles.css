@@ -1,0 +1,193 @@
+/* Minimalistic Color Scheme */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #ffffff;
+    --accent-color: #ecf0f1;
+    --text-color: #2c3e50;
+}
+
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    flex-direction: column; /* Stack the logo and form */
+    align-items: center; /* Center align the content */
+    margin-bottom: 220px;
+}
+
+/* Logo styles */
+.container img {
+    width: 250px; /* Set the width of your logo */
+    height: auto; /* Keep the aspect ratio */
+    margin-top: 20px;
+    margin-bottom: 20px; /* Space between logo and the form */
+}
+
+h2 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+/* Form styling */
+form {
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.form-group h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: var(--text-color);
+    text-align: left;
+}
+
+/* Input styling */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* Error message styling */
+p.error {
+    font-family: system-ui;
+    color: red;
+    margin-top: -15px;
+    font-size: 14px;
+    text-align: left;
+    position: absolute;
+}
+
+/* Caps Lock warning styling */
+#capsLockWarning {
+    font-size: 14px;
+    color: red;
+    margin-top: 5px;
+    padding-left: 0px;
+    text-align: left;
+    position: absolute;
+}
+
+/* Password error styling */
+#password-error {
+    font-size: 14px;
+    color: red;
+    margin-top: 5px;
+    padding-left: 0px;
+    text-align: left;
+    position: absolute;
+}
+
+/* Confirm Password error styling */
+#confirmPassword-error {
+    font-size: 14px;
+    color: red;
+    margin-top: 5px;
+    padding-left: 0px;
+    text-align: left;
+    position: absolute;
+}
+
+/* Username error styling */
+#username-error {
+    font-size: 14px;
+    color: red;
+    margin-top: 5px;
+    padding-left: 0px;
+    text-align: left;
+    position: absolute;
+}
+
+/* Button styling */
+button.btn {
+    width: 75%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button.btn:hover {
+    background-color: #2980b9;
+}
+
+button.btn:focus {
+    outline: none;
+}
+
+/* Styling for Sign Up text */
+p.sign-up-text {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-top: 20px;
+}
+
+p.sign-up-text a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p.sign-up-text a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    form {
+        width: 90%;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .form-group h4 {
+        font-size: 14px;
+    }
+
+    button.btn, button.sign-up {
+        width: 100%;
+    }
+
+    img.logo {
+        width: 80px;
+    }
+}

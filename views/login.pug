@@ -1,0 +1,40 @@
+extends layouts/layout
+
+block title
+    title Login
+
+block content
+    .container
+        img(src='/images/LoadoutLabLogo.svg', alt='Site Logo', class='logo')
+        h2 Login
+        form(method='POST' action='/login')
+            .form-group
+                h4 Username:
+                input(type='text' class='usernameInput' id='username' name='username' required)
+
+            if error
+                p.error= error
+      
+            .form-group
+                h4(style='padding-top: 4px') Password:
+                input(type='password' id='password' name='password' required)
+                br
+                p#capsLockWarning(style='display: none;') Warning: Caps Lock is on!
+
+            button.btn(type='submit') Login
+
+            p.sign-up-text 
+                | Don't have an account? 
+                a(href='/sign-up') Sign Up here
+
+        script.
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('password').addEventListener('keyup', function(event) {
+                    const capsLockWarning = document.getElementById('capsLockWarning');
+                    if (event.getModifierState('CapsLock')) {
+                    capsLockWarning.style.display = 'block';
+                    } else {
+                        capsLockWarning.style.display = 'none';
+                    }
+                });
+            });

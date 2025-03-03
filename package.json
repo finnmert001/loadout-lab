@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "A game loadout builder for optimising weapon setups within Call of Duty and Call of Duty: Warzone.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.8.1",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "pug": "^3.0.3"

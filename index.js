@@ -30,12 +30,18 @@ app.get("/sign-up", renderSignUp);
 
 app.post("/sign-up", signUpUser);
 
+app.get("/profile", renderProfile);
+
 export function redirectToLogin(req, res) {
   res.redirect("/login");
 }
 
 export function renderIndex(req, res) {
   res.render("index", { hideNavbar: false });
+}
+
+export function renderProfile(req, res) {
+  res.render("profile", { hideNavbar: false });
 }
 
 export function renderLogin(req, res) {

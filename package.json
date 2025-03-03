@@ -1,0 +1,18 @@
+{
+  "name": "loadout-lab",
+  "version": "1.0.0",
+  "description": "A game loadout builder for optimising weapon setups within Call of Duty and Call of Duty: Warzone.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.8.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pug": "^3.0.3"
+  }
+}

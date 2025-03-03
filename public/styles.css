@@ -36,7 +36,7 @@
 
 /* Navbar Items */
 .navbar li {
-    margin: 0 15px;
+    margin: 0 25px;
 }
 
 /* Push Logout to the right */
@@ -53,12 +53,23 @@
     font-size: 16px;
     transition: color 0.3s ease-in-out;
     align-items: center;
+    padding: 10px 0;
 }
 
 /* Hover Effect */
 .navbar a:hover {
-    color: var(--accent-color); /* Lighter accent color */
+    color: var(--primary-color); /* Lighter accent color */
 }
+
+.navbar a.logout:hover {
+    color: #e74c3c; /* Red color for logout */
+}
+
+/* Style for active navbar link */
+.navbar .active {
+    border-bottom: 3px solid var(--primary-color);  /* Adds primary color line */
+    padding-bottom: 5px;  /* Adjusts padding to accommodate the line */
+  }
 
 .navbar-logo {
     height: 80px; /* Adjust the size of the logo as per your preference */

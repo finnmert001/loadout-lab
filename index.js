@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import express from "express";
+import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
 import loginAPI from "./model/login.js";
@@ -14,6 +15,14 @@ const port = process.env.PORT || 3000;
 app.set("view engine", "pug");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(
+  session({
+    secret: "asecretkey", // Replace with a strong secret key
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Change to true if using HTTPS
+  })
+);
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 
@@ -30,7 +39,27 @@ app.get("/sign-up", renderSignUp);
 
 app.post("/sign-up", signUpUser);
 
-app.get("/profile", renderProfile);
+app.get("/profile", (req, res) => {
+  // Ensure the user is logged in (session check)
+  if (!req.session.user) {
+    return res.redirect("/login"); // Redirect to login if the user is not logged in
+  }
+
+  // Pass user data to profile page
+  const user = req.session.user;
+  res.render("profile", { user }); // Render the profile.pug template
+});
+
+app.get("/edit-profile", (req, res) => {
+  // Ensure the user is logged in (session check)
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  // Render the edit profile page and pass user data to the page
+  const user = req.session.user;
+  res.render("edit-profile", { user });
+});
 
 export function redirectToLogin(req, res) {
   res.redirect("/login");
@@ -38,10 +67,6 @@ export function redirectToLogin(req, res) {
 
 export function renderIndex(req, res) {
   res.render("index", { hideNavbar: false });
-}
-
-export function renderProfile(req, res) {
-  res.render("profile", { hideNavbar: false });
 }
 
 export function renderLogin(req, res) {
@@ -58,17 +83,32 @@ export async function loginUser(req, res) {
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (passwordMatch) {
-        res.redirect("/index");
+        // Store user data in the session
+        req.session.user = {
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
+
+        return res.redirect("/index"); // Redirect to profile page after successful login
       } else {
-        renderLoginWithError(res, "Incorrect Username or Password");
+        renderLoginWithError(res, "Incorrect Username or Password", {
+          hideNavbar: true,
+        });
         console.log("Incorrect Password");
       }
     } else {
-      renderLoginWithError(res, "Incorrect Username or Password");
+      renderLoginWithError(res, "Incorrect Username or Password", {
+        hideNavbar: true,
+      });
       console.log("User not found");
     }
   } catch (error) {
-    renderLoginWithError(res, "An error occurred while authenticating");
+    renderLoginWithError(res, "An error occurred while authenticating", {
+      hideNavbar: true,
+    });
+    console.error("Error during login:", error);
   }
 }
 
@@ -95,7 +135,16 @@ export async function signUpUser(req, res) {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    await loginAPI.createUser({ username, password: hashedPassword });
+
+    // Create a new user with only the username and password
+    const newUser = {
+      username,
+      password: hashedPassword,
+      firstName: "", // Leave first name empty for now
+      lastName: "", // Leave last name empty for now
+    };
+
+    await loginAPI.createUser(newUser); // Send the new user data to RestDB
     res.redirect("/login");
   } catch (error) {
     renderSignUpWithError(res, "An error occurred during registration");
@@ -103,8 +152,8 @@ export async function signUpUser(req, res) {
 }
 
 // Error handling functions
-export function renderLoginWithError(res, errorMessage) {
-  res.render("login", { error: errorMessage });
+function renderLoginWithError(res, errorMessage, options = {}) {
+  res.render("login", { error: errorMessage, hideNavbar: true, ...options });
 }
 
 export function renderSignUpWithError(res, errorMessage) {

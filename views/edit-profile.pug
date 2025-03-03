@@ -1,0 +1,48 @@
+extends layouts/layout
+
+block title
+  title Loadout Lab - Profile
+
+block content
+    .container.edit-profile
+        h1 Edit Profile
+        .profile-info
+            .form-group
+                h4(for='username') Username:
+                input(type='text' id='username' name='firstName' value=user.username)
+
+            .form-group
+                h4(for='firstName') First Name:
+                input(type='text' id='firstName' name='firstName' value=user.firstName placeholder="Enter your first name")
+
+            .form-group
+                h4(for='lastName') Last Name:
+                input(type='text' id='lastName' name='lastName' value=user.lastName placeholder="Enter your last name")
+
+            .form-group
+                h4(for='email') Email Address:
+                input(type='text' id='email' name='email' value=user.email placeholder="Enter your email address")
+
+            .form-group
+                button.btn(type='submit') Update Profile
+
+        // Change Password Section
+        h2(style='margin-top: 40px;') Change Password
+        .profile-info(style='margin-top: 20px;')
+            .form-group
+                h4(for='currentPassword') Current Password:
+                input(type='password' id='currentPassword' name='currentPassword' required)
+
+            .form-group
+                h4(for='newPassword') New Password:
+                input(type='password' id='newPassword' name='newPassword' required)
+
+            .form-group
+                h4(for='confirmPassword') Confirm New Password:
+                input(type='password' id='confirmPassword' name='confirmPassword' required)
+
+            .form-group
+                button.btn(type='submit') Change Password
+
+        .form-group
+            button.btn-cancel(type='submit') Cancel

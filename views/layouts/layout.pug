@@ -4,5 +4,14 @@ html
     block title
     link(rel='stylesheet', href='/styles.css')
     link(rel='icon', type='image/x-icon', href='/images/favicon.png')
-  body
+  body(class=hideNavbar ? "no-padding" : "")
+    if !hideNavbar
+      nav.navbar
+        ul
+          li: a(href='/index')
+            img(src='/images/NavbarLogo.svg', alt='Site Logo', class='navbar-logo')
+          li: a(href='/index') Home
+          li: a(href='/profile') Profile
+          li.logout: a(href='/logout') Logout
+
     block content

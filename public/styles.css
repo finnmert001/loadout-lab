@@ -6,6 +6,67 @@
     --text-color: #2c3e50;
 }
 
+/* Navigation Bar */
+.navbar {
+    background-color: var(--text-color); /* Use theme primary color */
+    color: var(--secondary-color); /* White text */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed; /* Keeps navbar at the top */
+    top: 0;
+    left: 0;
+    width: 97.8%;
+    height: 60px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Slight shadow */
+    z-index: 1000; /* Ensures navbar stays on top */
+    border-radius: 50px; /* Adjust this value to control the roundness */
+}
+
+/* Navbar List */
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Navbar Items */
+.navbar li {
+    margin: 0 15px;
+}
+
+/* Push Logout to the right */
+.navbar li.logout {
+    margin-left: auto; /* This pushes the logout link to the right */
+    margin-right: 20px;
+}
+
+/* Navbar Links */
+.navbar a {
+    text-decoration: none;
+    color: var(--secondary-color); /* White */
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease-in-out;
+    align-items: center;
+}
+
+/* Hover Effect */
+.navbar a:hover {
+    color: var(--accent-color); /* Lighter accent color */
+}
+
+.navbar-logo {
+    height: 80px; /* Adjust the size of the logo as per your preference */
+    margin-right: 15px; /* Space between the logo and the links */
+    display: flex;
+    align-items: center;
+  }
+
 /* General styles */
 body {
     font-family: Arial, sans-serif;
@@ -14,8 +75,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 80px;
     height: 100vh;
     margin: 0;
+}
+
+body.no-padding {
+    padding-top: 0 !important;
 }
 
 .container {

@@ -3,5 +3,43 @@ extends layouts/layout
 block title
     title Loadout Lab - Home
 
-block content 
-    h1 Welcome to Loadout Lab
+block content
+    .container.home-page
+        h1 Welcome to Loadout Lab!
+
+        form(style='margin-top: 60px;')
+            p
+                | At Loadout Lab, we help you create, organise, and customise your perfect loadouts for Call of Duty and Call of Duty: Warzone.
+
+            p
+                | Whether you’re optimising your gear following the latest update, gearing up for Ranked Play, or setting up your ideal class, Loadout Lab gives you the tools to organise and create your loadouts so you're ready to slam!
+
+            p
+                | Create your own unique setups, share with others, and find loadouts to level up your game.
+
+            p
+                | With a sleek interface and user-friendly features, Loadout Lab is your go-to hub for crafting the perfect loadout.
+
+            p
+                strong Ready to take your gear to the next level? 
+                | Start building today!
+
+            button.btn-intro-home(style='margin-right: 150px;' type='button', onclick="window.location.href='/index'") View All Loadouts
+            button.btn-intro-home(type='button', onclick="window.location.href='/index'") Create Loadout
+
+    footer
+      .footer-container
+        .footer-left
+          ul
+            li: a(href='/about') About
+            li: a(href='/contact') Contact
+            li: a(href='/terms') Terms of Service
+            li: a(href='/privacy') Privacy Policy
+            p(style='margin-left: 80px;') &copy; 2025 Loadout Lab. All rights reserved.
+        .footer-right
+          a(href='https://www.facebook.com') 
+            img(src='/images/facebook.png',target='_blank', alt='Facebook', class='social-icon')
+          a(href='https://www.instagram.com') 
+            img(src='/images/instagram.png', alt='Instagram', class='social-icon')
+          a(href='https://www.x.com') 
+            img(src='/images/twitter.png', alt='X', class='social-icon')

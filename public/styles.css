@@ -69,14 +69,91 @@
 .navbar .active {
     border-bottom: 3px solid var(--primary-color);  /* Adds primary color line */
     padding-bottom: 5px;  /* Adjusts padding to accommodate the line */
-  }
+}
 
 .navbar-logo {
     height: 80px; /* Adjust the size of the logo as per your preference */
     margin-right: 15px; /* Space between the logo and the links */
     display: flex;
     align-items: center;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;  /* Dark background for footer */
+    color: #fff;  /* White text */
+    padding: 20px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
   }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+  }
+  
+  .footer-left ul {
+    list-style-type: none;
+    padding-top: 20px;
+    margin: 10px 0;
+    display: flex;
+    margin-left: -300px;
+  }
+  
+  .footer-left ul li {
+    margin: 0 15px;
+  }
+  
+  .footer-left ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 14px;
+  }
+  
+  .footer-left ul li a:hover {
+    text-decoration: underline;
+  }
+
+  .footer-left p {
+    margin-top: 3px;
+    font-size: 12px;
+  }
+  
+  /* Social media icons on the right */
+  .footer-right {
+    margin-right: -240px;
+    display: flex;
+  }
+  
+  .footer-right a {
+    margin-left: 15px;
+  }
+  
+  .social-icon {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+  }
+  
+  .footer-right a:hover .social-icon {
+    opacity: 0.7;
+  }  
 
 /* General styles */
 body {
@@ -86,7 +163,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 80px;
+    padding-top: 0px;
     height: 100vh;
     margin: 0;
 }
@@ -102,6 +179,26 @@ body.no-padding {
     flex-direction: column; /* Stack the logo and form */
     align-items: center; /* Center align the content */
     margin-bottom: 220px;
+}
+
+.container.home-page {
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+    flex-direction: column; /* Stack the logo and form */
+    align-items: center; /* Center align the content */
+    margin-bottom: 250px;
+    padding-top: 0;
+}
+
+.container.edit-profile {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    flex-direction: column; /* Stack the logo and form */
+    align-items: center; /* Center align the content */
+    margin-bottom: 220px;
+    padding-top: 670px;
 }
 
 /* Logo styles */
@@ -229,6 +326,50 @@ button.btn:focus {
     outline: none;
 }
 
+/* Cancel button styling */
+button.btn-cancel {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    background-color: red;
+    color: var(--secondary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-cancel:hover {
+    background-color: lightcoral;
+}
+
+button.btn-cancel:focus {
+    outline: none;
+}
+
+/* Intro home buttons styling */
+button.btn-intro-home {
+    width: 30%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-intro-home:hover {
+    background-color: #2980b9;
+}
+
+button.btn-intro-home:focus {
+    outline: none;
+}
+
 /* Styling for Sign Up text */
 p.sign-up-text {
     font-size: 14px;
@@ -245,6 +386,35 @@ p.sign-up-text a {
 p.sign-up-text a:hover {
     text-decoration: underline;
 }
+
+/* Profile Info Section */
+.profile-info {
+    background-color: #f9f9f9; /* Light background color */
+    padding: 20px; /* Add padding inside the profile section */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slight shadow to create depth */
+    margin-bottom: 20px; /* Space below the profile section */
+    max-width: 600px; /* Limit the width */
+    margin-left: auto; /* Center align */
+    margin-right: auto; /* Center align */
+    margin-top: 40px;
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Center align items vertically */
+    flex-direction: row;
+  }
+  
+  .profile-info p {
+    font-size: 16px; /* Set text size */
+    line-height: 1.6; /* Line height for better readability */
+    color: var(--text-color); /* Dark text color */
+    text-align: left;
+    width: 100%;
+  }
+  
+  .profile-info strong {
+    font-weight: bold; /* Make label text bold */
+    color: #2c3e50; /* Darker color for labels */
+  }
 
 /* Responsive */
 @media (max-width: 500px) {

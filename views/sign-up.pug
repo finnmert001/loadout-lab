@@ -12,19 +12,16 @@ block content
                 h4 Username:
                 input(type='text' class='usernameInput' id='username' name='username' required)
                 br
-                p#username-error(style='display: none;') Username must be between 4 and 20 characters and should not contain symbols.
+                if error
+                    p#password-error= error
 
             .form-group
                 h4(style='padding-top: 14px') Password:
                 input(type='password' id='password' name='password' style='margin-bottom: 0px;' required)
-                br
-                p#password-error(style='display: none;') Password must be at least 8 characters long.
 
             .form-group
                 h4(style='padding-top: 14px') Confirm Password:
                 input(type='password' id='confirmPassword' name='confirmPassword' style='margin-bottom: 0px;' required)
-                br
-                p#confirmPassword-error(style='display: none;') Please ensure passwords match.
                 
             p#capsLockWarning(style='display: none; margin-top: -10px;') Warning: Caps Lock is on!
 
@@ -36,49 +33,16 @@ block content
         script.
             document.addEventListener('DOMContentLoaded', function() {
                 const form = document.getElementById('signup-form');
-                const usernameInput = document.getElementById('username');
                 const passwordInput = document.getElementById('password');
                 const confirmPasswordInput = document.getElementById('confirmPassword');
-                const usernameError = document.getElementById('username-error');
-                const passwordError = document.getElementById('password-error');
-                const confirmPasswordError = document.getElementById('confirmPassword-error');
                 const capsLockWarning = document.getElementById('capsLockWarning');
 
-                // Add event listeners to both password and confirm password inputs
+                // Caps Lock Warning
                 passwordInput.addEventListener('keyup', function(event) {
                     capsLockWarning.style.display = event.getModifierState('CapsLock') ? 'block' : 'none';
                 });
 
                 confirmPasswordInput.addEventListener('keyup', function(event) {
                     capsLockWarning.style.display = event.getModifierState('CapsLock') ? 'block' : 'none';
-                });
-
-                form.addEventListener('submit', function(event) {
-                    let isValid = true;
-
-                    if (usernameInput.value.length < 4 || usernameInput.value.length > 20 || /[!@#$%^&*(),.?":{}|<>]/.test(usernameInput.value)) {
-                        usernameError.style.display = 'block';
-                        isValid = false;
-                    } else {
-                        usernameError.style.display = 'none';
-                    }
-
-                    if (passwordInput.value.length < 8) {
-                        passwordError.style.display = 'block';
-                        isValid = false;
-                    } else {
-                        passwordError.style.display = 'none';
-                    }
-                    
-                    if (passwordInput.value.length >= 8 && passwordInput.value !== confirmPasswordInput.value) {
-                        confirmPasswordError.style.display = 'block';
-                        isValid = false;
-                    } else {
-                        confirmPasswordError.style.display = 'none';
-                    }
-
-                    if (!isValid) {
-                        event.preventDefault();
-                    }
                 });
             });

@@ -41,6 +41,18 @@ app.post("/sign-up", signUpUser);
 
 app.post("/edit-profile/:id", updateProfile);
 
+app.get("/check-username", async (req, res) => {
+  const { username } = req.query;
+
+  try {
+    const existingUser = await loginAPI.findUserByUsername(username);
+    res.json({ exists: !!existingUser }); // true if user exists, false otherwise
+  } catch (error) {
+    console.error("Error checking username:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -155,39 +167,6 @@ app.post("/update-password", async (req, res) => {
   }
 });
 
-export async function updateProfile(req, res) {
-  const userId = req.session.user._id; // Use _id from session or get it from DB if necessary
-
-  if (!req.session.user) {
-    return res.redirect("/login"); // Ensure user is logged in
-  }
-
-  const { username, firstName, lastName, email } = req.body;
-
-  const updatedProfileData = {
-    username: username,
-    firstName: firstName, // Ensure it's a string
-    lastName: lastName, // Ensure it's a string
-    email: email,
-  };
-
-  try {
-    // Use userId in the update API call
-    await loginAPI.updateUserById(userId, updatedProfileData); // Use _id for RestDB update
-
-    // After updating in DB, also update session data
-    req.session.user.username = username;
-    req.session.user.firstName = firstName;
-    req.session.user.lastName = lastName;
-    req.session.user.email = email;
-
-    // Redirect to profile page with updated session data
-    res.redirect("/profile");
-  } catch (error) {
-    handleProfileError(res, error, "Error updating profile");
-  }
-}
-
 app.delete("/delete-account", async (req, res) => {
   // Ensure the user is logged in
   if (!req.session.user) {
@@ -226,6 +205,48 @@ app.delete("/delete-account", async (req, res) => {
     res.status(500).json({ success: false, message: "Error deleting account" });
   }
 });
+
+export async function updateProfile(req, res) {
+  const userId = req.session.user._id; // Use _id from session or get it from DB if necessary
+
+  if (!req.session.user) {
+    return res.redirect("/login"); // Ensure user is logged in
+  }
+
+  const { username, firstName, lastName, email } = req.body;
+
+  const existingUser = await loginAPI.findUserByUsername(username);
+  if (existingUser && existingUser._id !== userId) {
+    return renderEditProfileWithError(
+      res,
+      userId,
+      "Username is already taken. Please choose another."
+    );
+  }
+
+  const updatedProfileData = {
+    username: username,
+    firstName: firstName, // Ensure it's a string
+    lastName: lastName, // Ensure it's a string
+    email: email,
+  };
+
+  try {
+    // Use userId in the update API call
+    await loginAPI.updateUserById(userId, updatedProfileData); // Use _id for RestDB update
+
+    // After updating in DB, also update session data
+    req.session.user.username = username;
+    req.session.user.firstName = firstName;
+    req.session.user.lastName = lastName;
+    req.session.user.email = email;
+
+    // Redirect to profile page with updated session data
+    res.redirect("/profile");
+  } catch (error) {
+    handleProfileError(res, error, "Error updating profile");
+  }
+}
 
 export function redirectToLogin(req, res) {
   res.redirect("/login");
@@ -284,12 +305,17 @@ export function renderSignUp(req, res) {
 }
 
 export async function signUpUser(req, res) {
-  const { username, password } = req.body;
+  const { username, password, confirmPassword } = req.body;
 
-  if (username.length < 4 || username.length > 20) {
+  if (
+    !username ||
+    username.length < 4 ||
+    username.length > 20 ||
+    /[!@#$%^&*(),.?":{}|<>]/.test(username)
+  ) {
     return renderSignUpWithError(
       res,
-      "Username must be between 4 and 20 characters long"
+      "Username must be between 4 and 20 characters and should not contain symbols."
     );
   }
 
@@ -300,7 +326,19 @@ export async function signUpUser(req, res) {
     );
   }
 
+  if (password !== confirmPassword) {
+    return renderSignUpWithError(
+      res,
+      "Please ensure password and confirm password match."
+    );
+  }
+
   try {
+    const existingUser = await loginAPI.findUserByUsername(username);
+    if (existingUser) {
+      return renderSignUpWithError(res, "Username is already taken.");
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user with only the username and password
@@ -324,13 +362,26 @@ function renderLoginWithError(res, errorMessage, options = {}) {
   res.render("login", { error: errorMessage, hideNavbar: true, ...options });
 }
 
-export function renderSignUpWithError(res, errorMessage) {
-  res.render("sign-up", { error: errorMessage });
+export function renderSignUpWithError(res, errorMessage, options = {}) {
+  res.render("sign-up", { error: errorMessage, hideNavbar: true, ...options });
 }
 
 export function handleProfileError(res, error, message) {
   console.error(message + ":", error.message);
   res.status(500).send(message);
+}
+
+export function renderEditProfileWithError(res, userId, errorMessage) {
+  // Fetch the user's data based on userId to populate the form
+  loginAPI
+    .findUserById(userId)
+    .then((user) => {
+      res.render("edit-profile", { error: errorMessage, user }); // Pass 'user' to the template
+    })
+    .catch((err) => {
+      console.error("Error fetching user:", err);
+      res.redirect("/profile"); // Redirect to profile in case of error fetching user
+    });
 }
 
 export function renderUpdatePasswordWithError(res, errorMessage) {

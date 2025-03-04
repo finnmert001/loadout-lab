@@ -39,6 +39,8 @@ app.get("/sign-up", renderSignUp);
 
 app.post("/sign-up", signUpUser);
 
+app.post("/edit-profile/:id", updateProfile);
+
 app.get("/profile", (req, res) => {
   // Ensure the user is logged in (session check)
   if (!req.session.user) {
@@ -65,6 +67,37 @@ app.get("/explore", (req, res) => {
   res.render("explore"); // Render the explore.pug template
 });
 
+export async function updateProfile(req, res) {
+  const id = req.session.user.id; // Use _id from session or null if not available
+
+  if (!req.session.user) {
+    return res.redirect("/login"); // Ensure user is logged in
+  }
+
+  const { username, firstName, lastName, email } = req.body;
+
+  const updatedProfileData = {
+    username: username,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+  };
+
+  try {
+    // Use userId in the update API call
+    await loginAPI.updateUserById(id, updatedProfileData); // Use _id for RestDB update
+
+    req.session.user.username = username;
+    req.session.user.firstName = firstName;
+    req.session.user.lastName = lastName;
+    req.session.user.email = email;
+
+    res.redirect("/profile");
+  } catch (error) {
+    handleProfileError(res, error, "Error updating profile");
+  }
+}
+
 export function redirectToLogin(req, res) {
   res.redirect("/login");
 }
@@ -89,6 +122,7 @@ export async function loginUser(req, res) {
       if (passwordMatch) {
         // Store user data in the session
         req.session.user = {
+          _id: user._id,
           username: user.username,
           email: user.email,
           firstName: user.firstName,
@@ -146,6 +180,7 @@ export async function signUpUser(req, res) {
       password: hashedPassword,
       firstName: "", // Leave first name empty for now
       lastName: "", // Leave last name empty for now
+      email: "", // Leave email empty for now
     };
 
     await loginAPI.createUser(newUser); // Send the new user data to RestDB
@@ -162,6 +197,11 @@ function renderLoginWithError(res, errorMessage, options = {}) {
 
 export function renderSignUpWithError(res, errorMessage) {
   res.render("sign-up", { error: errorMessage });
+}
+
+export function handleProfileError(res, error, message) {
+  console.error(message + ":", error.message);
+  res.status(500).send(message);
 }
 
 // Start server

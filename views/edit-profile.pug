@@ -6,10 +6,10 @@ block title
 block content
     .container.edit-profile
         h1 Edit Profile
-        .profile-info
+        form(style='margin-top: 40px;' method='POST' action=`/edit-profile/${user._id}`)
             .form-group
                 h4(for='username') Username:
-                input(type='text' id='username' name='firstName' value=user.username)
+                input(type='text' id='username' name='username' value=user.username)
 
             .form-group
                 h4(for='firstName') First Name:

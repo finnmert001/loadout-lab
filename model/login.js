@@ -39,6 +39,34 @@ const loginAPI = {
       throw error;
     }
   },
+  async updateUserById(id, updatedProfile) {
+    if (!id) {
+      console.error("User ID is missing or undefined");
+      return;
+    }
+
+    console.log("Updating user with ID:", id);
+    console.log("Updated profile data:", updatedProfile);
+
+    try {
+      const updateUrl = `https://logins-1476.restdb.io/rest/logins/${id}`; // Ensure 'id' is the correct user ID
+      console.log("Update URL:", updateUrl);
+      const updateResponse = await axios.patch(
+        updateUrl,
+        updatedProfile,
+        this.config
+      );
+      console.log("Profile updated successfully:", updateResponse.data);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      }
+      throw error;
+    }
+  },
 };
 
 export default loginAPI;

@@ -39,6 +39,20 @@ const loginAPI = {
       throw error;
     }
   },
+  async findUserById(userId) {
+    try {
+      const response = await axios.get(
+        `${this.url}&q={"_id":"${userId}"}`,
+        this.config
+      );
+      const user = response.data[0];
+
+      return user || null;
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      throw error;
+    }
+  },
   async updateUserById(id, updatedProfile) {
     console.log("Received ID:", id); // Debugging line
 

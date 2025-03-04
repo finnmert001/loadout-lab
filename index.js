@@ -188,6 +188,45 @@ export async function updateProfile(req, res) {
   }
 }
 
+app.delete("/delete-account", async (req, res) => {
+  // Ensure the user is logged in
+  if (!req.session.user) {
+    return res
+      .status(401)
+      .json({ success: false, message: "User not logged in" });
+  }
+
+  try {
+    const userId = req.session.user._id;
+
+    // Fetch the user using the userId from session
+    const user = await loginAPI.findUserById(userId);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    // Delete the user account (this can be a DB delete action)
+    await loginAPI.deleteUserById(userId);
+
+    // Destroy the session after successful deletion
+    req.session.destroy((err) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ success: false, message: "Error ending session" });
+      }
+
+      res.json({ success: true, message: "Account deleted successfully" });
+    });
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    res.status(500).json({ success: false, message: "Error deleting account" });
+  }
+});
+
 export function redirectToLogin(req, res) {
   res.redirect("/login");
 }

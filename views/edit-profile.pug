@@ -29,5 +29,47 @@ block content
         .form-group
             button.btn(type='button', onclick="window.location.href='/update-password'") Change Password
 
+        p.sign-up-text(style='margin-bottom: 120px;')
+            a(style='color: red;' href='/profile') Cancel
+
         .form-group
-            button.btn-cancel(type='button', onclick="window.location.href='/profile'") Cancel
+            button.btn-cancel(type='button', id="deleteAccountBtn") DELETE ACCOUNT
+
+    // Confirmation Modal for Account Deletion
+    div#confirmationModal.modal-overlay
+      div.modal-content
+        h2 Warning!
+        p Are you sure you want to delete your account? This action CANNOT BE UNDONE.
+        div.modal-buttons
+          button.btn-danger(type="button" onclick="confirmDeleteAccount()") Yes, Delete
+          button.btn-cancel(type="button" onclick="cancelDeleteAccount()") Cancel
+
+    script.
+      document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+        document.getElementById('confirmationModal').style.display = 'flex';
+      });
+
+      function confirmDeleteAccount() {
+        fetch('/delete-account', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert("Your account has been deleted.");
+            window.location.href = "/login"; // Redirect to login page after deletion
+          } else {
+            alert("Error: " + data.message);
+          }
+        })
+        .catch(error => {
+          console.error("Error deleting account:", error);
+        });
+
+        cancelDeleteAccount();
+      }
+
+      function cancelDeleteAccount() {
+        document.getElementById('confirmationModal').style.display = 'none';
+      }

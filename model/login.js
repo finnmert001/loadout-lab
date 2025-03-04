@@ -83,6 +83,18 @@ const loginAPI = {
       throw error;
     }
   },
+  async deleteUserById(id) {
+    try {
+      const response = await axios.delete(
+        `https://logins-1476.restdb.io/rest/logins/${id}`,
+        this.config
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      throw error;
+    }
+  },
 };
 
 export default loginAPI;

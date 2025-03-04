@@ -41,6 +41,14 @@ app.post("/sign-up", signUpUser);
 
 app.post("/edit-profile/:id", updateProfile);
 
+app.get("/explore", (req, res) => {
+  res.render("explore"); // Render the explore.pug template
+});
+
+app.get("/create-loadout", (req, res) => {
+  res.render("create-loadout"); // Render the explore.pug template
+});
+
 app.get("/check-username", async (req, res) => {
   const { username } = req.query;
 
@@ -110,12 +118,6 @@ app.post("/update-password", async (req, res) => {
 
   // Get the user's current password from the database using session user ID
   const user = await loginAPI.findUserById(req.session.user._id); // Assuming you're using an API
-
-  // if (!user) {
-  //   return res.render("update-password", {
-  //     errorMessage: "User not found", // Pass error message to render in view
-  //   });
-  // }
 
   if (!user) {
     return renderUpdatePasswordWithError(res, "User not found");

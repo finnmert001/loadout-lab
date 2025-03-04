@@ -6,22 +6,21 @@ block title
 block content
   .container
     h1 My Profile
-
-    // Profile Info (displaying user data passed from session)
+    
     if user
       .profile-info
         p
           strong Username: 
           | #{user.username}
         p
-          strong Email: 
-          | #{user.email || "Your account doesn't have an email yet."}
-        p
           strong First Name: 
           | #{user.firstName || "Your account doesn't have a first name yet."}
         p
           strong Last Name: 
           | #{user.lastName || "Your account doesn't have a last name yet."}
+        p
+          strong Email: 
+          | #{user.email || "Your account doesn't have an email yet."}
 
         .form-group
         button.btn(type='button', onclick="window.location.href='/edit-profile'") Edit Profile

@@ -205,7 +205,7 @@ body.no-padding {
     text-align: center;
     flex-direction: column; /* Stack the logo and form */
     align-items: center; /* Center align the content */
-    margin-bottom: 220px;
+    margin-bottom: 130px;
     padding-top: 670px;
 }
 
@@ -406,6 +406,7 @@ p.sign-up-text a:hover {
     margin-left: auto; /* Center align */
     margin-right: auto; /* Center align */
     margin-top: 40px;
+    margin-bottom: 80px;
     justify-content: space-between; /* Space between items */
     align-items: center; /* Center align items vertically */
     flex-direction: row;

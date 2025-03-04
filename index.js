@@ -68,7 +68,7 @@ app.get("/explore", (req, res) => {
 });
 
 export async function updateProfile(req, res) {
-  const id = req.session.user.id; // Use _id from session or null if not available
+  const userId = req.session.user._id; // Use _id from session or get it from DB if necessary
 
   if (!req.session.user) {
     return res.redirect("/login"); // Ensure user is logged in
@@ -78,20 +78,22 @@ export async function updateProfile(req, res) {
 
   const updatedProfileData = {
     username: username,
-    firstName: firstName,
-    lastName: lastName,
+    firstName: firstName, // Ensure it's a string
+    lastName: lastName, // Ensure it's a string
     email: email,
   };
 
   try {
     // Use userId in the update API call
-    await loginAPI.updateUserById(id, updatedProfileData); // Use _id for RestDB update
+    await loginAPI.updateUserById(userId, updatedProfileData); // Use _id for RestDB update
 
+    // After updating in DB, also update session data
     req.session.user.username = username;
     req.session.user.firstName = firstName;
     req.session.user.lastName = lastName;
     req.session.user.email = email;
 
+    // Redirect to profile page with updated session data
     res.redirect("/profile");
   } catch (error) {
     handleProfileError(res, error, "Error updating profile");

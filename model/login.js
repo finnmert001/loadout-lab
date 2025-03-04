@@ -40,6 +40,8 @@ const loginAPI = {
     }
   },
   async updateUserById(id, updatedProfile) {
+    console.log("Received ID:", id); // Debugging line
+
     if (!id) {
       console.error("User ID is missing or undefined");
       return;

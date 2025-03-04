@@ -9,8 +9,7 @@ block content
         form(style='margin-top: 40px;' method='POST' action=`/edit-profile/${user._id}`)
             .form-group
                 h4(for='username') Username:
-                input(type='text' id='username' name='username' value=user.username disabled)
-                p(style='margin-right: 0px; margin-top: 4px; text-align: left; font-family: system-ui; font-size: 14px;') Coming soon! You are currently unable to change your username.
+                input(type='text' id='username' name='username' value=user.username)
 
             .form-group
                 h4(for='firstName') First Name:

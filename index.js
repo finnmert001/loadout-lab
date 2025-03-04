@@ -41,6 +41,16 @@ app.post("/sign-up", signUpUser);
 
 app.post("/edit-profile/:id", updateProfile);
 
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send("Error logging out");
+    }
+
+    res.redirect("/login");
+  });
+});
+
 app.get("/update-password", (req, res) => {
   // Ensure the user is logged in
   if (!req.session.user) {

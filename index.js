@@ -41,6 +41,19 @@ app.post("/sign-up", signUpUser);
 
 app.post("/edit-profile/:id", updateProfile);
 
+app.get("/update-password", (req, res) => {
+  // Ensure the user is logged in
+  if (!req.session.user) {
+    return res.redirect("/login"); // Redirect to login if the user is not logged in
+  }
+
+  // Pass the user data from the session to the template
+  const user = req.session.user;
+
+  // Render the update-password page with the user data
+  res.render("update-password", { user });
+});
+
 app.get("/profile", (req, res) => {
   // Ensure the user is logged in (session check)
   if (!req.session.user) {
@@ -63,8 +76,73 @@ app.get("/edit-profile", (req, res) => {
   res.render("edit-profile", { user });
 });
 
-app.get("/explore", (req, res) => {
-  res.render("explore"); // Render the explore.pug template
+app.post("/update-password", async (req, res) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+
+  // Ensure the user is logged in
+  if (!req.session.user) {
+    return res.render("update-password", {
+      errorMessage: "User not logged in", // Pass error message to render in view
+    });
+  }
+
+  // Get the user's current password from the database using session user ID
+  const user = await loginAPI.findUserById(req.session.user._id); // Assuming you're using an API
+
+  // if (!user) {
+  //   return res.render("update-password", {
+  //     errorMessage: "User not found", // Pass error message to render in view
+  //   });
+  // }
+
+  if (!user) {
+    return renderUpdatePasswordWithError(res, "User not found");
+  }
+
+  // Check if the current password matches the stored password
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) {
+    return renderUpdatePasswordWithError(res, "Current password is incorrect.");
+  }
+
+  if (newPassword.length < 8) {
+    return renderUpdatePasswordWithError(
+      res,
+      "Password must be at least 8 characters long."
+    );
+  }
+
+  if (newPassword !== confirmPassword) {
+    return renderUpdatePasswordWithError(
+      res,
+      "Please ensure new and confirm password match."
+    );
+  }
+
+  if (currentPassword === newPassword) {
+    return renderUpdatePasswordWithError(
+      res,
+      "Your new password must be different from your current password."
+    );
+  }
+
+  // Hash the new password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+  try {
+    // Update the password in the database via API call (not via save)
+    await loginAPI.updateUserById(req.session.user._id, {
+      password: hashedPassword, // Only updating password
+    });
+
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.render("update-password", {
+      errorMessage: "Error updating password", // Pass error message to render in view
+    });
+  }
 });
 
 export async function updateProfile(req, res) {
@@ -204,6 +282,10 @@ export function renderSignUpWithError(res, errorMessage) {
 export function handleProfileError(res, error, message) {
   console.error(message + ":", error.message);
   res.status(500).send(message);
+}
+
+export function renderUpdatePasswordWithError(res, errorMessage) {
+  res.render("update-password", { error: errorMessage });
 }
 
 // Start server

@@ -26,22 +26,8 @@ block content
             .form-group
                 button.btn(type='submit') Update Profile
 
-        h2(style='margin-top: 40px;') Change Password
-        .profile-info(style='margin-top: 20px;')
-            .form-group
-                h4(for='currentPassword') Current Password:
-                input(type='password' id='currentPassword' name='currentPassword' required)
-
-            .form-group
-                h4(for='newPassword') New Password:
-                input(type='password' id='newPassword' name='newPassword' required)
-
-            .form-group
-                h4(for='confirmPassword') Confirm New Password:
-                input(type='password' id='confirmPassword' name='confirmPassword' required)
-
-            .form-group
-                button.btn(type='submit') Change Password
+        .form-group
+            button.btn(type='button', onclick="window.location.href='/update-password'") Change Password
 
         .form-group
             button.btn-cancel(type='button', onclick="window.location.href='/profile'") Cancel

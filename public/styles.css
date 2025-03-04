@@ -205,8 +205,16 @@ body.no-padding {
     text-align: center;
     flex-direction: column; /* Stack the logo and form */
     align-items: center; /* Center align the content */
-    margin-bottom: 130px;
-    padding-top: 670px;
+    padding-top: 240px;
+}
+
+.container.update-password {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    flex-direction: column; /* Stack the logo and form */
+    align-items: center; /* Center align the content */
+    padding-top: 105px;
 }
 
 /* Logo styles */
@@ -285,16 +293,9 @@ p.error {
 }
 
 /* Password error styling */
-#password-error {
-    font-size: 14px;
-    color: red;
-    margin-top: 5px;
-    padding-left: 0px;
-    text-align: left;
-    position: absolute;
-}
-
-/* Confirm Password error styling */
+#password-error,
+#currentPassword-error,
+#newPassword-error,
 #confirmPassword-error {
     font-size: 14px;
     color: red;
@@ -303,6 +304,16 @@ p.error {
     text-align: left;
     position: absolute;
 }
+
+/* Confirm Password error styling
+#confirmPassword-error {
+    font-size: 14px;
+    color: red;
+    margin-top: 5px;
+    padding-left: 0px;
+    text-align: left;
+    position: absolute;
+} */
 
 /* Username error styling */
 #username-error {

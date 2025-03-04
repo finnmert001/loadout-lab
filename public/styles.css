@@ -199,6 +199,14 @@ body.no-padding {
     margin-bottom: 335px;
 }
 
+.container.create-loadout {
+    display: flex;
+    justify-content: center; /* Centers the form horizontally */
+    align-items: center; /* Optional: to align vertically if needed */
+    max-width: 100%; /* Ensure the container is flexible */
+    padding: 20px; /* Optional: padding around the container */
+}
+
 .container.edit-profile {
     width: 100%;
     max-width: 400px;
@@ -239,6 +247,17 @@ form {
     box-sizing: border-box;
 }
 
+form.weapon-types {
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding-left: 0px;
+    width: 100%; /* Adjust the width as you desire */
+    max-width: 1500px; /* Optional: maximum width */
+    margin: 0; /* Remove any margin */
+}
+
 /* Form group styling */
 .form-group {
     margin-bottom: 15px;
@@ -250,6 +269,24 @@ form {
     margin-bottom: 5px;
     color: var(--text-color);
     text-align: left;
+}
+
+h2.class-title {
+    font-size: 20px;
+    padding-left: 20px;
+    padding-top: 0px;
+    margin-top: 0px;
+    color: var(--text-color);
+    text-align: left;
+}
+
+h3.class-sub-title {
+    font-size: 20px;
+    padding-left: 20px;
+    padding-top: 15px;
+    margin-top: 0px;
+    color: var(--text-color);
+    text-align: center;
 }
 
 /* Input styling */
@@ -347,25 +384,47 @@ button.btn:focus {
     outline: none;
 }
 
-/* Cancel button styling */
-/* button.btn-cancel {
-    width: 50%;
+/* Weapon type buttons styling */
+.btn-weapon-type {
+    width: 11%;
     padding: 10px;
     font-size: 16px;
     border: none;
-    background-color: red;
+    background-color: var(--primary-color);
     color: var(--secondary-color);
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 16px;
+    margin-left: 15px;
     transition: background-color 0.3s ease;
-} */
-
-button.btn-cancel:hover {
-    background-color: lightcoral;
 }
 
-button.btn-cancel:focus {
+.btn-weapon-type:hover {
+    background-color: #2980b9;
+}
+
+.btn-weapon-type:focus {
+    outline: none;
+}
+
+/* Weapon select buttons styling */
+.btn-weapon-select {
+    width: 10%;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    background-color: var(--text-color);
+    color: var(--secondary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-weapon-select:hover {
+    background-color: #34495e;
+}
+
+.btn-weapon-select:focus {
     outline: none;
 }
 
@@ -493,10 +552,14 @@ p.sign-up-text a:hover {
     cursor: pointer;
     border-radius: 5px;
   }
-  
-  .btn-cancel:hover {
-    background: #aaa;
-  }
+
+    .btn-cancel:hover {
+        background-color: lightcoral;
+    }
+
+    .btn-cancel:focus {
+        outline: none;
+    }
 
 /* Fade-in animation */
 @keyframes fadeIn {

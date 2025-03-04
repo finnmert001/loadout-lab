@@ -8,19 +8,22 @@ block content
         h1 Edit Profile
         form(style='margin-top: 40px;' method='POST' action=`/edit-profile/${user._id}`)
             .form-group
-                h4(for='username') Username:
+                h4 Username:
                 input(type='text' id='username' name='username' value=user.username)
+                br
+                if error
+                  p#password-error= error
 
             .form-group
-                h4(for='firstName') First Name:
+                h4 First Name:
                 input(type='text' id='firstName' name='firstName' value=user.firstName placeholder="Enter your first name")
 
             .form-group
-                h4(for='lastName') Last Name:
+                h4 Last Name:
                 input(type='text' id='lastName' name='lastName' value=user.lastName placeholder="Enter your last name")
 
             .form-group
-                h4(for='email') Email Address:
+                h4 Email Address:
                 input(type='email' id='email' name='email' value=user.email placeholder="Enter your email address")
 
             .form-group

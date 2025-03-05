@@ -7,10 +7,10 @@ block content
     .container.create-loadout
         h1 Loadout Builder 
 
-        form.weapon-types
+        form.weapon-types(style='max-height: 100vh; display: flex; flex-direction: column; expand: 1;')
             .form-group.weapons 
                 h2.class-title Loadout Name:
-                input(type='text' id='loadoutName' name='loadoutName' placeholder='Enter a name for your loadout' required)
+                input(style='width: 30%;' type='text' id='loadoutName' name='loadoutName' placeholder='Enter a name for your loadout' required)
 
             .form-group.weapons
                 h2.class-title Primary:

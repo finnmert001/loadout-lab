@@ -21,18 +21,50 @@ document.addEventListener("DOMContentLoaded", function () {
   // Sample weapon data
   const weapons = {
     "assault-rifle": [
-      { name: "AK-74", image: "/images/weapons/ak74.png" },
-      { name: "Ames 85", image: "/images/weapons/ames85.png" },
-      { name: "XM4", image: "/images/weapons/xm4.png" },
-      { name: "Cypher 091", image: "/images/weapons/cypher091.png" },
+      { name: "XM4", image: "/images/weapons/AR/xm4.png" },
+      { name: "AK-74", image: "/images/weapons/AR/ak74.png" },
+      { name: "Ames 85", image: "/images/weapons/AR/ames85.png" },
+      { name: "GPR 91", image: "/images/weapons/AR/gpr91.png" },
     ],
     smg: [
-      { name: "C9", image: "/images/weapons/c9.png" },
-      { name: "PP-19", image: "/images/weapons/pp19.png" },
-      { name: "Jackal PDW", image: "/images/weapons/jackalpdw.png" },
-      { name: "Kompakt 98", image: "/images/weapons/kompakt98.png" },
+      { name: "C9", image: "/images/weapons/SMG/c9.png" },
+      { name: "KSV", image: "/images/weapons/SMG/ksv.png" },
+      { name: "Tanto .22", image: "/images/weapons/SMG/tanto22.png" },
+      { name: "PP-919", image: "/images/weapons/SMG/pp919.png" },
     ],
-    // Add more weapon classes as needed
+    shotgun: [
+      { name: "Marine SP", image: "/images/weapons/shotgun/marineSP.png" },
+      { name: "ASG-89", image: "/images/weapons/shotgun/asg89.png" },
+      { name: "Maelstrom", image: "/images/weapons/shotgun/maelstrom.png" },
+    ],
+    lmg: [
+      { name: "PU-21", image: "/images/weapons/LMG/pu21.png" },
+      { name: "XMG", image: "/images/weapons/LMG/xmg.png" },
+      { name: "GPMG-7", image: "/images/weapons/LMG/gpmg7.png" },
+      { name: "Feng 82", image: "/images/weapons/LMG/feng82.png" },
+    ],
+    "marksman-rifle": [
+      { name: "SWAT 5.56", image: "/images/weapons/MR/swat556.png" },
+      { name: "Tsarkov 7.62", image: "/images/weapons/MR/tsarkov762.png" },
+      { name: "AEK-973", image: "/images/weapons/MR/aek973.png" },
+      { name: "DM-10", image: "/images/weapons/MR/dm10.png" },
+    ],
+    "sniper-rifle": [
+      { name: "LW3A1 Frostline", image: "/images/weapons/SR/lw3a1.png" },
+      { name: "SVD", image: "/images/weapons/SR/svd.png" },
+      { name: "LR 7.62", image: "/images/weapons/SR/lr762.png" },
+      { name: "AMR Mod 4", image: "/images/weapons/SR/amrMod4.png" },
+    ],
+    pistol: [
+      { name: "9mm PM", image: "/images/weapons/pistol/9mmPM.png" },
+      { name: "Grekhova", image: "/images/weapons/pistol/grekhova.png" },
+      { name: "GS45", image: "/images/weapons/pistol/gs45.png" },
+      { name: "Stryder .22", image: "/images/weapons/pistol/stryder22.png" },
+    ],
+    special: [
+      { name: "Sirin 9mm", image: "/images/weapons/special/sirin9mm.png" },
+      { name: "D1.3 Sector", image: "/images/weapons/special/d13Sector.png" },
+    ],
   };
 
   // Hide the modal when the page loads

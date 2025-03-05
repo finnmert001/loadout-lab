@@ -1,0 +1,53 @@
+extends layouts/layout
+
+block title
+    title Loadout Lab - Create
+
+block content
+    .container.create-loadout
+        h1 Loadout Builder 
+
+        form.weapon-types
+            .form-group.weapons 
+                h2.class-title Loadout Name:
+                input(type='text' id='loadoutName' name='loadoutName' placeholder='Enter a name for your loadout' required)
+
+            .form-group.weapons
+                h2.class-title Primary:
+
+                // Selected weapon display (always present, hidden initially)
+                .selected-weapon#selectedWeaponContainer(style="display: none;")
+                    img#weaponImage(src='' alt='Selected Weapon')
+                    p#weaponName 
+
+                // Plus button to open the weapon selection modal
+                button#openWeaponModal(type='button' class='plus-button') +
+
+                button#removeWeaponButton(type='button', style='display:none') Remove Weapon
+
+                // Modal for selecting weapon class and weapon
+                .modal#weaponModal
+                    .modal-content
+                        span.close#closeWeaponModal &times;
+                        h2 Select a Weapon
+                        
+                        // Weapon class dropdown
+                        select#weaponClassDropdown
+                            option(value='' disabled selected) Select a weapon class
+                            option(value='assault-rifle') Assault Rifle
+                            option(value='smg') SMG
+                            option(value='shotgun') Shotgun
+                            option(value='lmg') LMG
+                            option(value='marksman-rifle') Marksman Rifle
+                            option(value='sniper-rifle') Sniper Rifle
+                            option(value='pistol') Pistol
+                            option(value='special') Special
+
+                        // Weapon list container (populated dynamically)
+                        .weapon-list#weaponList
+
+                        // Confirm selection button
+                        button#confirmWeaponSelection(type='button') Select Weapon
+
+    // Include JavaScript file
+    script(src='/js/loadout.js')

@@ -248,7 +248,7 @@ form {
 }
 
 form.weapon-types {
-    background-color: var(--secondary-color);
+    background-color: var(--text-color);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
@@ -256,6 +256,12 @@ form.weapon-types {
     width: 100%; /* Adjust the width as you desire */
     max-width: 1500px; /* Optional: maximum width */
     margin: 0; /* Remove any margin */
+}
+
+#weaponName {
+    color: var(--secondary-color);
+    font-size: 20px;
+    font-weight: bold;
 }
 
 /* Form group styling */
@@ -283,7 +289,7 @@ h2.class-title {
     font-size: 20px;
     padding-top: 10px;
     margin-top: 0px;
-    color: var(--text-color);
+    color: var(--secondary-color);
     text-align: left;
 }
 
@@ -292,7 +298,7 @@ h3.class-sub-title {
     padding-left: 20px;
     padding-top: 15px;
     margin-top: 0px;
-    color: var(--text-color);
+    color: var(--secondary-color);
     text-align: center;
 }
 
@@ -404,8 +410,9 @@ button#confirmWeaponSelection:focus {
 }
 
 #openWeaponModal {
-    background-color: var(--text-color);
+    background-color: var(--primary-color);
     color: var(--secondary-color);
+    border-color: var(--secondary-color);
     font-size: 20px;
     cursor: pointer;
     border-radius: 4px;

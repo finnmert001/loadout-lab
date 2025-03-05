@@ -16,9 +16,11 @@ block content
                 h2.class-title Primary
 
                 // Selected weapon display (always present, hidden initially)
-                .selected-weapon#selectedWeaponContainer(style="display: none;")
-                    img#weaponImage(src='' alt='Selected Weapon')
+                .selected-weapon#selectedWeaponContainer(style="display: none; margin-top: -30px;")
                     p#weaponName 
+                    img#weaponImage(src='' alt='Selected Weapon')
+
+                    button.btn(type='button') Sight
 
                 // Plus button to open the weapon selection modal
                 button#openWeaponModal(type='button' class='plus-button') +

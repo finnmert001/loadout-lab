@@ -205,6 +205,8 @@ body.no-padding {
     align-items: center; /* Optional: to align vertically if needed */
     max-width: 100%; /* Ensure the container is flexible */
     padding: 20px; /* Optional: padding around the container */
+    position: absolute;
+    top: 100px;
 }
 
 .container.edit-profile {

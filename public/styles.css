@@ -84,13 +84,13 @@ footer {
     color: #fff;  /* White text */
     padding: 20px 0;
     position: absolute;
-    bottom: 0;
     width: 100%;
     text-align: center;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 40px;
+    margin-top: 7800px;
   }
   
   .footer-container {

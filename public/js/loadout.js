@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
     smg: [
       { name: "C9", image: "/images/weapons/SMG/c9.png" },
       { name: "KSV", image: "/images/weapons/SMG/ksv.png" },
-      { name: "Tanto .22", image: "/images/weapons/SMG/tanto22.png" },
+      { name: "Tanto .22", image: "/images/weapons/SMG/tanto22DS.png" },
       { name: "PP-919", image: "/images/weapons/SMG/pp919.png" },
     ],
     shotgun: [

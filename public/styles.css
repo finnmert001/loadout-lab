@@ -187,7 +187,7 @@ body.no-padding {
     text-align: center;
     flex-direction: column; /* Stack the logo and form */
     align-items: center; /* Center align the content */
-    margin-bottom: 250px;
+    margin-bottom: -3500px;
 }
 
 .container.explore-page {
@@ -258,6 +258,184 @@ form.weapon-types {
     margin: 0; /* Remove any margin */
 }
 
+form.warzone-meta{
+    border-radius: 4px;
+    padding: 1px;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(105deg, #FFD700 0%, #FF4500 50%, #FFD700 100%);
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+form.a-tier{
+    border-radius: 4px;
+    padding: 1px;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(105deg, #A8FF78 0%, #008000 50%, #A8FF78 100%);
+    margin-top: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+form.b-tier{
+    border-radius: 4px;
+    padding: 1px;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(105deg, #00D4FF 0%, #8A2BE2 50%, #00D4FF 100%);
+    margin-top: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+form.c-tier{
+    border-radius: 4px;
+    padding: 1px;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(105deg, #FF8C00 0%, #B8860B 50%, #FF8C00 100%);
+    margin-top: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+form.d-tier{
+    border-radius: 4px;
+    padding: 1px;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(105deg, #AFFF00 0%, #1C1C1C 50%, #AFFF00 100%);
+    margin-top: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+form.loadout-container {
+    border-radius: 4px;
+    background-color: var(--text-color);
+    margin-top: 5px;
+    padding: 10px;
+    width: 100%;
+    height: 110px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.weapon-image {
+    margin-left: 60px;
+    height: 40px; /* Adjust image size */
+    width: auto; /* Keep the aspect ratio */
+}
+
+.loadout-content-container {
+    display: flex; /* Aligns h4 and tags horizontally */
+    flex-direction: column; /* Stacks h4 and tags vertically */
+    margin-left: -500px; /* Align the title and tags to the left */
+    margin-top: -24px;
+    align-items: flex-start;
+}
+
+.loadout-title-home {
+    font-size: 20px;
+    font-weight: normal;
+    color: var(--secondary-color);
+    margin-bottom: 12px;
+}
+
+.tag-container {
+    display: flex; /* Align the tags horizontally */
+    gap: 5px; /* Adds space between tags */
+}
+
+.tag {
+    color: white; /* White text */
+    padding: 3px 8px; /* Padding inside the tags */
+    font-weight: normal;
+    font-size: 14px; /* Smaller text size */
+    border-radius: 12px; /* Round corners */
+}
+
+.close-range-tag {
+    background-color: #FF3B30; /* Blue color for 'Long Range' tag */
+}
+
+.long-range-tag {
+    background-color: #4682B4; /* Blue color for 'Long Range' tag */
+}
+
+.no1-tag {
+    background: linear-gradient(105deg, #FFD700 0%, #FF4500 50%, #FFD700 100%); /* Blue color for 'Long Range' tag */
+}
+
+.no2-tag {
+    background: linear-gradient(105deg, #A8FF78 0%, #008000 50%, #A8FF78 100%); /* Blue color for 'Long Range' tag */
+}
+
+.no3-tag {
+    background: linear-gradient(105deg, #00D4FF 0%, #8A2BE2 50%, #00D4FF 100%); /* Blue color for 'Long Range' tag */
+}
+
+.assault-rifle-tag {
+    background-color: #556B2F; /* Tomato color for 'Assault Rifle' tag */
+}
+
+.smg-tag {
+    background-color: #1E90FF; /* Tomato color for 'Assault Rifle' tag */
+}
+
+.shotgun-tag {
+    background-color: #FF6347; /* Tomato color for 'Assault Rifle' tag */
+}
+
+.lmg-tag {
+    background-color: #808000; /* Tomato color for 'Assault Rifle' tag */
+}
+
+.marksman-rifle-tag {
+    background-color: #008080;
+}
+
+.sniper-rifle-tag {
+    background-color: #800080;
+}
+
+.pistol-tag {
+    background-color: #D3D3D3;
+    color: black;
+}
+
+.special-tag {
+    background-color: #FFD700;
+    color: black;
+}
+
+.btn-view-loadout {
+    background: none;
+    border: none;
+    font-size: 20px; /* Button size */
+    cursor: pointer;
+    color: white; /* Adjust button color */
+}
+
+h3.warzone-heading {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 4px 12px; /* Adjust padding to control the bubble size */
+    display: inline-block; /* Ensures background fits text */
+    background: white;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border: 4px solid white; /* Outline border */
+    border-radius: 15px; /* Makes it rounded */
+    text-align: center;
+    margin-top: 5px;
+}
+
 #weaponName {
     color: var(--secondary-color);
     font-size: 20px;
@@ -276,6 +454,9 @@ form.weapon-types {
     margin-right: 40px;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    display: flex;
+    gap: 15px;
 }
 
 .form-group h4 {

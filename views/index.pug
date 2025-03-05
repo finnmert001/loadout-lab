@@ -7,9 +7,9 @@ block content
     .container.home-page
         h1 Welcome to Loadout Lab!
 
-        form(style='margin-top: 60px;')
+        form(style='margin-top: 40px;')
             p
-                | At Loadout Lab, we help you create, organise, and customise your perfect loadouts for Call of Duty and Call of Duty: Warzone.
+                | At Loadout Lab, we help you create, organise, and customise your perfect loadouts for Call of Duty: Warzone.
 
             p
                 | Whether you’re optimising your gear following the latest update, gearing up for Ranked Play, or setting up your ideal class, Loadout Lab gives you the tools to organise and create your loadouts so you're ready to slam!
@@ -27,19 +27,300 @@ block content
             button.btn-intro-home(style='margin-right: 150px;' type='button', onclick="window.location.href='/explore'") View All Loadouts
             button.btn-intro-home(type='button', onclick="window.location.href='/create-loadout'") Create Loadout
 
-    footer
-      .footer-container
-        .footer-left
-          ul
-            li: a(href='/about') About
-            li: a(href='/contact') Contact
-            li: a(href='/terms') Terms of Service
-            li: a(href='/privacy') Privacy Policy
-            p(style='margin-left: 80px;') &copy; 2025 Loadout Lab. All rights reserved.
-        .footer-right
-          a(href='https://www.facebook.com') 
-            img(src='/images/facebook.png',target='_blank', alt='Facebook', class='social-icon')
-          a(href='https://www.instagram.com') 
-            img(src='/images/instagram.png', alt='Instagram', class='social-icon')
-          a(href='https://www.x.com') 
-            img(src='/images/twitter.png', alt='X', class='social-icon')
+            p(style='margin-top: 40px;')
+                | Below are some loadouts us at Loadout Lab have created. Trust us on this one!
+
+        h2(style='margin-top: 40px;') Loadouts We Love
+          form.warzone-meta
+            h3.warzone-heading WARZONE META
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/SMG/c9.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -535px;')
+                h4.loadout-title-home C9
+                .tag-container
+                  span.tag.no1-tag #1 Close Range
+                  span.tag.smg-tag SMG
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/AR/ames85.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -495px;')
+                h4.loadout-title-home Ames 85
+                .tag-container
+                  span.tag.no2-tag #2 Long Range
+                  span.tag.assault-rifle-tag Assault Rifle
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/LMG/xmg.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -550px;')
+                h4.loadout-title-home XMG
+                .tag-container
+                  span.tag.no3-tag #3 Long Range
+                  span.tag.lmg-tag LMG
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/SR/lr762.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -580px;')
+                h4.loadout-title-home LR 7.62
+                .tag-container
+                  span.tag.no2-tag #2 Sniper
+                  span.tag.sniper-rifle-tag Sniper
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/SMG/ksv.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -440px;')
+                h4.loadout-title-home KSV
+                .tag-container
+                  span.tag.no1-tag #1 Sniper Support
+                  span.tag.close-range-tag Close Range
+                  span.tag.smg-tag SMG
+              button.btn-view-loadout &#9662;
+
+          form.a-tier
+            h3.warzone-heading A TIER
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/AR/xm4.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -540px;')
+                h4.loadout-title-home XM4
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.assault-rifle-tag Assault Rifle
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/SR/lw3a1.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -580px;')
+                h4.loadout-title-home LW3A1 Frostline
+                .tag-container
+                  span.tag.no3-tag #3 Sniper
+                  span.tag.sniper-rifle-tag Sniper
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/AR/gpr91.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -530px;')
+                h4.loadout-title-home GPR 91
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.assault-rifle-tag Assault Rifle
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/SMG/pp919.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -565px;')
+                h4.loadout-title-home PP-919
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.smg-tag SMG
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/AR/ak74.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -520px;')
+                h4.loadout-title-home AK-74
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.assault-rifle-tag Assault Rifle
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/LMG/feng82.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -565px;')
+                h4.loadout-title-home Feng 82
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.lmg-tag LMG
+              button.btn-view-loadout &#9662;
+
+          form.b-tier
+            h3.warzone-heading B TIER
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/special/sirin9mm.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -545px;')
+                h4.loadout-title-home Sirin 9mm
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.special-tag Special
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/shotgun/marineSP.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -535px;')
+                h4.loadout-title-home Marine SP
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.shotgun-tag Shotgun
+              button.btn-view-loadout &#9662;
+          
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/SR/amrMod4.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -595px;')
+                h4.loadout-title-home AMR Mod 4
+                .tag-container
+                  span.tag.sniper-rifle-tag Sniper
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/MR/dm10.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -520px;')
+                h4.loadout-title-home DM-10
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.marksman-rifle-tag Marksman
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/LMG/pu21.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -555px;')
+                h4.loadout-title-home PU-21
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.lmg-tag LMG
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/LMG/gpmg7.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -555px;')
+                h4.loadout-title-home GPMG-7
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.lmg-tag LMG
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/shotgun/maelstrom.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -525px;')
+                h4.loadout-title-home Maelstrom
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.shotgun-tag Shotgun
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/MR/aek973.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -510px;')
+                h4.loadout-title-home AEK-973
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.marksman-rifle-tag Marksman
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/shotgun/asg89.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -520px;')
+                h4.loadout-title-home ASG-89
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.shotgun-tag Shotgun
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/MR/swat556.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -515px;')
+                h4.loadout-title-home SWAT 5.56
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.marksman-rifle-tag Marksman
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/SMG/tanto22.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -540px;')
+                h4.loadout-title-home Tanto .22
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.smg-tag SMG
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/pistol/grekhova.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -535px;')
+                h4.loadout-title-home Grekhova
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.pistol-tag Pistol
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/pistol/stryder22.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -535px;')
+                h4.loadout-title-home Stryder .22
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.pistol-tag Pistol
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/pistol/9mmPM.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -535px;')
+                h4.loadout-title-home 9mm PM
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.pistol-tag Pistol
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/pistol/gs45.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -535px;')
+                h4.loadout-title-home GS45
+                .tag-container
+                  span.tag.close-range-tag Close Range
+                  span.tag.pistol-tag Pistol
+              button.btn-view-loadout &#9662;
+
+          form.c-tier
+            h3.warzone-heading C TIER
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/special/d13Sector.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -530px;')
+                h4.loadout-title-home D1.3 Sector
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.special-tag Special
+              button.btn-view-loadout &#9662;
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/MR/tsarkov762.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -510px;')
+                h4.loadout-title-home Tsarkov 7.62
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.marksman-rifle-tag Marksman
+              button.btn-view-loadout &#9662;
+
+          form.d-tier
+            h3.warzone-heading D TIER
+
+          form.loadout-container
+              img.weapon-image(src='/images/weapons/SR/svd.png', alt='Weapon Image')
+              .loadout-content-container(style='margin-left: -545px;')
+                h4.loadout-title-home SVD
+                .tag-container
+                  span.tag.long-range-tag Long Range
+                  span.tag.sniper-rifle-tag Sniper
+              button.btn-view-loadout &#9662;
+
+
+    //- footer
+    //-   .footer-container
+    //-     .footer-left
+    //-       ul
+    //-         li: a(href='/about') About
+    //-         li: a(href='/contact') Contact
+    //-         li: a(href='/terms') Terms of Service
+    //-         li: a(href='/privacy') Privacy Policy
+    //-         p(style='margin-left: 80px;') &copy; 2025 Loadout Lab. All rights reserved.
+    //-     .footer-right
+    //-       a(href='https://www.facebook.com') 
+    //-         img(src='/images/facebook.png',target='_blank', alt='Facebook', class='social-icon')
+    //-       a(href='https://www.instagram.com') 
+    //-         img(src='/images/instagram.png', alt='Instagram', class='social-icon')
+    //-       a(href='https://www.x.com') 
+    //-         img(src='/images/twitter.png', alt='X', class='social-icon')

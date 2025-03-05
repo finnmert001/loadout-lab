@@ -7,13 +7,13 @@ block content
     .container.create-loadout
         h1 Loadout Builder 
 
-        form.weapon-types(style='max-height: 100vh; display: flex; flex-direction: column; expand: 1;')
+        form.weapon-types
             .form-group.weapons 
-                h2.class-title Loadout Name:
+                h2.class-title Loadout Name
                 input(style='width: 30%;' type='text' id='loadoutName' name='loadoutName' placeholder='Enter a name for your loadout' required)
 
             .form-group.weapons
-                h2.class-title Primary:
+                h2.class-title Primary
 
                 // Selected weapon display (always present, hidden initially)
                 .selected-weapon#selectedWeaponContainer(style="display: none;")
@@ -29,7 +29,7 @@ block content
                 .modal#weaponModal
                     .modal-content
                         span.close#closeWeaponModal &times;
-                        h2 Select a Weapon
+                        h2(style='margin-top: 5px;') Select a Weapon
                         
                         // Weapon class dropdown
                         select#weaponClassDropdown

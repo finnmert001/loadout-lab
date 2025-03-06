@@ -12,44 +12,49 @@ block content
                 h2.class-title Loadout Name
                 input(style='width: 30%;' type='text' id='loadoutName' name='loadoutName' placeholder='Enter a name for your loadout' required)
 
+            // Primary Weapon Section
             .form-group.weapons
                 h2.class-title Primary
 
-                // Selected weapon display (always present, hidden initially)
-                .selected-weapon#selectedWeaponContainer(style="display: none; margin-top: -30px;")
-                    p#weaponName 
-                    img#weaponImage(src='' alt='Selected Weapon')
+                .selected-weapon#primaryWeaponContainer(style="display: none; margin-top: -30px;")
+                    p#primaryWeaponName 
+                    img#primaryWeaponImage(src='' alt='Selected Primary Weapon')
 
-                    button.btn(type='button') Sight
+                button#openPrimaryWeaponModal(type='button' class='plus-button') +
 
-                // Plus button to open the weapon selection modal
-                button#openWeaponModal(type='button' class='plus-button') +
+                button#removePrimaryWeaponButton(type='button', style='display:none') Remove Weapon
 
-                button#removeWeaponButton(type='button', style='display:none') Remove Weapon
+            // Secondary Weapon Section
+            .form-group.weapons
+                h2.class-title Secondary
 
-                // Modal for selecting weapon class and weapon
-                .modal#weaponModal
-                    .modal-content
-                        span.close#closeWeaponModal &times;
-                        h2(style='margin-top: 5px;') Select a Weapon
-                        
-                        // Weapon class dropdown
-                        select#weaponClassDropdown
-                            option(value='' disabled selected) Select a weapon class
-                            option(value='assault-rifle') Assault Rifle
-                            option(value='smg') SMG
-                            option(value='shotgun') Shotgun
-                            option(value='lmg') LMG
-                            option(value='marksman-rifle') Marksman Rifle
-                            option(value='sniper-rifle') Sniper Rifle
-                            option(value='pistol') Pistol
-                            option(value='special') Special
+                .selected-weapon#secondaryWeaponContainer(style="display: none; margin-top: -30px;")
+                    p#secondaryWeaponName 
+                    img#secondaryWeaponImage(src='' alt='Selected Secondary Weapon')
 
-                        // Weapon list container (populated dynamically)
-                        .weapon-list#weaponList
+                button#openSecondaryWeaponModal(type='button' class='plus-button') +
 
-                        // Confirm selection button
-                        button#confirmWeaponSelection(type='button') Select Weapon
+                button#removeSecondaryWeaponButton(type='button', style='display:none') Remove Weapon
 
-    // Include JavaScript file
+            // Modal for selecting weapon class and weapon (Shared)
+            .modal#weaponModal
+                .modal-content
+                    span.close#closeWeaponModal &times;
+                    h2(style='margin-top: 5px;') Select a Weapon
+                    
+                    select#weaponClassDropdown
+                        option(value='' disabled selected) Select a weapon class
+                        option(value='assault-rifle') Assault Rifle
+                        option(value='smg') SMG
+                        option(value='shotgun') Shotgun
+                        option(value='lmg') LMG
+                        option(value='marksman-rifle') Marksman Rifle
+                        option(value='sniper-rifle') Sniper Rifle
+                        option(value='pistol') Pistol
+                        option(value='special') Special
+
+                    .weapon-list#weaponList
+
+                    button#confirmWeaponSelection(type='button') Select Weapon
+
     script(src='/js/loadout.js')

@@ -208,6 +208,8 @@ body.no-padding {
     flex-direction: column; /* Stack the logo and form */
     align-items: center; /* Center align the content */
     margin-bottom: 220px;
+    position: absolute;
+    top: 100px;
 }
 
 .container.home-page {
@@ -227,7 +229,8 @@ body.no-padding {
     text-align: center;
     flex-direction: column; /* Stack the logo and form */
     align-items: center; /* Center align the content */
-    margin-bottom: 335px;
+    position: absolute;
+    top: 100px;
 }
 
 .container.create-loadout {
@@ -235,7 +238,6 @@ body.no-padding {
     justify-content: center; /* Centers the form horizontally */
     align-items: center; /* Optional: to align vertically if needed */
     max-width: 97.9%; /* Ensure the container is flexible */
-    padding: 20px; /* Optional: padding around the container */
     position: absolute;
     top: 100px;
 }
@@ -246,7 +248,8 @@ body.no-padding {
     text-align: center;
     flex-direction: column; /* Stack the logo and form */
     align-items: center; /* Center align the content */
-    padding-top: 310px;
+    position: absolute;
+    top: 100px;
 }
 
 .container.update-password {
@@ -255,7 +258,8 @@ body.no-padding {
     text-align: center;
     flex-direction: column; /* Stack the logo and form */
     align-items: center; /* Center align the content */
-    padding-top: 105px;
+    position: absolute;
+    top: 100px;
 }
 
 /* Logo styles */
@@ -286,6 +290,8 @@ form {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     padding-left: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     width: 97.9%; /* Adjust the width as you desire */
     max-width: 1500px; /* Optional: maximum width */
     margin: 0; /* Remove any margin */

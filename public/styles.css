@@ -440,13 +440,15 @@ h3.warzone-heading {
     margin-top: 5px;
 }
 
-#weaponName {
+#primaryWeaponName,
+#secondaryWeaponName {
     color: var(--text-color);
     font-size: 20px;
     font-weight: bold;
 }
 
-#weaponImage {
+#primaryWeaponImage,
+#secondaryWeaponImage {
     margin-top: -10px;
 }
 
@@ -589,7 +591,8 @@ button#confirmWeaponSelection:focus {
     outline: none;
 }
 
-#openWeaponModal {
+#openPrimaryWeaponModal,
+#openSecondaryWeaponModal {
     background: linear-gradient(105deg, #1E3A8A 0%, #3B82F6 50%, #1E3A8A 100%);
     color: #fff;
     border-color: var(--text-color);
@@ -601,7 +604,8 @@ button#confirmWeaponSelection:focus {
     display: inline-block;
 }
 
-#openWeaponModal:hover {
+#openPrimaryWeaponModal:hover,
+#openSecondaryWeaponModal:hover {
     background: linear-gradient(105deg, #2563EB 0%, #93C5FD 50%, #2563EB 100%);
     background-color: #3B82F6;
     color: #f0f0f0;
@@ -652,7 +656,8 @@ button#confirmWeaponSelection:focus {
 }
 
 /* Remove Weapon button styling*/
-#removeWeaponButton {
+#removePrimaryWeaponButton,
+#removeSecondaryWeaponButton {
     background-color: #ff4d4d; /* Red background */
     color: white; /* White text */
     padding: 10px 20px; /* Add padding */
@@ -667,7 +672,8 @@ button#confirmWeaponSelection:focus {
 }
 
 /* Hover effect */
-#removeWeaponButton:hover {
+#removePrimaryWeaponButton:hover,
+#removeSecondaryWeaponButton:hover {
     background-color: #ff1a1a; /* Darker red on hover */
 }
 

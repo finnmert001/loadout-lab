@@ -280,13 +280,13 @@ form {
     box-sizing: border-box;
 }
 
-form.weapon-types {
+.container.weapon-types {
     background-color: #f5f5f5;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     padding-left: 0px;
-    width: 100%; /* Adjust the width as you desire */
+    width: 97.9%; /* Adjust the width as you desire */
     max-width: 1500px; /* Optional: maximum width */
     margin: 0; /* Remove any margin */
 }
@@ -546,7 +546,8 @@ h3.warzone-heading {
     align-items: center;
     gap: 20px;
     width: 97.9%;
-    margin-left: 547px;
+    max-width: 95%;
+    margin-left: 497px;
 }
 
 .weapon-info {

@@ -343,6 +343,24 @@ form.loadout-container {
     align-items: flex-start;
 }
 
+.loadout-attachment-grid {
+    display: grid;
+    margin-left: 10px;
+    margin-right: -60px;
+    margin-top: 12px;
+    grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+    grid-template-rows: repeat(3, auto); /* 4 rows */
+    width: 50%;
+}
+
+p.loadout-attachment {
+    color: yellow;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: left;
+    margin-top: -1px;
+}
+
 .loadout-title-home {
     font-size: 20px;
     font-weight: normal;

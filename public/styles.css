@@ -30,7 +30,7 @@
 
 /* Firefox Scrollbar Styling */
 * {
-    scrollbar-width: default;
+    scrollbar-width: thin;
     scrollbar-color: var(--primary-color) var(--text-color); /* Thumb color | Track color */
 }
 
@@ -234,7 +234,7 @@ body.no-padding {
     display: flex;
     justify-content: center; /* Centers the form horizontally */
     align-items: center; /* Optional: to align vertically if needed */
-    max-width: 100%; /* Ensure the container is flexible */
+    max-width: 97.9%; /* Ensure the container is flexible */
     padding: 20px; /* Optional: padding around the container */
     position: absolute;
     top: 100px;
@@ -545,7 +545,7 @@ h3.warzone-heading {
     display: flex;
     align-items: center;
     gap: 20px;
-    width: 100%;
+    width: 97.9%;
     margin-left: 547px;
 }
 

@@ -307,6 +307,14 @@ block content
                   span.tag.sniper-rifle-tag Sniper
               button.btn-view-loadout &#9662;
 
+    // Cookie Consent Modal
+    #cookieModal.modal-cookie
+      .cookie-content
+        h3 Cookie Consent 🍪
+        p We use cookies to improve your experience. By clicking "Accept," you agree to our use of cookies.
+        .cookie-buttons
+            button#acceptCookies Accept
+            button#declineCookies Decline
 
     footer
       .footer-container
@@ -325,3 +333,5 @@ block content
             img(src='/images/instagram.png', alt='Instagram', class='social-icon')
           a(href='https://www.x.com') 
             img(src='/images/twitter.png', alt='X', class='social-icon')
+
+    script(src='/js/cookies.js')

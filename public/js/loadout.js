@@ -133,14 +133,16 @@ document.addEventListener("DOMContentLoaded", function () {
         primaryWeaponContainer.style.display = "block";
         openPrimaryWeaponModal.style.display = "none";
         removePrimaryWeaponButton.style.display = "block";
+        showAttachments("primary");
       } else {
         secondaryWeaponImage.src = selectedWeapon.image;
         secondaryWeaponName.textContent = selectedWeapon.name;
         secondaryWeaponContainer.style.display = "block";
         openSecondaryWeaponModal.style.display = "none";
         removeSecondaryWeaponButton.style.display = "block";
+        showAttachments("secondary");
       }
-      weaponModal.style.display = "none";
+      weaponModal.style.display = "none"; // Close modal after selection
     }
   });
 
@@ -150,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
     primaryWeaponContainer.style.display = "none";
     openPrimaryWeaponModal.style.display = "inline-block";
     removePrimaryWeaponButton.style.display = "none";
+    hideAttachments("primary");
   });
 
   removeSecondaryWeaponButton.addEventListener("click", () => {
@@ -158,6 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
     secondaryWeaponContainer.style.display = "none";
     openSecondaryWeaponModal.style.display = "inline-block";
     removeSecondaryWeaponButton.style.display = "none";
+    hideAttachments("secondary");
   });
 
   window.addEventListener("click", (event) => {
@@ -165,4 +169,14 @@ document.addEventListener("DOMContentLoaded", function () {
       weaponModal.style.display = "none";
     }
   });
+
+  function showAttachments(type) {
+    const container = document.getElementById(`${type}Attachments`);
+    container.style.display = "grid";
+  }
+
+  function hideAttachments(type) {
+    const container = document.getElementById(`${type}Attachments`);
+    container.style.display = "none";
+  }
 });

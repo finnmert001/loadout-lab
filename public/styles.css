@@ -440,6 +440,33 @@ h3.warzone-heading {
     margin-top: 5px;
 }
 
+.weapon-selection-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-left: 547px;
+}
+
+.weapon-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.weapon-info img {
+    width: 120px; /* Adjust as needed */
+    height: auto;
+    margin-top: 10px;
+}
+
+.attachments-container {
+    flex: 2;
+    display: none; /* Initially hidden until weapon is selected */
+}
+
 #primaryWeaponName,
 #secondaryWeaponName {
     color: var(--text-color);
@@ -734,6 +761,50 @@ select#weaponClassDropdown {
     cursor: pointer;
 }
 
+select.attachment#optic,
+select.attachment#muzzle,
+select.attachment#barrel,
+select.attachment#underbarrel,
+select.attachment#magazine,
+select.attachment#reargrip,
+select.attachment#stock,
+select.attachment#laser,
+select.attachment#firemods {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: var(--text-color);
+    color: var(--secondary-color);
+    cursor: pointer;
+    margin-left: 80px;
+}
+
+.attachments-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 2 equal columns */
+    grid-template-rows: repeat(3, auto); /* 4 rows */
+    gap: 20px 20px; /* Adjust spacing between rows & columns */
+    width: 100%;
+    max-width: 500px; /* Adjust as needed */
+}
+
+.attachments-grid select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: var(--text-color);
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
 #weaponList {
     flex-direction: column;
     align-items: center; /* This ensures all items are centered horizontally */
@@ -892,6 +963,83 @@ p.sign-up-text a:hover {
     .btn-cancel:focus {
         outline: none;
     }
+
+/* Cookie Modal */
+.modal-cookie {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #383838; /* Dark gray background */
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 340px;
+    text-align: center;
+    display: none; /* Hidden by default */
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Show modal with animation */
+.modal-cookie.show {
+    display: block;
+    opacity: 1;
+}
+
+/* Cookie Modal Title */
+.cookie-content h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #f4c542; /* Gold accent */
+}
+
+/* Cookie Modal Text */
+.cookie-content p {
+    font-size: 14px;
+    margin: 10px 0;
+    color: #ddd;
+}
+
+/* Cookie Buttons Container */
+.cookie-buttons {
+    margin-top: 12px;
+}
+
+/* General Button Styles */
+.cookie-buttons button {
+    border: none;
+    padding: 10px 16px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+/* Accept Button */
+#acceptCookies {
+    background-color: #28a745;
+    color: white;
+}
+
+#acceptCookies:hover {
+    background-color: #218838;
+}
+
+/* Decline Button */
+#declineCookies {
+    background-color: #dc3545;
+    color: white;
+}
+
+#declineCookies:hover {
+    background-color: #c82333;
+}
+
 
 /* Fade-in animation */
 @keyframes fadeIn {

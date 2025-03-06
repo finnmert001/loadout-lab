@@ -6,6 +6,35 @@
     --text-color: #2c3e50;
 }
 
+/* Scrollbar for Webkit Browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 10px; /* Scrollbar width */
+}
+
+/* Scrollbar Track (Background) */
+::-webkit-scrollbar-track {
+    background: var(--text-color); /* Dark background */
+    border-radius: 10px;
+}
+
+/* Scrollbar Handle (Thumb) */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #3b82f6, #1e3a8a); /* Custom gradient */
+    border-radius: 10px;
+}
+
+/* Scrollbar Handle on Hover */
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #2563eb, #102a6a); /* Slightly lighter gradient */
+}
+
+/* Firefox Scrollbar Styling */
+* {
+    scrollbar-width: default;
+    scrollbar-color: var(--primary-color) var(--text-color); /* Thumb color | Track color */
+}
+
+
 /* Navigation Bar */
 .navbar {
     background-color: var(--text-color); /* Use theme primary color */
@@ -338,27 +367,80 @@ form.loadout-container {
 .loadout-content-container {
     display: flex; /* Aligns h4 and tags horizontally */
     flex-direction: column; /* Stacks h4 and tags vertically */
-    margin-left: -500px; /* Align the title and tags to the left */
     margin-top: -24px;
+    margin-left: 50px;
     align-items: flex-start;
 }
 
-.loadout-attachment-grid {
-    display: grid;
-    margin-left: 10px;
-    margin-right: -60px;
-    margin-top: 12px;
-    grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
-    grid-template-rows: repeat(3, auto); /* 4 rows */
+/* Ensure wrapper is positioned correctly */
+.attachment-wrapper {
+    position: relative;
     width: 50%;
+    text-align: center;
+    margin-left: -100px;
+}
+
+/* Attachments Grid - Initially Hidden with Smooth Animation */
+.loadout-attachment-grid {
+    position: absolute;
+    top: 100%; /* Starts directly below the button */
+    left: 31%;
+    transform: translateX(-50%);
+    width: 250px;
+    background-color: var(--text-color);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    
+    /* Animation properties */
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Show attachments smoothly */
+.loadout-attachment-grid.show {
+    opacity: 1;
+    max-height: 300px; /* Adjust based on content size */
+    visibility: visible;
 }
 
 p.loadout-attachment {
-    color: yellow;
+    color: var(--secondary-color);
     font-size: 14px;
     font-weight: normal;
     text-align: left;
     margin-top: -1px;
+}
+
+.loadout-attachment-button-container {
+    display: flex;
+    margin-left: 60px;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.btn-attachments {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    width: 40%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.btn-attachments:hover {
+    background-color: #2980b9;
 }
 
 .loadout-title-home {
@@ -371,6 +453,7 @@ p.loadout-attachment {
 .tag-container {
     display: flex; /* Align the tags horizontally */
     gap: 5px; /* Adds space between tags */
+    width: 400px;
 }
 
 .tag {

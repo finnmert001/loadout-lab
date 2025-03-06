@@ -36,301 +36,883 @@ block content
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/SMG/c9.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -90px;')
+              .loadout-content-container
                 h4.loadout-title-home C9
                 .tag-container
                   span.tag.no1-tag #1 Close Range
                   span.tag.smg-tag SMG
-              .loadout-attachment-grid
-                p.loadout-attachment <strong>Muzzle</strong> ‎ SUPPRESSOR
-                p.loadout-attachment <strong>Barrel</strong> ‎ LONG BARREL
-                p.loadout-attachment <strong>Underbarrel</strong> ‎ VERTICAL FOREGRIP
-                p.loadout-attachment <strong>Magazine</strong> ‎ EXTENDED MAG II
-                p.loadout-attachment <strong>Rear Grip</strong> ‎ COMMANDO GRIP
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+              
+                // Hidden attachments section
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ SUPPRESSOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ VERTICAL FOREGRIP
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
+                  p.loadout-attachment 
+                    strong Rear Grip:
+                    |  ‎ COMMANDO GRIP
 
           form.loadout-container
-              img.weapon-image(src='/images/weapons/AR/ames85.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -50px;')
-                h4.loadout-title-home Ames 85
-                .tag-container
-                  span.tag.no2-tag #2 Long Range
-                  span.tag.assault-rifle-tag Assault Rifle
+            img.weapon-image(src='/images/weapons/AR/ames85.png', alt='Weapon Image')
+            .loadout-content-container
+              h4.loadout-title-home Ames 85
+              .tag-container
+                span.tag.no2-tag #2 Long Range
+                span.tag.assault-rifle-tag Assault Rifle
+
+            .attachment-wrapper
+              .loadout-attachment-button-container
+                button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+              // Attachments section (Initially hidden)
               .loadout-attachment-grid
-                p.loadout-attachment <strong>Optic</strong> ‎ WILLIS 3X
-                p.loadout-attachment <strong>Muzzle</strong> ‎ COMPENSATOR
-                p.loadout-attachment <strong>Barrel</strong> ‎ GAIN-TWIST BARREL
-                p.loadout-attachment <strong>Underbarrel</strong> ‎ VERTICAL FOREGRIP
-                p.loadout-attachment <strong>Magazine</strong> ‎ EXTENDED MAG II
+                p.loadout-attachment 
+                  strong Optic:
+                  |  ‎ WILLIS 3X
+                p.loadout-attachment 
+                  strong Muzzle:
+                  |  ‎ COMPENSATOR
+                p.loadout-attachment 
+                  strong Barrel:
+                  |  ‎ GAIN-TWIST BARREL
+                p.loadout-attachment 
+                  strong Underbarrel:
+                  |  ‎ VERTICAL FOREGRIP
+                p.loadout-attachment 
+                  strong Magazine:
+                  |  ‎ EXTENDED MAG II
 
           form.loadout-container
-              img.weapon-image(src='/images/weapons/LMG/xmg.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -95px;')
-                h4.loadout-title-home XMG
-                .tag-container
-                  span.tag.no3-tag #3 Long Range
-                  span.tag.lmg-tag LMG
+            img.weapon-image(src='/images/weapons/LMG/xmg.png', alt='Weapon Image')
+            .loadout-content-container
+              h4.loadout-title-home XMG
+              .tag-container
+                span.tag.no3-tag #3 Long Range
+                span.tag.lmg-tag LMG
+
+            .attachment-wrapper
+              .loadout-attachment-button-container
+                button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+              // Attachments section (Initially hidden)
               .loadout-attachment-grid
-                p.loadout-attachment <strong>Optic</strong> ‎ WILLIS 3X
-                p.loadout-attachment <strong>Muzzle</strong> ‎ COMPENSATOR
-                p.loadout-attachment <strong>Barrel</strong> ‎ REINFORCED BARREL
-                p.loadout-attachment <strong>Underbarrel</strong> ‎ VERTICAL FOREGRIP
-                p.loadout-attachment <strong>Stock</strong> ‎ BUFFER WEIGHT STOCK
+                p.loadout-attachment 
+                  strong Optic:
+                  |  ‎ WILLIS 3X
+                p.loadout-attachment 
+                  strong Muzzle:
+                  |  ‎ COMPENSATOR
+                p.loadout-attachment 
+                  strong Barrel:
+                  |  ‎ REINFORCED BARREL
+                p.loadout-attachment 
+                  strong Underbarrel:
+                  |  ‎ VERTICAL FOREGRIP
+                p.loadout-attachment 
+                  strong Stock:
+                  |  ‎ BUFFER WEIGHT STOCK
 
           form.loadout-container
-              img.weapon-image(src='/images/weapons/SR/lr762.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -120px;')
-                h4.loadout-title-home LR 7.62
-                .tag-container
-                  span.tag.no2-tag #2 Sniper
-                  span.tag.sniper-rifle-tag Sniper
+            img.weapon-image(src='/images/weapons/SR/lr762.png', alt='Weapon Image')
+            .loadout-content-container
+              h4.loadout-title-home LR 7.62
+              .tag-container
+                span.tag.no2-tag #2 Sniper
+                span.tag.sniper-rifle-tag Sniper
+
+            .attachment-wrapper
+              .loadout-attachment-button-container
+                button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+              // Attachments section (Initially hidden)
               .loadout-attachment-grid
-                p.loadout-attachment <strong>Muzzle</strong> ‎ SUPPRESSOR
-                p.loadout-attachment <strong>Barrel</strong> ‎ LONG BARREL
-                p.loadout-attachment <strong>Underbarrel</strong> ‎ LIGHTWIGHT HANDGUARD
-                p.loadout-attachment <strong>Rear Grip</strong> ‎ QUICKDRAW GRIP
-                p.loadout-attachment <strong>Fire Mods</strong> ‎ 7.62 NATO OVERPRESSURED
+                p.loadout-attachment 
+                  strong Muzzle:
+                  |  ‎ SUPPRESSOR
+                p.loadout-attachment 
+                  strong Barrel:
+                  |  ‎ LONG BARREL
+                p.loadout-attachment 
+                  strong Underbarrel:
+                  |  ‎ LIGHTWEIGHT HANDGUARD
+                p.loadout-attachment 
+                  strong Rear Grip:
+                  |  ‎ QUICKDRAW GRIP
+                p.loadout-attachment 
+                  strong Fire Mods:
+                  |  ‎ 7.62 NATO OVERPRESSURED
 
           form.loadout-container
-              img.weapon-image(src='/images/weapons/SMG/ksv.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: 25px;')
-                h4.loadout-title-home KSV
-                .tag-container
-                  span.tag.no1-tag #1 Sniper Support
-                  span.tag.close-range-tag Close Range
-                  span.tag.smg-tag SMG
+            img.weapon-image(src='/images/weapons/SMG/ksv.png', alt='Weapon Image')
+            .loadout-content-container
+              h4.loadout-title-home KSV
+              .tag-container
+                span.tag.no1-tag #1 Sniper Support
+                span.tag.close-range-tag Close Range
+                span.tag.smg-tag SMG
+
+            .attachment-wrapper
+              .loadout-attachment-button-container
+                button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+              // Attachments section (Initially hidden)
               .loadout-attachment-grid
-                p.loadout-attachment <strong>Muzzle</strong> ‎ SUPPRESSOR
-                p.loadout-attachment <strong>Barrel</strong> ‎ LONG BARREL
-                p.loadout-attachment <strong>Underbarrel</strong> ‎ LIGHTWIGHT HANDGUARD
-                p.loadout-attachment <strong>Rear Grip</strong> ‎ QUICKDRAW GRIP
-                p.loadout-attachment <strong>Fire Mods</strong> ‎ 7.62 NATO OVERPRESSURED
+                p.loadout-attachment 
+                  strong Muzzle:
+                  |  ‎ COMPENSATOR
+                p.loadout-attachment 
+                  strong Barrel:
+                  |  ‎ LONG BARREL
+                p.loadout-attachment 
+                  strong Underbarrel:
+                  |  ‎ VERTICAL FOREGRIP
+                p.loadout-attachment 
+                  strong Magazine:
+                  |  ‎ EXTENDED MAG II
+                p.loadout-attachment 
+                  strong Rear Grip:
+                  |  ‎ COMMANDO GRIP
+
 
           form.a-tier
             h3.warzone-heading A TIER
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/AR/xm4.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -540px;')
+              .loadout-content-container
                 h4.loadout-title-home XM4
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.assault-rifle-tag Assault Rifle
-              button.btn-view-loadout &#9662;
+              
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ WILLIS 3X
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ REINFORCED BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ VERTICAL FOREGRIP
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG III
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/SR/lw3a1.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -580px;')
+              .loadout-content-container
                 h4.loadout-title-home LW3A1 Frostline
                 .tag-container
                   span.tag.no3-tag #3 Sniper
                   span.tag.sniper-rifle-tag Sniper
-              button.btn-view-loadout &#9662;
+              
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ SUPPRESSOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Stock Pad:
+                    |  ‎ LIGHTWEIGHT PAD
+                  p.loadout-attachment 
+                    strong Comb:
+                    |  ‎ QUICKDRAW RISER
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ 7.62 NATO OVERPRESSURED
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/AR/gpr91.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -530px;')
+              .loadout-content-container
                 h4.loadout-title-home GPR 91
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.assault-rifle-tag Assault Rifle
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ WILLIS 3X
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ REINFORCED BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ VERTICAL FOREGRIP
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/SMG/pp919.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -565px;')
+              .loadout-content-container
                 h4.loadout-title-home PP-919
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.smg-tag SMG
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ SUPPRESSOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ FAST MAG I
+                  p.loadout-attachment 
+                    strong Rear Grip:
+                    |  ‎ ERGONOMIC GRIP
+                  p.loadout-attachment 
+                    strong Stock:
+                    |  ‎ INFILTRATOR STOCK
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/AR/ak74.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -520px;')
+              .loadout-content-container
                 h4.loadout-title-home AK-74
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.assault-rifle-tag Assault Rifle
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ WILLIS 3X
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ GAIN-TWIST BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ VERTICAL FOREGRIP
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG III
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/LMG/feng82.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -565px;')
+              .loadout-content-container
                 h4.loadout-title-home Feng 82
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.lmg-tag LMG
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ OTERO RED DOT
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ GAIN-TWIST BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ VERTICAL FOREGRIP
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG I
 
           form.b-tier
             h3.warzone-heading B TIER
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/special/sirin9mm.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -545px;')
+              .loadout-content-container
                 h4.loadout-title-home Sirin 9mm
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.special-tag Special
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ IRON SIGHT
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ SUPPRESSOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ VERTICAL FOREGRIP
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG I
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/shotgun/marineSP.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -535px;')
+              .loadout-content-container
                 h4.loadout-title-home Marine SP
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.shotgun-tag Shotgun
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ MODIFIED CHOKE
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Stock:
+                    |  ‎ COMBAT STOCK
+                  p.loadout-attachment 
+                    strong Laser:
+                    |  ‎ TACTICAL LASER
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RAPID FIRE
           
           form.loadout-container
               img.weapon-image(src='/images/weapons/SR/amrMod4.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -595px;')
+              .loadout-content-container
                 h4.loadout-title-home AMR Mod 4
                 .tag-container
                   span.tag.sniper-rifle-tag Sniper
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ LIGHTWEIGHT PAD
+                  p.loadout-attachment 
+                    strong Rear Grip:
+                    |  ‎ QUICKDRAW GRIP
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RECOIL SPRINGS
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/MR/dm10.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -520px;')
+              .loadout-content-container
                 h4.loadout-title-home DM-10
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.marksman-rifle-tag Marksman
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ REINFORCED BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ PRECISION HANDGUARD
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
+                  p.loadout-attachment 
+                    strong Stock:
+                    |  ‎ BUFFER WEIGHT STOCK
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/LMG/pu21.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -555px;')
+              .loadout-content-container
                 h4.loadout-title-home PU-21
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.lmg-tag LMG
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ VOLZHSKIY REFLEX
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ REINFORCED BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ VERTICAL FOREGRIP
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RECOIL SPRINGS
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/LMG/gpmg7.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -555px;')
+              .loadout-content-container
                 h4.loadout-title-home GPMG-7
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.lmg-tag LMG
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ VOLZHSKIY REFLEX
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ REINFORCED BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ VERTICAL FOREGRIP
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/shotgun/maelstrom.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -525px;')
+              .loadout-content-container
                 h4.loadout-title-home Maelstrom
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.shotgun-tag Shotgun
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ MODIFIED CHOKE
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG I
+                  p.loadout-attachment 
+                    strong Rear Grip:
+                    |  ‎ COMMANDO GRIP
+                  p.loadout-attachment 
+                    strong Laser:
+                    |  ‎ TACTICAL LASER
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/MR/aek973.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -510px;')
+              .loadout-content-container
                 h4.loadout-title-home AEK-973
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.marksman-rifle-tag Marksman
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ WILLIS 3X
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ REINFORCED BARREL
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ 7.62X39MM OVERPRESSURED
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/shotgun/asg89.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -520px;')
+              .loadout-content-container
                 h4.loadout-title-home ASG-89
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.shotgun-tag Shotgun
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ MODIFIED CHOKE
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Rear Grip:
+                    |  ‎ COMMANDO GRIP
+                  p.loadout-attachment 
+                    strong Laser:
+                    |  ‎ TACTICAL LASER
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RAPID FIRE
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/MR/swat556.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -515px;')
+              .loadout-content-container
                 h4.loadout-title-home SWAT 5.56
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.marksman-rifle-tag Marksman
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ WILLIS 3X
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ REINFORCED BARREL
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RAPID FIRE
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/SMG/tanto22.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -540px;')
+              .loadout-content-container
                 h4.loadout-title-home Tanto .22
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.smg-tag SMG
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ SUPPRESSOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ RANGER FOREGRIP
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG I
+                  p.loadout-attachment 
+                    strong Rear Grip:
+                    |  ‎ ERGONOMIC GRIP
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/pistol/grekhova.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -535px;')
+              .loadout-content-container
                 h4.loadout-title-home Grekhova
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.pistol-tag Pistol
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ KEPLER MICROFLEX
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG III
+                  p.loadout-attachment 
+                    strong Rear Grip:
+                    |  ‎ QUICKDRAW GRIP
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RAPID FIRE
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/pistol/stryder22.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -535px;')
+              .loadout-content-container
                 h4.loadout-title-home Stryder .22
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.pistol-tag Pistol
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ KEPLER MICROFLEX
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ SUPPRESSOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RAPID FIRE
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/pistol/9mmPM.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -535px;')
+              .loadout-content-container
                 h4.loadout-title-home 9mm PM
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.pistol-tag Pistol
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ KEPLER MICROFLEX
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ SUPPRESSOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RAPID FIRE
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/pistol/gs45.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -535px;')
+              .loadout-content-container
                 h4.loadout-title-home GS45
                 .tag-container
                   span.tag.close-range-tag Close Range
                   span.tag.pistol-tag Pistol
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ KEPLER MICROFLEX
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ SUPPRESSOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RAPID FIRE
 
           form.c-tier
             h3.warzone-heading C TIER
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/special/d13Sector.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -530px;')
+              .loadout-content-container
                 h4.loadout-title-home D1.3 Sector
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.special-tag Special
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ LONG BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ CROSSBAR
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXPLOSIVE BLADES
+                  p.loadout-attachment 
+                    strong Stock:
+                    |  ‎ OVERCLOCKED STOCK
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/MR/tsarkov762.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -510px;')
+              .loadout-content-container
                 h4.loadout-title-home Tsarkov 7.62
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.marksman-rifle-tag Marksman
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Optic:
+                    |  ‎ WILLIS 3X
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ REINFORCED BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ WEIGHTED HANDGUARD
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
 
           form.d-tier
             h3.warzone-heading D TIER
 
           form.loadout-container
               img.weapon-image(src='/images/weapons/SR/svd.png', alt='Weapon Image')
-              .loadout-content-container(style='margin-left: -545px;')
+              .loadout-content-container
                 h4.loadout-title-home SVD
                 .tag-container
                   span.tag.long-range-tag Long Range
                   span.tag.sniper-rifle-tag Sniper
-              button.btn-view-loadout &#9662;
+
+              .attachment-wrapper
+                .loadout-attachment-button-container
+                  button.btn-attachments(type="button" onclick="toggleAttachments(event, this)") View Attachments
+
+                // Attachments section (Initially hidden)
+                .loadout-attachment-grid
+                  p.loadout-attachment 
+                    strong Muzzle:
+                    |  ‎ PORTED COMPENSATOR
+                  p.loadout-attachment 
+                    strong Barrel:
+                    |  ‎ REINFORCED BARREL
+                  p.loadout-attachment 
+                    strong Underbarrel:
+                    |  ‎ PRECISION HANDGUARD
+                  p.loadout-attachment 
+                    strong Magazine:
+                    |  ‎ EXTENDED MAG II
+                  p.loadout-attachment 
+                    strong Fire Mods:
+                    |  ‎ RECOIL SPRINGS
 
     // Cookie Consent Modal
     #cookieModal.modal-cookie
@@ -360,3 +942,5 @@ block content
             img(src='/images/twitter.png', alt='X', class='social-icon')
 
     script(src='/js/cookies.js')
+    script(src='/js/attachmentsToggle.js')
+

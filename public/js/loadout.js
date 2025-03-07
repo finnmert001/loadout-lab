@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   const primaryWeaponImage = document.getElementById("primaryWeaponImage");
   const primaryWeaponName = document.getElementById("primaryWeaponName");
+  const primaryAttachments = document.getElementById("primaryAttachments");
 
   const openSecondaryWeaponModal = document.getElementById(
     "openSecondaryWeaponModal"
@@ -23,8 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   const secondaryWeaponImage = document.getElementById("secondaryWeaponImage");
   const secondaryWeaponName = document.getElementById("secondaryWeaponName");
+  const secondaryAttachments = document.getElementById("secondaryAttachments");
 
-  // General Modal Elements
   const weaponModal = document.getElementById("weaponModal");
   const closeWeaponModal = document.getElementById("closeWeaponModal");
   const weaponClassDropdown = document.getElementById("weaponClassDropdown");
@@ -34,9 +35,22 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
   let selectedWeapon = null;
-  let selectingPrimary = true; // Track which weapon slot is being selected
+  let selectingPrimary = true;
+  let selectedPrimaryClass = "";
+  let selectedSecondaryClass = "";
 
-  // Sample weapon data
+  // Weapon restrictions
+  const restrictedWeaponTypes = [
+    "assault-rifle",
+    "smg",
+    "shotgun",
+    "lmg",
+    "marksman-rifle",
+    "sniper-rifle",
+  ];
+  const secondaryOnlyTypes = ["pistol", "special"];
+
+  // ✅ Keeps all existing weapons
   const weapons = {
     "assault-rifle": [
       { name: "XM4", image: "/images/weapons/AR/xm4DS.png" },
@@ -85,22 +99,46 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
   };
 
-  // Hide the modal when the page loads
   weaponModal.style.display = "none";
 
   openPrimaryWeaponModal.addEventListener("click", () => {
     selectingPrimary = true;
     weaponModal.style.display = "flex";
+    populateWeaponDropdown(false); // Exclude Pistol/Special for Primary selection
   });
 
   openSecondaryWeaponModal.addEventListener("click", () => {
     selectingPrimary = false;
     weaponModal.style.display = "flex";
+    populateWeaponDropdown(true); // Include all weapons for Secondary selection
   });
 
   closeWeaponModal.addEventListener("click", () => {
     weaponModal.style.display = "none";
   });
+
+  function populateWeaponDropdown(allowSecondaryOnly) {
+    weaponClassDropdown.innerHTML = ""; // Clear existing options
+
+    // ✅ Add default placeholder option
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Select a weapon class";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    weaponClassDropdown.appendChild(defaultOption);
+
+    // ✅ Populate the dropdown with valid weapon classes
+    for (const weaponClass in weapons) {
+      if (!allowSecondaryOnly && secondaryOnlyTypes.includes(weaponClass)) {
+        continue; // Skip Pistol & Special for Primary selection
+      }
+      const option = document.createElement("option");
+      option.value = weaponClass;
+      option.textContent = weaponClass.replace(/-/g, " ").toUpperCase();
+      weaponClassDropdown.appendChild(option);
+    }
+  }
 
   weaponClassDropdown.addEventListener("change", function () {
     const selectedClass = this.value;
@@ -127,24 +165,109 @@ document.addEventListener("DOMContentLoaded", function () {
 
   confirmWeaponSelection.addEventListener("click", () => {
     if (selectedWeapon) {
+      const selectedClass = weaponClassDropdown.value;
+
       if (selectingPrimary) {
         primaryWeaponImage.src = selectedWeapon.image;
         primaryWeaponName.textContent = selectedWeapon.name;
         primaryWeaponContainer.style.display = "block";
         openPrimaryWeaponModal.style.display = "none";
         removePrimaryWeaponButton.style.display = "block";
-        showAttachments("primary");
+        selectedPrimaryClass = selectedClass;
+        resetAttachments("primary");
+        disableAttachments();
       } else {
         secondaryWeaponImage.src = selectedWeapon.image;
         secondaryWeaponName.textContent = selectedWeapon.name;
         secondaryWeaponContainer.style.display = "block";
         openSecondaryWeaponModal.style.display = "none";
         removeSecondaryWeaponButton.style.display = "block";
-        showAttachments("secondary");
+        selectedSecondaryClass = selectedClass;
+        resetAttachments("secondary");
+        disableAttachments();
       }
-      weaponModal.style.display = "none"; // Close modal after selection
+
+      checkAttachmentLimit();
+      weaponModal.style.display = "none";
     }
   });
+
+  function checkAttachmentLimit() {
+    const isPrimaryRestricted =
+      restrictedWeaponTypes.includes(selectedPrimaryClass);
+    const isSecondaryRestricted = restrictedWeaponTypes.includes(
+      selectedSecondaryClass
+    );
+    const isSecondaryLimited = secondaryOnlyTypes.includes(
+      selectedSecondaryClass
+    );
+
+    secondaryAttachments.style.display = selectedSecondaryClass
+      ? "grid"
+      : "none";
+
+    enforceAttachmentLimit("secondary", 5);
+
+    if (isPrimaryRestricted && isSecondaryRestricted) {
+      resetAttachments("primary");
+      enforceAttachmentLimit("primary", 5);
+    } else if (isPrimaryRestricted && isSecondaryLimited) {
+      resetAttachments("primary");
+      enforceAttachmentLimit("primary", 8);
+    } else {
+      resetAttachments("primary");
+    }
+
+    enableAttachments();
+  }
+
+  function enforceAttachmentLimit(type, limit) {
+    const container = document.getElementById(`${type}Attachments`);
+    const attachmentDropdowns = container.querySelectorAll("select.attachment");
+
+    attachmentDropdowns.forEach((dropdown) => {
+      dropdown.addEventListener("change", function () {
+        const selectedCount = Array.from(attachmentDropdowns).filter(
+          (select) => select.value !== ""
+        ).length;
+
+        if (selectedCount >= limit) {
+          attachmentDropdowns.forEach((select) => {
+            if (select.value === "") select.disabled = true;
+          });
+        } else {
+          attachmentDropdowns.forEach((select) => (select.disabled = false));
+        }
+      });
+    });
+  }
+
+  function resetAttachments(type) {
+    const container = document.getElementById(`${type}Attachments`);
+    const attachmentDropdowns = container.querySelectorAll("select.attachment");
+    attachmentDropdowns.forEach((dropdown) => {
+      dropdown.value = "";
+      dropdown.disabled = false;
+    });
+
+    if (type === "primary") {
+      primaryAttachments.style.display = "grid";
+    } else {
+      secondaryAttachments.style.display = "none";
+    }
+  }
+
+  function disableAttachments() {
+    primaryAttachments.style.display = "none";
+    secondaryAttachments.style.display = "none";
+  }
+
+  function enableAttachments() {
+    if (selectedPrimaryClass && selectedSecondaryClass) {
+      primaryAttachments.style.display = "grid";
+      secondaryAttachments.style.display = "grid";
+    }
+  }
 
   removePrimaryWeaponButton.addEventListener("click", () => {
     primaryWeaponImage.src = "";
@@ -152,7 +275,9 @@ document.addEventListener("DOMContentLoaded", function () {
     primaryWeaponContainer.style.display = "none";
     openPrimaryWeaponModal.style.display = "inline-block";
     removePrimaryWeaponButton.style.display = "none";
-    hideAttachments("primary");
+    primaryAttachments.style.display = "none";
+    selectedPrimaryClass = "";
+    disableAttachments();
   });
 
   removeSecondaryWeaponButton.addEventListener("click", () => {
@@ -161,7 +286,14 @@ document.addEventListener("DOMContentLoaded", function () {
     secondaryWeaponContainer.style.display = "none";
     openSecondaryWeaponModal.style.display = "inline-block";
     removeSecondaryWeaponButton.style.display = "none";
-    hideAttachments("secondary");
+    secondaryAttachments.style.display = "none";
+    selectedSecondaryClass = "";
+
+    if (secondaryOnlyTypes.includes(selectedSecondaryClass)) {
+      resetAttachments("primary");
+    }
+
+    disableAttachments();
   });
 
   window.addEventListener("click", (event) => {
@@ -169,14 +301,4 @@ document.addEventListener("DOMContentLoaded", function () {
       weaponModal.style.display = "none";
     }
   });
-
-  function showAttachments(type) {
-    const container = document.getElementById(`${type}Attachments`);
-    container.style.display = "grid";
-  }
-
-  function hideAttachments(type) {
-    const container = document.getElementById(`${type}Attachments`);
-    container.style.display = "none";
-  }
 });

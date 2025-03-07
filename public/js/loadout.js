@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const removePrimaryWeaponButton = document.getElementById(
     "removePrimaryWeaponButton"
   );
+  const resetPrimaryAttachmentsButton = document.getElementById(
+    "resetPrimaryAttachmentsButton"
+  );
   const primaryWeaponContainer = document.getElementById(
     "primaryWeaponContainer"
   );
@@ -18,6 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   const removeSecondaryWeaponButton = document.getElementById(
     "removeSecondaryWeaponButton"
+  );
+  const resetSecondaryAttachmentsButton = document.getElementById(
+    "resetSecondaryAttachmentsButton"
   );
   const secondaryWeaponContainer = document.getElementById(
     "secondaryWeaponContainer"
@@ -191,6 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
         primaryWeaponContainer.style.display = "block";
         openPrimaryWeaponModal.style.display = "none";
         removePrimaryWeaponButton.style.display = "block";
+        resetPrimaryAttachmentsButton.style.display = "block";
         selectedPrimaryClass = selectedClass;
         resetAttachments("primary");
       } else {
@@ -205,6 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
         secondaryWeaponContainer.style.display = "block";
         openSecondaryWeaponModal.style.display = "none";
         removeSecondaryWeaponButton.style.display = "block";
+        resetSecondaryAttachmentsButton.style.display = "block";
         selectedSecondaryClass = selectedClass;
         resetAttachments("secondary");
         secondaryAttachments.style.display = "grid";
@@ -263,15 +271,19 @@ document.addEventListener("DOMContentLoaded", function () {
   function resetAttachments(type) {
     const container = document.getElementById(`${type}Attachments`);
     const attachmentDropdowns = container.querySelectorAll("select.attachment");
+
     attachmentDropdowns.forEach((dropdown) => {
-      dropdown.value = "";
-      dropdown.disabled = false;
+      dropdown.value = ""; // ✅ Clear selection
+      dropdown.disabled = false; // ✅ Re-enable all dropdowns
     });
 
+    // ✅ Ensure the attachments grid remains visible
     if (type === "primary") {
       primaryAttachments.style.display = "grid";
     } else {
-      secondaryAttachments.style.display = "none";
+      secondaryAttachments.style.display = selectedSecondaryClass
+        ? "grid"
+        : "none";
     }
   }
 
@@ -295,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
     primaryWeaponContainer.style.display = "none";
     openPrimaryWeaponModal.style.display = "inline-block";
     removePrimaryWeaponButton.style.display = "none";
+    resetPrimaryAttachmentsButton.style.display = "none";
     primaryAttachments.style.display = "none";
     selectedPrimaryClass = "";
     disableAttachments();
@@ -306,6 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
     secondaryWeaponContainer.style.display = "none";
     openSecondaryWeaponModal.style.display = "inline-block";
     removeSecondaryWeaponButton.style.display = "none";
+    resetSecondaryAttachmentsButton.style.display = "none";
     secondaryAttachments.style.display = "none";
     selectedSecondaryClass = "";
 
@@ -314,6 +328,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     disableAttachments();
+  });
+
+  resetPrimaryAttachmentsButton.addEventListener("click", () => {
+    resetAttachments("primary");
+  });
+
+  resetSecondaryAttachmentsButton.addEventListener("click", () => {
+    resetAttachments("secondary");
   });
 
   window.addEventListener("click", (event) => {

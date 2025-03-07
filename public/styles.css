@@ -818,6 +818,44 @@ button#confirmWeaponSelection:focus {
     background-color: #ff1a1a; /* Darker red on hover */
 }
 
+#resetPrimaryAttachmentsButton,
+#resetSecondaryAttachmentsButton {
+    background-color: var(--primary-color); /* Red background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Add padding */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Make it appear clickable */
+    font-size: 14px; /* Font size */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    display: block;
+    margin: 20px auto; /* This will center the button horizontally */
+    margin-top: 20px;
+}
+
+#resetPrimaryAttachmentsButton:hover,
+#resetSecondaryAttachmentsButton:hover {
+    background-color: #2980b9; /* Red background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Add padding */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Make it appear clickable */
+    font-size: 14px; /* Font size */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    display: block;
+    margin: 20px auto; /* This will center the button horizontally */
+    margin-top: 20px;
+}
+
+.loadout-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+    grid-template-rows: repeat(1, auto); /* 4 rows */
+    gap: 100px; /* Adjust spacing between rows & columns */
+    margin-left: 260px;
+}
+
 /* Weapon select buttons styling */
 .btn-weapon-select {
     width: 10%;

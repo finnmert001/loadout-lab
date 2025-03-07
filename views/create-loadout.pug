@@ -110,7 +110,10 @@ block content
                                 option(value='recoil-springs') Recoil Springs
 
                 button#openPrimaryWeaponModal(type='button' class='plus-button') +
-                button#removePrimaryWeaponButton(type='button', style='display:none') Remove Weapon
+
+                .loadout-buttons
+                    button#removePrimaryWeaponButton(type='button', style='display:none') Remove Weapon
+                    button#resetPrimaryAttachmentsButton(type='button', style='display:none') Reset Attachments
 
             // Secondary Weapon Section
             .form-group.weapons
@@ -183,7 +186,10 @@ block content
                                 option(value='recoil-springs') Recoil Springs
                 
                 button#openSecondaryWeaponModal(type='button' class='plus-button') +
-                button#removeSecondaryWeaponButton(type='button', style='display:none') Remove Weapon
+                
+                .loadout-buttons
+                    button#removeSecondaryWeaponButton(type='button', style='display:none') Remove Weapon
+                    button#resetSecondaryAttachmentsButton(type='button', style='display:none') Reset Attachments
 
             // Modal for selecting weapon class and weapon (Shared)
             .modal#weaponModal

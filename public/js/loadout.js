@@ -336,6 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   resetSecondaryAttachmentsButton.addEventListener("click", () => {
     resetAttachments("secondary");
+    secondaryAttachments.style.display = "block";
   });
 
   window.addEventListener("click", (event) => {

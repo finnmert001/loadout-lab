@@ -291,10 +291,10 @@ form {
     box-sizing: border-box;
     padding-left: 0px;
     padding-top: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
     width: 97.9%; /* Adjust the width as you desire */
-    max-width: 1500px; /* Optional: maximum width */
-    margin: 0; /* Remove any margin */
+    max-width: 1570px; /* Optional: maximum width */
+    margin-top: 440px;
 }
 
 form.warzone-meta{
@@ -552,9 +552,15 @@ h3.warzone-heading {
     align-items: center;
     gap: 20px;
     width: 97.9%;
-    max-width: 95%;
-    margin-left: 497px;
+    max-width: 90%;
+    margin-left: 490px;
 }
+
+.weapon-item.disabled {
+    pointer-events: none; /* Prevent clicks */
+    opacity: 0.5; /* Make visually different */
+    color: grey;
+  }
 
 .weapon-info {
     flex: 1;

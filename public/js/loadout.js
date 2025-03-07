@@ -144,19 +144,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedClass = this.value;
     weaponList.innerHTML = "";
 
+    // Get the name of the weapon already selected in the other slot
+    const otherSelectedWeapon = selectingPrimary
+      ? secondaryWeaponName.textContent
+      : primaryWeaponName.textContent;
+
     if (selectedClass && weapons[selectedClass]) {
       weapons[selectedClass].forEach((weapon) => {
         const weaponItem = document.createElement("div");
         weaponItem.classList.add("weapon-item");
         weaponItem.innerHTML = `<p>${weapon.name}</p>`;
 
-        weaponItem.addEventListener("click", () => {
-          selectedWeapon = weapon;
-          document
-            .querySelectorAll(".weapon-item")
-            .forEach((item) => item.classList.remove("selected"));
-          weaponItem.classList.add("selected");
-        });
+        // ✅ Disable selection if the weapon is already in the other slot
+        if (weapon.name === otherSelectedWeapon) {
+          weaponItem.classList.add("disabled");
+          weaponItem.style.opacity = "0.5"; // Make it faded
+          weaponItem.style.pointerEvents = "none"; // Prevent clicks
+        } else {
+          weaponItem.addEventListener("click", () => {
+            selectedWeapon = weapon;
+            document
+              .querySelectorAll(".weapon-item")
+              .forEach((item) => item.classList.remove("selected"));
+            weaponItem.classList.add("selected");
+          });
+        }
 
         weaponList.appendChild(weaponItem);
       });
@@ -168,6 +180,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const selectedClass = weaponClassDropdown.value;
 
       if (selectingPrimary) {
+        // ✅ Prevent selecting the same weapon in the other slot
+        if (selectedWeapon.name === secondaryWeaponName.textContent) {
+          alert("This weapon is already selected as secondary!");
+          return;
+        }
+
         primaryWeaponImage.src = selectedWeapon.image;
         primaryWeaponName.textContent = selectedWeapon.name;
         primaryWeaponContainer.style.display = "block";
@@ -175,8 +193,13 @@ document.addEventListener("DOMContentLoaded", function () {
         removePrimaryWeaponButton.style.display = "block";
         selectedPrimaryClass = selectedClass;
         resetAttachments("primary");
-        disableAttachments();
       } else {
+        // ✅ Prevent selecting the same weapon in the other slot
+        if (selectedWeapon.name === primaryWeaponName.textContent) {
+          alert("This weapon is already selected as primary!");
+          return;
+        }
+
         secondaryWeaponImage.src = selectedWeapon.image;
         secondaryWeaponName.textContent = selectedWeapon.name;
         secondaryWeaponContainer.style.display = "block";
@@ -184,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
         removeSecondaryWeaponButton.style.display = "block";
         selectedSecondaryClass = selectedClass;
         resetAttachments("secondary");
-        disableAttachments();
+        secondaryAttachments.style.display = "grid";
       }
 
       checkAttachmentLimit();
@@ -195,23 +218,18 @@ document.addEventListener("DOMContentLoaded", function () {
   function checkAttachmentLimit() {
     const isPrimaryRestricted =
       restrictedWeaponTypes.includes(selectedPrimaryClass);
-    const isSecondaryRestricted = restrictedWeaponTypes.includes(
-      selectedSecondaryClass
-    );
     const isSecondaryLimited = secondaryOnlyTypes.includes(
       selectedSecondaryClass
     );
 
-    secondaryAttachments.style.display = selectedSecondaryClass
-      ? "grid"
-      : "none";
+    if (selectedSecondaryClass) {
+      secondaryAttachments.style.display = "grid";
+    }
 
     enforceAttachmentLimit("secondary", 5);
+    enforceAttachmentLimit("primary", 5);
 
-    if (isPrimaryRestricted && isSecondaryRestricted) {
-      resetAttachments("primary");
-      enforceAttachmentLimit("primary", 5);
-    } else if (isPrimaryRestricted && isSecondaryLimited) {
+    if (isPrimaryRestricted && isSecondaryLimited) {
       resetAttachments("primary");
       enforceAttachmentLimit("primary", 8);
     } else {
@@ -263,8 +281,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function enableAttachments() {
-    if (selectedPrimaryClass && selectedSecondaryClass) {
+    if (selectedPrimaryClass) {
       primaryAttachments.style.display = "grid";
+    }
+    if (selectedSecondaryClass) {
       secondaryAttachments.style.display = "grid";
     }
   }

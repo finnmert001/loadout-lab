@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import express from "express";
 import session from "express-session";
 import path from "path";

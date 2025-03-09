@@ -142,13 +142,23 @@ app.delete("/delete-account", async (req, res) => {
 
 // ➤ Create a new loadout
 app.post("/api/loadouts", async (req, res) => {
-  console.log("🛠️ Received Loadout Data:", JSON.stringify(req.body, null, 2));
+  if (!req.session || !req.session.user) {
+    return res
+      .status(401)
+      .json({ error: "Unauthorized: Please log in to save a loadout." });
+  }
+
+  const userId = req.session.user._id;
 
   try {
-    const newLoadout = await saveLoadout(req.body);
+    const loadoutData = {
+      ...req.body,
+      userId: userId,
+    };
+
+    const newLoadout = await saveLoadout(loadoutData);
     res.status(201).json(newLoadout);
   } catch (error) {
-    console.error("❌ RESTdb Error:", error.response?.data || error);
     res.status(500).json({ error: "Failed to create loadout" });
   }
 });
@@ -159,6 +169,30 @@ app.get("/api/loadouts", async (req, res) => {
     const loadouts = await getLoadouts();
     res.status(200).json(loadouts);
   } catch (error) {
+    res.status(500).json({ error: "Failed to fetch loadouts" });
+  }
+});
+
+// ➤ Get loadouts for the logged-in user (for My Loadouts page)
+app.get("/api/my-loadouts", async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ error: "Unauthorized" }); // Ensure user is logged in
+  }
+
+  try {
+    const userId = req.session.user._id; // Get the logged-in user's ID
+    const allLoadouts = await getLoadouts(); // Fetch all loadouts
+    const userLoadouts = allLoadouts.filter(
+      (loadout) => loadout.userId === userId
+    );
+
+    if (userLoadouts.length === 0) {
+      return res.json([]); // Send empty array if user has no loadouts
+    }
+
+    res.json(userLoadouts);
+  } catch (error) {
+    console.error("Error fetching user loadouts:", error);
     res.status(500).json({ error: "Failed to fetch loadouts" });
   }
 });

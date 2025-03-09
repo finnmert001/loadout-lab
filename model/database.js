@@ -21,11 +21,6 @@ const saveLoadout = async (loadoutData) => {
     );
     return response.data;
   } catch (error) {
-    console.error("❌ Error saving loadout:", error.response?.data || error);
-    console.error(
-      "🛑 Validation issues:",
-      JSON.stringify(error.response?.data?.list, null, 2)
-    );
     throw error;
   }
 };

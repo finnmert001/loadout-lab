@@ -48,61 +48,61 @@ block content
                         img#primaryWeaponImage(src='' alt='Selected Primary Weapon')
                     .attachments-container#primaryAttachments(style="display: none;")
                         .attachments-grid
-                            select.attachment#optic
+                            select.attachment#optic(name="primaryAttachments[]")
                                 option(value='' disabled selected) Optic
                                 option(value='accu-spot-reflex') Accu-Spot Reflex
                                 option(value='kepler-microflex') Kepler Microflex
                                 option(value='otero-micro-dot') Otero Micro Dot
                                 option(value='jason-armory-2x') Jason Armory 2x
                                 option(value='willis-3x') Willis 3x
-                            select.attachment#muzzle
+                            select.attachment#muzzle(name="primaryAttachments[]")
                                 option(value='' disabled selected) Muzzle
                                 option(value='suppressor') Suppressor
                                 option(value='compensator') Compensator
                                 option(value='ported-compensator') Ported Compensator
                                 option(value='muzzle-brake') Muzzle Brake
-                            select.attachment#barrel
+                            select.attachment#barrel(name="primaryAttachments[]")
                                 option(value='' disabled selected) Barrel
                                 option(value='chf-barrel') CHF Barrel
                                 option(value='long-barrel') Long Barrel
                                 option(value='gain-twist-barrel') Gain-Twist Barrel
                                 option(value='reinforced-barrel') Reinforced Barrel
-                            select.attachment#underbarrel
+                            select.attachment#underbarrel(name="primaryAttachments[]")
                                 option(value='' disabled selected) Underbarrel
                                 option(value='vertical-foregrip') Vertical Foregrip
                                 option(value='ranger-foregrip') Ranger Foregrip
                                 option(value='precision-foregrip') Precision Foregrip
                                 option(value='marksman-foregrip') Marksman Foregrip
                                 option(value='lightweight-foregrip') Lightweight Foregrip
-                            select.attachment#magazine
+                            select.attachment#magazine(name="primaryAttachments[]")
                                 option(value='' disabled selected) Magazine
                                 option(value='flip-mag') Flip Mag
                                 option(value='fast-mag-1') Fast Mag I
                                 option(value='fast-mag-2') Fast Mag II
                                 option(value='extended-mag-1') Extended Mag I
                                 option(value='extended-mag-2') Extended Mag II
-                            select.attachment#reargrip
+                            select.attachment#reargrip(name="primaryAttachments[]")
                                 option(value='' disabled selected) Rear Grip
                                 option(value='assault-grip') Assault Grip
                                 option(value='commando-grip') Commando Grip
                                 option(value='cqb-grip') CQB Grip
                                 option(value='ergonomic-grip') Ergonomic Grip
                                 option(value='quickdraw-grip') Quickdraw Grip
-                            select.attachment#stock
+                            select.attachment#stock(name="primaryAttachments[]")
                                 option(value='' disabled selected) Stock
                                 option(value='light-stock') Light Stock
                                 option(value='infiltrator-stock') Infiltrator Stock
                                 option(value='no-stock') No Stock
                                 option(value='agility-stock') Agility Stock
                                 option(value='balanced-stock') Balanced Stock
-                            select.attachment#laser
+                            select.attachment#laser(name="primaryAttachments[]")
                                 option(value='' disabled selected) Laser
                                 option(value='fast-motion-laser') Fast Motion Laser
                                 option(value='steady-aim-laser') Steady Aim Laser
                                 option(value='strelok-laser') Strelok Laser
                                 option(value='tactical-laser') Tactical Laser
                                 option(value='target-laser') Target Laser
-                            select.attachment#firemods
+                            select.attachment#firemods(name="primaryAttachments[]")
                                 option(value='' disabled selected) Fire Mods
                                 option(value='fmj') FMJ
                                 option(value='overpressured') Overpressured
@@ -124,61 +124,61 @@ block content
                         img#secondaryWeaponImage(src='' alt='Selected Secondary Weapon')
                     .attachments-container#secondaryAttachments(style="display: none;")
                         .attachments-grid
-                            select.attachment#optic
+                            select.attachment#optic(name="secondaryAttachments[]")
                                 option(value='' disabled selected) Optic
                                 option(value='accu-spot-reflex') Accu-Spot Reflex
                                 option(value='kepler-microflex') Kepler Microflex
                                 option(value='otero-micro-dot') Otero Micro Dot
                                 option(value='jason-armory-2x') Jason Armory 2x
                                 option(value='willis-3x') Willis 3x
-                            select.attachment#muzzle
+                            select.attachment#muzzle(name="secondaryAttachments[]")
                                 option(value='' disabled selected) Muzzle
                                 option(value='suppressor') Suppressor
                                 option(value='compensator') Compensator
                                 option(value='ported-compensator') Ported Compensator
                                 option(value='muzzle-brake') Muzzle Brake
-                            select.attachment#barrel
+                            select.attachment#barrel(name="secondaryAttachments[]")
                                 option(value='' disabled selected) Barrel
                                 option(value='chf-barrel') CHF Barrel
                                 option(value='long-barrel') Long Barrel
                                 option(value='gain-twist-barrel') Gain-Twist Barrel
                                 option(value='reinforced-barrel') Reinforced Barrel
-                            select.attachment#underbarrel
+                            select.attachment#underbarrel(name="secondaryAttachments[]")
                                 option(value='' disabled selected) Underbarrel
                                 option(value='vertical-foregrip') Vertical Foregrip
                                 option(value='ranger-foregrip') Ranger Foregrip
                                 option(value='precision-foregrip') Precision Foregrip
                                 option(value='marksman-foregrip') Marksman Foregrip
                                 option(value='lightweight-foregrip') Lightweight Foregrip
-                            select.attachment#magazine
+                            select.attachment#magazine(name="secondaryAttachments[]")
                                 option(value='' disabled selected) Magazine
                                 option(value='flip-mag') Flip Mag
                                 option(value='fast-mag-1') Fast Mag I
                                 option(value='fast-mag-2') Fast Mag II
                                 option(value='extended-mag-1') Extended Mag I
                                 option(value='extended-mag-2') Extended Mag II
-                            select.attachment#reargrip
+                            select.attachment#reargrip(name="secondaryAttachments[]")
                                 option(value='' disabled selected) Rear Grip
                                 option(value='assault-grip') Assault Grip
                                 option(value='commando-grip') Commando Grip
                                 option(value='cqb-grip') CQB Grip
                                 option(value='ergonomic-grip') Ergonomic Grip
                                 option(value='quickdraw-grip') Quickdraw Grip
-                            select.attachment#stock
+                            select.attachment#stock(name="secondaryAttachments[]")
                                 option(value='' disabled selected) Stock
                                 option(value='light-stock') Light Stock
                                 option(value='infiltrator-stock') Infiltrator Stock
                                 option(value='no-stock') No Stock
                                 option(value='agility-stock') Agility Stock
                                 option(value='balanced-stock') Balanced Stock
-                            select.attachment#laser
+                            select.attachment#laser(name="secondaryAttachments[]")
                                 option(value='' disabled selected) Laser
                                 option(value='fast-motion-laser') Fast Motion Laser
                                 option(value='steady-aim-laser') Steady Aim Laser
                                 option(value='strelok-laser') Strelok Laser
                                 option(value='tactical-laser') Tactical Laser
                                 option(value='target-laser') Target Laser
-                            select.attachment#firemods
+                            select.attachment#firemods(name="secondaryAttachments[]")
                                 option(value='' disabled selected) Fire Mods
                                 option(value='fmj') FMJ
                                 option(value='overpressured') Overpressured
@@ -190,6 +190,8 @@ block content
                 .loadout-buttons
                     button#removeSecondaryWeaponButton(type='button', style='display:none') Remove Weapon
                     button#resetSecondaryAttachmentsButton(type='button', style='display:none') Reset Attachments
+
+            button#saveLoadoutButton(type='submit') Save Loadout
 
             // Modal for selecting weapon class and weapon (Shared)
             .modal#weaponModal

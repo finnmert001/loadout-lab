@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const secondaryWeaponName = document.getElementById("secondaryWeaponName");
   const secondaryAttachments = document.getElementById("secondaryAttachments");
 
+  const saveLoadoutButton = document.getElementById("saveLoadoutButton"); // New Save Loadout button
   const weaponModal = document.getElementById("weaponModal");
   const closeWeaponModal = document.getElementById("closeWeaponModal");
   const weaponClassDropdown = document.getElementById("weaponClassDropdown");
@@ -56,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
   const secondaryOnlyTypes = ["pistol", "special"];
 
-  // ✅ Keeps all existing weapons
   const weapons = {
     "assault-rifle": [
       { name: "XM4", image: "/images/weapons/AR/xm4DS.png" },
@@ -110,13 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
   openPrimaryWeaponModal.addEventListener("click", () => {
     selectingPrimary = true;
     weaponModal.style.display = "flex";
-    populateWeaponDropdown(false); // Exclude Pistol/Special for Primary selection
+    populateWeaponDropdown(false);
   });
 
   openSecondaryWeaponModal.addEventListener("click", () => {
     selectingPrimary = false;
     weaponModal.style.display = "flex";
-    populateWeaponDropdown(true); // Include all weapons for Secondary selection
+    populateWeaponDropdown(true);
   });
 
   closeWeaponModal.addEventListener("click", () => {
@@ -124,9 +124,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function populateWeaponDropdown(allowSecondaryOnly) {
-    weaponClassDropdown.innerHTML = ""; // Clear existing options
+    weaponClassDropdown.innerHTML = "";
 
-    // ✅ Add default placeholder option
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.textContent = "Select a weapon class";
@@ -134,11 +133,9 @@ document.addEventListener("DOMContentLoaded", function () {
     defaultOption.selected = true;
     weaponClassDropdown.appendChild(defaultOption);
 
-    // ✅ Populate the dropdown with valid weapon classes
     for (const weaponClass in weapons) {
-      if (!allowSecondaryOnly && secondaryOnlyTypes.includes(weaponClass)) {
-        continue; // Skip Pistol & Special for Primary selection
-      }
+      if (!allowSecondaryOnly && secondaryOnlyTypes.includes(weaponClass))
+        continue;
       const option = document.createElement("option");
       option.value = weaponClass;
       option.textContent = weaponClass.replace(/-/g, " ").toUpperCase();
@@ -149,8 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
   weaponClassDropdown.addEventListener("change", function () {
     const selectedClass = this.value;
     weaponList.innerHTML = "";
-
-    // Get the name of the weapon already selected in the other slot
     const otherSelectedWeapon = selectingPrimary
       ? secondaryWeaponName.textContent
       : primaryWeaponName.textContent;
@@ -161,11 +156,10 @@ document.addEventListener("DOMContentLoaded", function () {
         weaponItem.classList.add("weapon-item");
         weaponItem.innerHTML = `<p>${weapon.name}</p>`;
 
-        // ✅ Disable selection if the weapon is already in the other slot
         if (weapon.name === otherSelectedWeapon) {
           weaponItem.classList.add("disabled");
-          weaponItem.style.opacity = "0.5"; // Make it faded
-          weaponItem.style.pointerEvents = "none"; // Prevent clicks
+          weaponItem.style.opacity = "0.5";
+          weaponItem.style.pointerEvents = "none";
         } else {
           weaponItem.addEventListener("click", () => {
             selectedWeapon = weapon;
@@ -182,44 +176,109 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   confirmWeaponSelection.addEventListener("click", () => {
-    if (selectedWeapon) {
-      const selectedClass = weaponClassDropdown.value;
+    if (!selectedWeapon) {
+      alert("Please select a weapon before confirming.");
+      return;
+    }
 
-      if (selectingPrimary) {
-        // ✅ Prevent selecting the same weapon in the other slot
-        if (selectedWeapon.name === secondaryWeaponName.textContent) {
-          alert("This weapon is already selected as secondary!");
-          return;
-        }
+    const selectedClass = weaponClassDropdown.value;
 
-        primaryWeaponImage.src = selectedWeapon.image;
-        primaryWeaponName.textContent = selectedWeapon.name;
-        primaryWeaponContainer.style.display = "block";
-        openPrimaryWeaponModal.style.display = "none";
-        removePrimaryWeaponButton.style.display = "block";
-        resetPrimaryAttachmentsButton.style.display = "block";
-        selectedPrimaryClass = selectedClass;
-        resetAttachments("primary");
-      } else {
-        // ✅ Prevent selecting the same weapon in the other slot
-        if (selectedWeapon.name === primaryWeaponName.textContent) {
-          alert("This weapon is already selected as primary!");
-          return;
-        }
-
-        secondaryWeaponImage.src = selectedWeapon.image;
-        secondaryWeaponName.textContent = selectedWeapon.name;
-        secondaryWeaponContainer.style.display = "block";
-        openSecondaryWeaponModal.style.display = "none";
-        removeSecondaryWeaponButton.style.display = "block";
-        resetSecondaryAttachmentsButton.style.display = "block";
-        selectedSecondaryClass = selectedClass;
-        resetAttachments("secondary");
-        secondaryAttachments.style.display = "grid";
+    if (selectingPrimary) {
+      if (selectedWeapon.name === secondaryWeaponName.textContent) {
+        alert("This weapon is already selected as secondary!");
+        return;
       }
 
-      checkAttachmentLimit();
-      weaponModal.style.display = "none";
+      primaryWeaponImage.src = selectedWeapon.image;
+      primaryWeaponName.textContent = selectedWeapon.name;
+      primaryWeaponContainer.style.display = "block";
+      openPrimaryWeaponModal.style.display = "none";
+      removePrimaryWeaponButton.style.display = "block";
+      resetPrimaryAttachmentsButton.style.display = "block";
+      selectedPrimaryClass = selectedClass;
+      resetAttachments("primary");
+    } else {
+      if (selectedWeapon.name === primaryWeaponName.textContent) {
+        alert("This weapon is already selected as primary!");
+        return;
+      }
+
+      secondaryWeaponImage.src = selectedWeapon.image;
+      secondaryWeaponName.textContent = selectedWeapon.name;
+      secondaryWeaponContainer.style.display = "block";
+      openSecondaryWeaponModal.style.display = "none";
+      removeSecondaryWeaponButton.style.display = "block";
+      resetSecondaryAttachmentsButton.style.display = "block";
+      selectedSecondaryClass = selectedClass;
+      resetAttachments("secondary");
+      secondaryAttachments.style.display = "grid";
+    }
+
+    checkAttachmentLimit();
+    weaponModal.style.display = "none";
+  });
+
+  function getAttachments(containerId) {
+    return Array.from(
+      document.querySelectorAll(`#${containerId} select.attachment`)
+    )
+      .filter((select) => select.value !== "")
+      .map((select) => select.value);
+  }
+
+  saveLoadoutButton.addEventListener("click", async () => {
+    const loadoutName = document.getElementById("loadoutName").value;
+    const primaryWeapon = primaryWeaponName.textContent;
+    const secondaryWeapon = secondaryWeaponName.textContent;
+    const primaryAttachments = getAttachments("primaryAttachments");
+    const secondaryAttachments = getAttachments("secondaryAttachments");
+
+    if (!loadoutName) {
+      alert("Please enter a loadout name.");
+      return;
+    }
+
+    if (!primaryWeapon) {
+      alert("Please select a primary weapon.");
+      return;
+    }
+
+    if (!secondaryWeapon) {
+      alert("Please select a secondary weapon.");
+      return;
+    }
+
+    const loadoutData = {
+      loadoutName: loadoutName,
+      primaryWeapon: { name: primaryWeapon },
+      primaryAttachments: primaryAttachments,
+      secondaryWeapon: { name: secondaryWeapon },
+      secondaryAttachments: secondaryAttachments,
+    };
+
+    try {
+      console.log(
+        "🚀 Sending Loadout Data:",
+        JSON.stringify(loadoutData, null, 2)
+      );
+
+      const response = await fetch("/api/loadouts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loadoutData),
+      });
+
+      if (response.ok) {
+        alert("✅ Loadout saved successfully!");
+        window.location.href = "/my-loadouts";
+      } else {
+        const errorResponse = await response.json();
+        console.error("❌ Failed to save loadout:", errorResponse);
+        alert(`Error: ${errorResponse.message || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("❌ Error saving loadout:", error);
+      alert("An error occurred while saving.");
     }
   });
 
@@ -271,25 +330,15 @@ document.addEventListener("DOMContentLoaded", function () {
   function resetAttachments(type) {
     const container = document.getElementById(`${type}Attachments`);
     const attachmentDropdowns = container.querySelectorAll("select.attachment");
-
     attachmentDropdowns.forEach((dropdown) => {
-      dropdown.value = ""; // ✅ Clear selection
-      dropdown.disabled = false; // ✅ Re-enable all dropdowns
+      dropdown.value = "";
+      dropdown.disabled = false;
     });
-
-    // ✅ Ensure the attachments grid remains visible
     if (type === "primary") {
       primaryAttachments.style.display = "grid";
     } else {
-      secondaryAttachments.style.display = selectedSecondaryClass
-        ? "grid"
-        : "none";
+      secondaryAttachments.style.display = "grid";
     }
-  }
-
-  function disableAttachments() {
-    primaryAttachments.style.display = "none";
-    secondaryAttachments.style.display = "none";
   }
 
   function enableAttachments() {
@@ -309,8 +358,6 @@ document.addEventListener("DOMContentLoaded", function () {
     removePrimaryWeaponButton.style.display = "none";
     resetPrimaryAttachmentsButton.style.display = "none";
     primaryAttachments.style.display = "none";
-    selectedPrimaryClass = "";
-    disableAttachments();
   });
 
   removeSecondaryWeaponButton.addEventListener("click", () => {
@@ -321,13 +368,6 @@ document.addEventListener("DOMContentLoaded", function () {
     removeSecondaryWeaponButton.style.display = "none";
     resetSecondaryAttachmentsButton.style.display = "none";
     secondaryAttachments.style.display = "none";
-    selectedSecondaryClass = "";
-
-    if (secondaryOnlyTypes.includes(selectedSecondaryClass)) {
-      resetAttachments("primary");
-    }
-
-    disableAttachments();
   });
 
   resetPrimaryAttachmentsButton.addEventListener("click", () => {

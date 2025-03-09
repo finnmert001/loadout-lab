@@ -1,8 +1,16 @@
 import bcrypt from "bcryptjs";
+import cors from "cors";
 import express from "express";
 import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
+import {
+  deleteLoadout,
+  getLoadoutById,
+  getLoadouts,
+  saveLoadout,
+  updateLoadout,
+} from "./model/database.js"; // Import loadout database functions
 import loginAPI from "./model/login.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -11,13 +19,16 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Set up view engine and middleware
+// Middleware Setup
 app.set("view engine", "pug");
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors()); // Allow frontend requests
 app.use(express.static("public"));
+
 app.use(
   session({
-    secret: "asecretkey", // Replace with a strong secret key
+    secret: "asecretkey",
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }, // Change to true if using HTTPS
@@ -26,149 +37,68 @@ app.use(
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-// Routes
+// ------------------ AUTH ROUTES ------------------
+
+// Redirect to login if not authenticated
 app.get("/", redirectToLogin);
 
+// Render index
 app.get("/index", renderIndex);
 
+// Render login page
 app.get("/login", renderLogin);
 
+// Handle login
 app.post("/login", loginUser);
 
+// Render sign-up page
 app.get("/sign-up", renderSignUp);
 
+// Handle sign-up
 app.post("/sign-up", signUpUser);
 
+// Edit profile
 app.post("/edit-profile/:id", updateProfile);
 
 app.get("/explore", (req, res) => {
   res.render("explore"); // Render the explore.pug template
 });
 
+app.get("/my-loadouts", (req, res) => {
+  res.render("my-loadouts"); // Render the explore.pug template
+});
+
 app.get("/create-loadout", (req, res) => {
   res.render("create-loadout"); // Render the explore.pug template
 });
 
+// Logout
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) return res.status(500).send("Error logging out");
+    res.redirect("/login");
+  });
+});
+
+// Profile and password management
+app.get("/profile", ensureAuthenticated, renderProfile);
+app.get("/edit-profile", ensureAuthenticated, renderEditProfile);
+app.get("/update-password", ensureAuthenticated, renderUpdatePassword);
+app.post("/update-password", ensureAuthenticated, updatePassword);
+
+// Check username availability (AJAX)
 app.get("/check-username", async (req, res) => {
   const { username } = req.query;
-
   try {
     const existingUser = await loginAPI.findUserByUsername(username);
-    res.json({ exists: !!existingUser }); // true if user exists, false otherwise
+    res.json({ exists: !!existingUser });
   } catch (error) {
     console.error("Error checking username:", error);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-app.get("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).send("Error logging out");
-    }
-
-    res.redirect("/login");
-  });
-});
-
-app.get("/update-password", (req, res) => {
-  // Ensure the user is logged in
-  if (!req.session.user) {
-    return res.redirect("/login"); // Redirect to login if the user is not logged in
-  }
-
-  // Pass the user data from the session to the template
-  const user = req.session.user;
-
-  // Render the update-password page with the user data
-  res.render("update-password", { user });
-});
-
-app.get("/profile", (req, res) => {
-  // Ensure the user is logged in (session check)
-  if (!req.session.user) {
-    return res.redirect("/login"); // Redirect to login if the user is not logged in
-  }
-
-  // Pass user data to profile page
-  const user = req.session.user;
-  res.render("profile", { user }); // Render the profile.pug template
-});
-
-app.get("/edit-profile", (req, res) => {
-  // Ensure the user is logged in (session check)
-  if (!req.session.user) {
-    return res.redirect("/login");
-  }
-
-  // Render the edit profile page and pass user data to the page
-  const user = req.session.user;
-  res.render("edit-profile", { user });
-});
-
-app.post("/update-password", async (req, res) => {
-  const { currentPassword, newPassword, confirmPassword } = req.body;
-
-  // Ensure the user is logged in
-  if (!req.session.user) {
-    return res.render("update-password", {
-      errorMessage: "User not logged in", // Pass error message to render in view
-    });
-  }
-
-  // Get the user's current password from the database using session user ID
-  const user = await loginAPI.findUserById(req.session.user._id); // Assuming you're using an API
-
-  if (!user) {
-    return renderUpdatePasswordWithError(res, "User not found");
-  }
-
-  // Check if the current password matches the stored password
-  const isMatch = await bcrypt.compare(currentPassword, user.password);
-  if (!isMatch) {
-    return renderUpdatePasswordWithError(res, "Current password is incorrect.");
-  }
-
-  if (newPassword.length < 8) {
-    return renderUpdatePasswordWithError(
-      res,
-      "Password must be at least 8 characters long."
-    );
-  }
-
-  if (newPassword !== confirmPassword) {
-    return renderUpdatePasswordWithError(
-      res,
-      "Please ensure new and confirm password match."
-    );
-  }
-
-  if (currentPassword === newPassword) {
-    return renderUpdatePasswordWithError(
-      res,
-      "Your new password must be different from your current password."
-    );
-  }
-
-  // Hash the new password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-  try {
-    // Update the password in the database via API call (not via save)
-    await loginAPI.updateUserById(req.session.user._id, {
-      password: hashedPassword, // Only updating password
-    });
-
-    res.redirect("/profile");
-  } catch (error) {
-    console.error("Error updating password:", error);
-    res.render("update-password", {
-      errorMessage: "Error updating password", // Pass error message to render in view
-    });
-  }
-});
-
+// Delete user
 app.delete("/delete-account", async (req, res) => {
   // Ensure the user is logged in
   if (!req.session.user) {
@@ -208,48 +138,67 @@ app.delete("/delete-account", async (req, res) => {
   }
 });
 
-export async function updateProfile(req, res) {
-  const userId = req.session.user._id; // Use _id from session or get it from DB if necessary
+// ------------------ LOADOUT API ROUTES ------------------
 
-  if (!req.session.user) {
-    return res.redirect("/login"); // Ensure user is logged in
-  }
-
-  const { username, firstName, lastName, email } = req.body;
-
-  const existingUser = await loginAPI.findUserByUsername(username);
-  if (existingUser && existingUser._id !== userId) {
-    return renderEditProfileWithError(
-      res,
-      userId,
-      "Username is already taken. Please choose another."
-    );
-  }
-
-  const updatedProfileData = {
-    username: username,
-    firstName: firstName, // Ensure it's a string
-    lastName: lastName, // Ensure it's a string
-    email: email,
-  };
+// ➤ Create a new loadout
+app.post("/api/loadouts", async (req, res) => {
+  console.log("🛠️ Received Loadout Data:", JSON.stringify(req.body, null, 2));
 
   try {
-    // Use userId in the update API call
-    await loginAPI.updateUserById(userId, updatedProfileData); // Use _id for RestDB update
-
-    // After updating in DB, also update session data
-    req.session.user.username = username;
-    req.session.user.firstName = firstName;
-    req.session.user.lastName = lastName;
-    req.session.user.email = email;
-
-    // Redirect to profile page with updated session data
-    res.redirect("/profile");
+    const newLoadout = await saveLoadout(req.body);
+    res.status(201).json(newLoadout);
   } catch (error) {
-    handleProfileError(res, error, "Error updating profile");
+    console.error("❌ RESTdb Error:", error.response?.data || error);
+    res.status(500).json({ error: "Failed to create loadout" });
   }
-}
+});
 
+// ➤ Get all loadouts
+app.get("/api/loadouts", async (req, res) => {
+  try {
+    const loadouts = await getLoadouts();
+    res.status(200).json(loadouts);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch loadouts" });
+  }
+});
+
+// ➤ Get a single loadout by ID
+app.get("/api/loadouts/:id", async (req, res) => {
+  try {
+    const loadout = await getLoadoutById(req.params.id);
+    if (!loadout) {
+      return res.status(404).json({ error: "Loadout not found" });
+    }
+    res.status(200).json(loadout);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch loadout" });
+  }
+});
+
+// ➤ Update a loadout
+app.put("/api/loadouts/:id", async (req, res) => {
+  try {
+    const updatedLoadout = await updateLoadout(req.params.id, req.body);
+    res.status(200).json(updatedLoadout);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update loadout" });
+  }
+});
+
+// ➤ Delete a loadout
+app.delete("/api/loadouts/:id", async (req, res) => {
+  try {
+    await deleteLoadout(req.params.id);
+    res.status(200).json({ message: "Loadout deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete loadout" });
+  }
+});
+
+// ------------------ HELPER FUNCTIONS ------------------
+
+// Redirect to login if not authenticated
 export function redirectToLogin(req, res) {
   res.redirect("/login");
 }
@@ -359,6 +308,119 @@ export async function signUpUser(req, res) {
   }
 }
 
+export async function updateProfile(req, res) {
+  const userId = req.session.user._id; // Use _id from session or get it from DB if necessary
+
+  if (!req.session.user) {
+    return res.redirect("/login"); // Ensure user is logged in
+  }
+
+  const { username, firstName, lastName, email } = req.body;
+
+  const existingUser = await loginAPI.findUserByUsername(username);
+  if (existingUser && existingUser._id !== userId) {
+    return renderEditProfileWithError(
+      res,
+      userId,
+      "Username is already taken. Please choose another."
+    );
+  }
+
+  const updatedProfileData = {
+    username: username,
+    firstName: firstName, // Ensure it's a string
+    lastName: lastName, // Ensure it's a string
+    email: email,
+  };
+
+  try {
+    // Use userId in the update API call
+    await loginAPI.updateUserById(userId, updatedProfileData); // Use _id for RestDB update
+
+    // After updating in DB, also update session data
+    req.session.user.username = username;
+    req.session.user.firstName = firstName;
+    req.session.user.lastName = lastName;
+    req.session.user.email = email;
+
+    // Redirect to profile page with updated session data
+    res.redirect("/profile");
+  } catch (error) {
+    handleProfileError(res, error, "Error updating profile");
+  }
+}
+
+// Middleware to ensure user is authenticated
+function ensureAuthenticated(req, res, next) {
+  if (!req.session.user) return res.redirect("/login");
+  next();
+}
+
+// Render profile page
+function renderProfile(req, res) {
+  res.render("profile", { user: req.session.user });
+}
+
+// Render edit profile page
+function renderEditProfile(req, res) {
+  res.render("edit-profile", { user: req.session.user });
+}
+
+// Render update password page
+function renderUpdatePassword(req, res) {
+  res.render("update-password", { user: req.session.user });
+}
+
+// Handle password update
+async function updatePassword(req, res) {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+
+  if (!req.session.user) {
+    return res.render("update-password", {
+      errorMessage: "User not logged in",
+    });
+  }
+
+  const user = await loginAPI.findUserById(req.session.user._id);
+  if (!user)
+    return res.render("update-password", { errorMessage: "User not found" });
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) {
+    return renderUpdatePasswordWithError(res, "Current password is incorrect.");
+  }
+
+  if (newPassword.length < 8) {
+    return renderUpdatePasswordWithError(
+      res,
+      "Password must be at least 8 characters long."
+    );
+  }
+
+  if (newPassword !== confirmPassword) {
+    return renderUpdatePasswordWithError(
+      res,
+      "Please ensure new and confirm password match."
+    );
+  }
+
+  if (currentPassword === newPassword) {
+    return renderUpdatePasswordWithError(
+      res,
+      "Your new password must be different from your current password."
+    );
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await loginAPI.updateUserById(req.session.user._id, {
+    password: hashedPassword,
+  });
+
+  res.redirect("/profile");
+}
+
+// ----------------- ERROR HANDLING -----------------
+
 // Error handling functions
 function renderLoginWithError(res, errorMessage, options = {}) {
   res.render("login", { error: errorMessage, hideNavbar: true, ...options });
@@ -390,7 +452,8 @@ export function renderUpdatePasswordWithError(res, errorMessage) {
   res.render("update-password", { error: errorMessage });
 }
 
-// Start server
+// ------------------ START SERVER ------------------
+
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+  console.log(`🚀 Server is running at http://localhost:${port}`);
 });

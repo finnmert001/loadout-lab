@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       throw new Error(loadouts.error || "Failed to load loadouts.");
     }
 
+    console.log("🔍 Loadouts API Response:", loadouts);
+
     if (loadouts.length === 0) {
       loadoutsContainer.innerHTML = "<p>No loadouts found. Create one now!</p>";
       return;
@@ -17,26 +19,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadoutsContainer.innerHTML = ""; // Clear placeholder text
 
     loadouts.forEach((loadout) => {
-      const primaryWeapon = loadout.primaryWeapon.name || "Unknown Primary"; // ✅ Extract name
+      // Ensure `primaryWeapon` exists and has `name` and `image`
+      const primaryWeapon = loadout.primaryWeapon?.name || "Unknown Primary";
+      const primaryWeaponImage =
+        loadout.primaryWeapon?.image || "/images/default.png"; // ✅ Safe fallback
+
+      // Ensure `secondaryWeapon` exists and has `name` and `image`
       const secondaryWeapon =
-        loadout.secondaryWeapon.name || "Unknown Secondary"; // ✅ Extract name
+        loadout.secondaryWeapon?.name || "Unknown Secondary";
+      const secondaryWeaponImage =
+        loadout.secondaryWeapon?.image || "/images/default.png"; // ✅ Safe fallback
 
       const loadoutElement = document.createElement("div");
       loadoutElement.classList.add("loadout-item");
 
       loadoutElement.innerHTML = `
-            <div class="loadout">
-              <h2>${loadout.loadoutName}</h2>
-              <div class="loadout-details">
-                <img src="/images/weapons/${primaryWeapon}.png" alt="${primaryWeapon}" class="weapon-image">
-                <img src="/images/weapons/${secondaryWeapon}.png" alt="${secondaryWeapon}" class="weapon-image">
+              <div class="loadout">
+                <h2>${loadout.loadoutName}</h2>
+                <div class="loadout-details">
+                  <img src="${primaryWeaponImage}" alt="${primaryWeapon}" class="weapon-image">
+                  <img src="${secondaryWeaponImage}" alt="${secondaryWeapon}" class="weapon-image">
+                </div>
+                <p><strong>Primary:</strong> ${primaryWeapon}</p>
+                <p><strong>Secondary:</strong> ${secondaryWeapon}</p>
+                <button class="view-attachments" data-id="${loadout._id}">View Attachments</button>
+                <button class="delete-loadout" data-id="${loadout._id}">Delete</button>
               </div>
-              <p><strong>Primary:</strong> ${primaryWeapon}</p>
-              <p><strong>Secondary:</strong> ${secondaryWeapon}</p>
-              <button class="view-attachments" data-id="${loadout._id}">View Attachments</button>
-              <button class="delete-loadout" data-id="${loadout._id}">Delete</button>
-            </div>
-          `;
+            `;
 
       loadoutsContainer.appendChild(loadoutElement);
     });

@@ -190,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       primaryWeaponImage.src = selectedWeapon.image;
+      primaryWeaponImage.setAttribute("data-image", selectedWeapon.image); // ✅ Store image for retrieval
       primaryWeaponName.textContent = selectedWeapon.name;
       primaryWeaponContainer.style.display = "block";
       openPrimaryWeaponModal.style.display = "none";
@@ -204,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       secondaryWeaponImage.src = selectedWeapon.image;
+      secondaryWeaponImage.setAttribute("data-image", selectedWeapon.image); // ✅ Store image for retrieval
       secondaryWeaponName.textContent = selectedWeapon.name;
       secondaryWeaponContainer.style.display = "block";
       openSecondaryWeaponModal.style.display = "none";
@@ -230,6 +232,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const loadoutName = document.getElementById("loadoutName").value;
     const primaryWeapon = primaryWeaponName.textContent;
     const secondaryWeapon = secondaryWeaponName.textContent;
+    // ✅ Retrieve stored image from `data-image` attribute
+    const primaryWeaponImageSrc =
+      primaryWeaponImage.getAttribute("data-image") || "";
+    const secondaryWeaponImageSrc =
+      secondaryWeaponImage.getAttribute("data-image") || "";
     const primaryAttachments = getAttachments("primaryAttachments");
     const secondaryAttachments = getAttachments("secondaryAttachments");
 
@@ -250,18 +257,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const loadoutData = {
       loadoutName: loadoutName,
-      primaryWeapon: { name: primaryWeapon },
+      primaryWeapon: {
+        name: primaryWeapon,
+        image: primaryWeaponImageSrc, // ✅ Store the image correctly
+      },
       primaryAttachments: primaryAttachments,
-      secondaryWeapon: { name: secondaryWeapon },
+      secondaryWeapon: {
+        name: secondaryWeapon,
+        image: secondaryWeaponImageSrc, // ✅ Store the image correctly
+      },
       secondaryAttachments: secondaryAttachments,
     };
 
-    try {
-      console.log(
-        "🚀 Sending Loadout Data:",
-        JSON.stringify(loadoutData, null, 2)
-      );
+    console.log(
+      "🚀 Loadout Data Before Sending:",
+      JSON.stringify(loadoutData, null, 2)
+    );
 
+    try {
       const response = await fetch("/api/loadouts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -269,7 +269,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        alert("✅ Loadout saved successfully!");
         window.location.href = "/my-loadouts";
       } else {
         const errorResponse = await response.json();

@@ -8,6 +8,7 @@ import {
   deleteLoadout,
   getLoadoutById,
   getLoadouts,
+  getLoadoutsByUserId,
   saveLoadout,
   updateLoadout,
 } from "./model/database.js"; // Import loadout database functions
@@ -140,7 +141,7 @@ app.delete("/delete-account", async (req, res) => {
 
 // ------------------ LOADOUT API ROUTES ------------------
 
-// ➤ Create a new loadout
+// Create a new loadout
 app.post("/api/loadouts", async (req, res) => {
   if (!req.session || !req.session.user) {
     return res
@@ -163,7 +164,7 @@ app.post("/api/loadouts", async (req, res) => {
   }
 });
 
-// ➤ Get all loadouts
+// Get all loadouts
 app.get("/api/loadouts", async (req, res) => {
   try {
     const loadouts = await getLoadouts();
@@ -173,31 +174,28 @@ app.get("/api/loadouts", async (req, res) => {
   }
 });
 
-// ➤ Get loadouts for the logged-in user (for My Loadouts page)
+// Get loadouts for the logged-in user (for My Loadouts page)
 app.get("/api/my-loadouts", async (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ error: "Unauthorized" }); // Ensure user is logged in
-  }
-
   try {
-    const userId = req.session.user._id; // Get the logged-in user's ID
-    const allLoadouts = await getLoadouts(); // Fetch all loadouts
-    const userLoadouts = allLoadouts.filter(
-      (loadout) => loadout.userId === userId
-    );
-
-    if (userLoadouts.length === 0) {
-      return res.json([]); // Send empty array if user has no loadouts
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({ error: "Unauthorized. Please log in." });
     }
 
-    res.json(userLoadouts);
+    const userId = req.session.user._id;
+    console.log("🔍 Fetching loadouts for user ID:", userId); // Debugging
+
+    const loadouts = await getLoadoutsByUserId(userId);
+
+    console.log("✅ Loadouts retrieved:", loadouts); // Debugging
+
+    res.status(200).json(loadouts);
   } catch (error) {
-    console.error("Error fetching user loadouts:", error);
-    res.status(500).json({ error: "Failed to fetch loadouts" });
+    console.error("❌ Error fetching user loadouts:", error);
+    res.status(500).json({ error: "Failed to fetch user loadouts." });
   }
 });
 
-// ➤ Get a single loadout by ID
+// Get a single loadout by ID
 app.get("/api/loadouts/:id", async (req, res) => {
   try {
     const loadout = await getLoadoutById(req.params.id);
@@ -210,7 +208,7 @@ app.get("/api/loadouts/:id", async (req, res) => {
   }
 });
 
-// ➤ Update a loadout
+// Update a loadout
 app.put("/api/loadouts/:id", async (req, res) => {
   try {
     const updatedLoadout = await updateLoadout(req.params.id, req.body);
@@ -220,7 +218,7 @@ app.put("/api/loadouts/:id", async (req, res) => {
   }
 });
 
-// ➤ Delete a loadout
+// Delete a loadout
 app.delete("/api/loadouts/:id", async (req, res) => {
   try {
     await deleteLoadout(req.params.id);

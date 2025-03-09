@@ -11,21 +11,30 @@ const loadoutAPI = {
   },
 };
 
-// ➤ Save a new loadout
-const saveLoadout = async (loadoutData) => {
+// Save a new loadout
+const saveLoadout = async (loadout) => {
   try {
     const response = await axios.post(
       loadoutAPI.url,
-      loadoutData,
+      {
+        loadoutName: loadout.loadoutName,
+        primaryWeapon: JSON.stringify(loadout.primaryWeapon), // Convert to JSON
+        primaryAttachments: loadout.primaryAttachments,
+        secondaryWeapon: JSON.stringify(loadout.secondaryWeapon), // Convert to JSON
+        secondaryAttachments: loadout.secondaryAttachments,
+        userId: loadout.userId, // ✅ Store the userId to link loadouts to users
+      },
       loadoutAPI.config
     );
+
     return response.data;
   } catch (error) {
+    console.error("❌ Error saving loadout:", error);
     throw error;
   }
 };
 
-// ➤ Get all loadouts
+// Get all loadouts
 const getLoadouts = async () => {
   try {
     const response = await axios.get(loadoutAPI.url, loadoutAPI.config);
@@ -36,7 +45,7 @@ const getLoadouts = async () => {
   }
 };
 
-// ➤ Get a single loadout by ID
+// Get a single loadout by ID
 const getLoadoutById = async (id) => {
   try {
     const response = await axios.get(
@@ -50,7 +59,21 @@ const getLoadoutById = async (id) => {
   }
 };
 
-// ➤ Update a loadout
+// Get loadouts by User ID (NEW FUNCTION)
+const getLoadoutsByUserId = async (userId) => {
+  try {
+    const response = await axios.get(
+      `${loadoutAPI.url}?q={"userId": "${userId}"}`, // ✅ Filter by userId
+      loadoutAPI.config
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching loadouts for user:", error);
+    throw error;
+  }
+};
+
+// Update a loadout
 const updateLoadout = async (id, updateData) => {
   try {
     const response = await axios.put(
@@ -65,7 +88,7 @@ const updateLoadout = async (id, updateData) => {
   }
 };
 
-// ➤ Delete a loadout
+// Delete a loadout
 const deleteLoadout = async (id) => {
   try {
     await axios.delete(`${loadoutAPI.url}/${id}`, loadoutAPI.config);
@@ -80,6 +103,7 @@ export {
   deleteLoadout,
   getLoadoutById,
   getLoadouts,
+  getLoadoutsByUserId, // ✅ Export new function
   saveLoadout,
   updateLoadout,
 };

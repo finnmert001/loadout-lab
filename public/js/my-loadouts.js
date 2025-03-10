@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("🔍 Loadouts API Response:", loadouts);
 
     if (loadouts.length === 0) {
-      loadoutsContainer.innerHTML = "<p>No loadouts found. Create one now!</p>";
+      loadoutsContainer.innerHTML = `<p>No loadouts found. Create one using the button below!</p>`;
       return;
     }
 
@@ -21,37 +21,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadouts.forEach((loadout) => {
       // Ensure `primaryWeapon` exists and has `name` and `image`
       const primaryWeapon = loadout.primaryWeapon?.name || "Unknown Primary";
-      const primaryWeaponImage =
-        loadout.primaryWeapon?.image || "/images/default.png"; // ✅ Safe fallback
+      const primaryWeaponImage = loadout.primaryWeapon?.image;
 
       // Ensure `secondaryWeapon` exists and has `name` and `image`
       const secondaryWeapon =
         loadout.secondaryWeapon?.name || "Unknown Secondary";
-      const secondaryWeaponImage =
-        loadout.secondaryWeapon?.image || "/images/default.png"; // ✅ Safe fallback
+      const secondaryWeaponImage = loadout.secondaryWeapon?.image;
 
       const loadoutElement = document.createElement("div");
       loadoutElement.classList.add("loadout-item");
 
       loadoutElement.innerHTML = `
-              <div class="loadout">
-                <h2>${loadout.loadoutName}</h2>
-                <div class="loadout-details">
-                  <img src="${primaryWeaponImage}" alt="${primaryWeapon}" class="weapon-image">
-                  <img src="${secondaryWeaponImage}" alt="${secondaryWeapon}" class="weapon-image">
-                </div>
-                <p><strong>Primary:</strong> ${primaryWeapon}</p>
-                <p><strong>Secondary:</strong> ${secondaryWeapon}</p>
-                <button class="view-attachments" data-id="${loadout._id}">View Attachments</button>
-                <button class="delete-loadout" data-id="${loadout._id}">Delete</button>
-              </div>
-            `;
+        <div class="loadout">
+          <h2 class="loadout-title">${loadout.loadoutName}</h2>
+        
+          <div>
+            <img src="${primaryWeaponImage}" alt="${primaryWeapon}" class="weapon-image">
+            <p class="weapon-class">${primaryWeapon}</p>
+          </div>
+
+          <div>
+            <img src="${secondaryWeaponImage}" alt="${secondaryWeapon}" class="weapon-image">
+            <p class="weapon-class">${secondaryWeapon}</p>
+          </div>
+
+          <div>
+            <button class="view-loadout" data-id="${loadout._id}">View Loadout</button>
+            <button class="delete-loadout" data-id="${loadout._id}">Delete</button>
+          </div>
+        </div>
+      `;
 
       loadoutsContainer.appendChild(loadoutElement);
     });
 
     // Attach event listeners to buttons
-    document.querySelectorAll(".view-attachments").forEach((button) => {
+    document.querySelectorAll(".view-loadout").forEach((button) => {
       button.addEventListener("click", (event) => {
         const loadoutId = event.target.dataset.id;
         window.location.href = `/loadout/${loadoutId}`; // Navigate to detailed view

@@ -4,9 +4,12 @@ block title
     title Loadout Lab - My Loadouts
 
 block content
-    .container
+    .container.home-page
         h1 My Loadouts
+        
         #loadoutsContainer
             p Loading your loadouts...
+
+        button.btn-intro-home(type='button', onclick="window.location.href='/create-loadout'") Create Loadout
         
     script(src='/js/my-loadouts.js')

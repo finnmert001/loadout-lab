@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Primary and Secondary Weapon Elements
   const openPrimaryWeaponModal = document.getElementById(
     "openPrimaryWeaponModal"
   );
@@ -32,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const secondaryWeaponName = document.getElementById("secondaryWeaponName");
   const secondaryAttachments = document.getElementById("secondaryAttachments");
 
-  const saveLoadoutButton = document.getElementById("saveLoadoutButton"); // New Save Loadout button
+  const saveLoadoutButton = document.getElementById("saveLoadoutButton");
   const weaponModal = document.getElementById("weaponModal");
   const closeWeaponModal = document.getElementById("closeWeaponModal");
   const weaponClassDropdown = document.getElementById("weaponClassDropdown");
@@ -190,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       primaryWeaponImage.src = selectedWeapon.image;
-      primaryWeaponImage.setAttribute("data-image", selectedWeapon.image); // ✅ Store image for retrieval
+      primaryWeaponImage.setAttribute("data-image", selectedWeapon.image);
       primaryWeaponName.textContent = selectedWeapon.name;
       primaryWeaponContainer.style.display = "block";
       openPrimaryWeaponModal.style.display = "none";
@@ -205,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       secondaryWeaponImage.src = selectedWeapon.image;
-      secondaryWeaponImage.setAttribute("data-image", selectedWeapon.image); // ✅ Store image for retrieval
+      secondaryWeaponImage.setAttribute("data-image", selectedWeapon.image);
       secondaryWeaponName.textContent = selectedWeapon.name;
       secondaryWeaponContainer.style.display = "block";
       openSecondaryWeaponModal.style.display = "none";
@@ -232,7 +231,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const loadoutName = document.getElementById("loadoutName").value.trim();
     const primaryWeapon = primaryWeaponName.textContent.trim();
     const secondaryWeapon = secondaryWeaponName.textContent.trim();
-    // ✅ Retrieve stored image from `data-image` attribute
     const primaryWeaponImageSrc =
       primaryWeaponImage.getAttribute("data-image") || "";
     const secondaryWeaponImageSrc =
@@ -259,20 +257,15 @@ document.addEventListener("DOMContentLoaded", function () {
       loadoutName: loadoutName,
       primaryWeapon: {
         name: primaryWeapon,
-        image: primaryWeaponImageSrc, // ✅ Store the image correctly
+        image: primaryWeaponImageSrc,
       },
       primaryAttachments: primaryAttachments,
       secondaryWeapon: {
         name: secondaryWeapon,
-        image: secondaryWeaponImageSrc, // ✅ Store the image correctly
+        image: secondaryWeaponImageSrc,
       },
       secondaryAttachments: secondaryAttachments,
     };
-
-    console.log(
-      "🚀 Loadout Data Before Sending:",
-      JSON.stringify(loadoutData, null, 2)
-    );
 
     try {
       const response = await fetch("/api/loadouts", {
@@ -285,11 +278,9 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "/my-loadouts";
       } else {
         const errorResponse = await response.json();
-        console.error("❌ Failed to save loadout:", errorResponse);
         alert(`Error: ${errorResponse.message || "Unknown error"}`);
       }
     } catch (error) {
-      console.error("❌ Error saving loadout:", error);
       alert("An error occurred while saving.");
     }
   });

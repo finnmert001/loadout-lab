@@ -2,21 +2,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loadoutsContainer = document.getElementById("loadoutsContainer");
 
   try {
-    const response = await fetch("/api/my-loadouts"); // Fetch user loadouts
+    const response = await fetch("/api/my-loadouts");
     const loadouts = await response.json();
 
     if (!response.ok) {
       throw new Error(loadouts.error || "Failed to load loadouts.");
     }
 
-    console.log("🔍 Loadouts API Response:", loadouts);
-
     if (loadouts.length === 0) {
       loadoutsContainer.innerHTML = `<p>No loadouts found. Create one using the button below!</p>`;
       return;
     }
 
-    loadoutsContainer.innerHTML = ""; // Clear placeholder text
+    loadoutsContainer.innerHTML = "";
 
     loadouts.forEach((loadout) => {
       // Ensure `primaryWeapon` exists and has `name` and `image`
@@ -59,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".view-loadout").forEach((button) => {
       button.addEventListener("click", (event) => {
         const loadoutId = event.target.dataset.id;
-        window.location.href = `/loadout/${loadoutId}`; // Navigate to detailed view
+        window.location.href = `/loadout/${loadoutId}`;
       });
     });
 
@@ -68,12 +66,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const loadoutId = event.target.dataset.id;
         if (confirm("Are you sure you want to delete this loadout?")) {
           await fetch(`/api/loadouts/${loadoutId}`, { method: "DELETE" });
-          window.location.reload(); // Refresh the page after deletion
+          window.location.reload();
         }
       });
     });
   } catch (error) {
-    console.error("Error fetching loadouts:", error);
     loadoutsContainer.innerHTML = "<p>Error loading loadouts.</p>";
   }
 });

@@ -54,8 +54,6 @@ const loginAPI = {
     }
   },
   async updateUserById(id, updatedProfile) {
-    console.log("Received ID:", id); // Debugging line
-
     if (!id) {
       console.error("User ID is missing or undefined");
       return;
@@ -65,7 +63,7 @@ const loginAPI = {
     console.log("Updated profile data:", updatedProfile);
 
     try {
-      const updateUrl = `https://logins-1476.restdb.io/rest/logins/${id}`; // Ensure 'id' is the correct user ID
+      const updateUrl = `https://logins-1476.restdb.io/rest/logins/${id}`;
       console.log("Update URL:", updateUrl);
       const updateResponse = await axios.patch(
         updateUrl,

@@ -5,20 +5,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Check if the user has already accepted/declined cookies
   if (!localStorage.getItem("cookiesAccepted")) {
-    cookieModal.classList.add("show"); // Show modal smoothly
+    cookieModal.classList.add("show");
   }
 
   // User accepts cookies
   acceptButton.addEventListener("click", function () {
     localStorage.setItem("cookiesAccepted", "true");
-    cookieModal.classList.remove("show"); // Hide smoothly
+    cookieModal.classList.remove("show");
     setTimeout(() => (cookieModal.style.display = "none"), 500);
   });
 
   // User declines cookies
   declineButton.addEventListener("click", function () {
     localStorage.setItem("cookiesAccepted", "false");
-    cookieModal.classList.remove("show"); // Hide smoothly
+    cookieModal.classList.remove("show");
     setTimeout(() => (cookieModal.style.display = "none"), 500);
   });
 });

@@ -30,7 +30,6 @@ const saveLoadout = async (loadout) => {
 
     return response.data;
   } catch (error) {
-    console.error("❌ Error saving loadout:", error);
     throw error;
   }
 };
@@ -45,7 +44,6 @@ const getLoadouts = async () => {
 
     return loadouts;
   } catch (error) {
-    console.error("Error fetching loadouts:", error);
     throw error;
   }
 };
@@ -59,21 +57,19 @@ const getLoadoutById = async (id) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching loadout by ID:", error);
     throw error;
   }
 };
 
-// Get loadouts by User ID (NEW FUNCTION)
+// Get loadouts by User ID
 const getLoadoutsByUserId = async (userId) => {
   try {
     const response = await axios.get(
-      `${loadoutAPI.url}?q={"userId": "${userId}"}`, // ✅ Filter by userId
+      `${loadoutAPI.url}?q={"userId": "${userId}"}`,
       loadoutAPI.config
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching loadouts for user:", error);
     throw error;
   }
 };
@@ -88,7 +84,6 @@ const updateLoadout = async (id, updateData) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error updating loadout:", error);
     throw error;
   }
 };
@@ -99,7 +94,6 @@ const deleteLoadout = async (id) => {
     await axios.delete(`${loadoutAPI.url}/${id}`, loadoutAPI.config);
     return { message: "Loadout deleted successfully" };
   } catch (error) {
-    console.error("Error deleting loadout:", error);
     throw error;
   }
 };
@@ -108,7 +102,7 @@ export {
   deleteLoadout,
   getLoadoutById,
   getLoadouts,
-  getLoadoutsByUserId, // ✅ Export new function
+  getLoadoutsByUserId,
   saveLoadout,
   updateLoadout,
 };

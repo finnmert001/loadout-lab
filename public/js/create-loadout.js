@@ -229,9 +229,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   saveLoadoutButton.addEventListener("click", async () => {
-    const loadoutName = document.getElementById("loadoutName").value;
-    const primaryWeapon = primaryWeaponName.textContent;
-    const secondaryWeapon = secondaryWeaponName.textContent;
+    const loadoutName = document.getElementById("loadoutName").value.trim();
+    const primaryWeapon = primaryWeaponName.textContent.trim();
+    const secondaryWeapon = secondaryWeaponName.textContent.trim();
     // ✅ Retrieve stored image from `data-image` attribute
     const primaryWeaponImageSrc =
       primaryWeaponImage.getAttribute("data-image") || "";

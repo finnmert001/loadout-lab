@@ -182,15 +182,11 @@ app.get("/api/my-loadouts", async (req, res) => {
     }
 
     const userId = req.session.user._id;
-    console.log("🔍 Fetching loadouts for user ID:", userId); // Debugging
 
     const loadouts = await getLoadoutsByUserId(userId);
 
-    console.log("✅ Loadouts retrieved:", loadouts); // Debugging
-
     res.status(200).json(loadouts);
   } catch (error) {
-    console.error("❌ Error fetching user loadouts:", error);
     res.status(500).json({ error: "Failed to fetch user loadouts." });
   }
 });

@@ -1,23 +1,23 @@
 function toggleAttachments(event, button) {
-  event.preventDefault(); // Prevent page refresh
+  event.preventDefault();
 
-  const attachmentGrid = button.parentElement.nextElementSibling; // Find the correct dropdown
+  const attachmentGrid = button.parentElement.nextElementSibling;
 
   // Close any other open dropdowns first
   document.querySelectorAll(".loadout-attachment-grid.show").forEach((grid) => {
     if (grid !== attachmentGrid) {
       grid.classList.remove("show");
       grid.previousElementSibling.querySelector("button").textContent =
-        "Attachments"; // Reset button text
+        "Attachments";
     }
   });
 
   // Toggle visibility
   if (attachmentGrid.classList.contains("show")) {
-    attachmentGrid.classList.remove("show"); // Hide attachments
+    attachmentGrid.classList.remove("show");
     button.textContent = "View Attachments";
   } else {
-    attachmentGrid.classList.add("show"); // Show attachments
+    attachmentGrid.classList.add("show");
     button.textContent = "Hide Attachments";
   }
 }
@@ -29,9 +29,9 @@ document.addEventListener("click", function (event) {
       !grid.contains(event.target) &&
       !grid.previousElementSibling.contains(event.target)
     ) {
-      grid.classList.remove("show"); // Hide dropdown
+      grid.classList.remove("show");
       grid.previousElementSibling.querySelector("button").textContent =
-        "View Attachments"; // Reset button text
+        "View Attachments";
     }
   });
 });

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loadoutsContainer = document.getElementById("loadoutsContainer");
 
   try {
-    const response = await fetch("/api/my-loadouts");
+    const response = await fetch("/api/loadouts");
     const loadouts = await response.json();
 
     if (!response.ok) {
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (loadouts.length === 0) {
-      loadoutsContainer.innerHTML = `<p>No loadouts found. Create one using the button below!</p>`;
+      loadoutsContainer.innerHTML = `<p>No loadouts found.</p>`;
       return;
     }
 
@@ -30,25 +30,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       loadoutElement.classList.add("loadout-item");
 
       loadoutElement.innerHTML = `
-        <div class="loadout">
-          <h2 class="loadout-title">${loadout.loadoutName}</h2>
-        
-          <div>
-            <img src="${primaryWeaponImage}" alt="${primaryWeapon}" class="weapon-image">
-            <p class="weapon-class">${primaryWeapon}</p>
+          <div class="loadout">
+            <h2 class="loadout-title">${loadout.loadoutName}</h2>
+          
+            <div>
+              <img src="${primaryWeaponImage}" alt="${primaryWeapon}" class="weapon-image">
+              <p class="weapon-class">${primaryWeapon}</p>
+            </div>
+  
+            <div>
+              <img src="${secondaryWeaponImage}" alt="${secondaryWeapon}" class="weapon-image">
+              <p class="weapon-class">${secondaryWeapon}</p>
+            </div>
+  
+            <div>
+              <button class="view-loadout" data-id="${loadout._id}">View Loadout</button>
+            </div>
           </div>
-
-          <div>
-            <img src="${secondaryWeaponImage}" alt="${secondaryWeapon}" class="weapon-image">
-            <p class="weapon-class">${secondaryWeapon}</p>
-          </div>
-
-          <div>
-            <button class="view-loadout" data-id="${loadout._id}">View Loadout</button>
-            <button class="delete-loadout" data-id="${loadout._id}">Delete</button>
-          </div>
-        </div>
-      `;
+        `;
 
       loadoutsContainer.appendChild(loadoutElement);
     });
@@ -58,16 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       button.addEventListener("click", (event) => {
         const loadoutId = event.target.dataset.id;
         window.location.href = `/loadout/${loadoutId}`;
-      });
-    });
-
-    document.querySelectorAll(".delete-loadout").forEach((button) => {
-      button.addEventListener("click", async (event) => {
-        const loadoutId = event.target.dataset.id;
-        if (confirm("Are you sure you want to delete this loadout?")) {
-          await fetch(`/api/loadouts/${loadoutId}`, { method: "DELETE" });
-          window.location.reload();
-        }
       });
     });
   } catch (error) {

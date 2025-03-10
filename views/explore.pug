@@ -4,13 +4,18 @@ block title
     title Loadout Lab - Explore
 
 block content
-    .container.explore-page
+    .container.home-page
         h1 Find Your Next Loadout!
 
-        form(style='margin-top: 40px;')
-            p 
-                strong Coming soon! 
-            p This is where you'll be able to discover and view other users' loadouts and classes.  
-            p Stay tuned for exciting updates!
+        #loadoutsContainer
+            p Loading loadouts...
 
-            button.btn-intro-home(type='button', onclick="window.location.href='/index'") Return to Home Page
+    script(src='/js/explore.js')
+
+        //- form(style='margin-top: 40px;')
+        //-     p 
+        //-         strong Coming soon! 
+        //-     p This is where you'll be able to discover and view other users' loadouts and classes.  
+        //-     p Stay tuned for exciting updates!
+
+        //-     button.btn-intro-home(type='button', onclick="window.location.href='/index'") Return to Home Page

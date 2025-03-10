@@ -18,11 +18,12 @@ const saveLoadout = async (loadout) => {
       loadoutAPI.url,
       {
         loadoutName: loadout.loadoutName,
-        primaryWeapon: JSON.stringify(loadout.primaryWeapon), // Convert to JSON
+        primaryWeapon: JSON.stringify(loadout.primaryWeapon),
         primaryAttachments: loadout.primaryAttachments,
-        secondaryWeapon: JSON.stringify(loadout.secondaryWeapon), // Convert to JSON
+        secondaryWeapon: JSON.stringify(loadout.secondaryWeapon),
         secondaryAttachments: loadout.secondaryAttachments,
-        userId: loadout.userId, // ✅ Store the userId to link loadouts to users
+        userId: loadout.userId,
+        createdAt: new Date().toISOString(),
       },
       loadoutAPI.config
     );
@@ -38,7 +39,11 @@ const saveLoadout = async (loadout) => {
 const getLoadouts = async () => {
   try {
     const response = await axios.get(loadoutAPI.url, loadoutAPI.config);
-    return response.data;
+    const loadouts = response.data;
+
+    loadouts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    return loadouts;
   } catch (error) {
     console.error("Error fetching loadouts:", error);
     throw error;

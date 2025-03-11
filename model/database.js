@@ -1,7 +1,7 @@
 import axios from "axios";
 import "dotenv/config";
 
-const USE_MOCK_DATA = true; // Set to false to use real API calls
+const USE_MOCK_DATA = false; // Set to false to use real API calls
 
 const mockLoadouts = [
   {

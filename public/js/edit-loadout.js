@@ -195,7 +195,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       removePrimaryWeaponButton.style.display = "block";
       resetPrimaryAttachmentsButton.style.display = "block";
       selectedPrimaryClass = selectedClass;
-      console.log(`Primary weapon class set to: ${selectedPrimaryClass}`);
       resetAttachments("primary");
     } else {
       if (selectedWeapon.name === primaryWeaponName.textContent) {
@@ -212,7 +211,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       removeSecondaryWeaponButton.style.display = "block";
       resetSecondaryAttachmentsButton.style.display = "block";
       selectedSecondaryClass = selectedClass;
-      console.log(`Secondary weapon class set to: ${selectedSecondaryClass}`);
       resetAttachments("secondary");
       secondaryAttachments.style.display = "grid";
 
@@ -226,7 +224,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     checkAttachmentLimit();
-    console.log("Attachment limit updated");
 
     weaponModal.style.display = "none";
   });

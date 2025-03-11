@@ -57,7 +57,9 @@ block content
                     button#removeSecondaryWeaponButton(type='button', style='display:none') Remove Weapon
                     button#resetSecondaryAttachmentsButton(type='button', style='display:none') Reset Attachments
 
-            button#updateLoadoutButton(type='submit') Update Loadout
+            .button-container-view
+                button#updateLoadoutButton(type='submit') Update Loadout
+                button.back-button-view(onclick="history.back()") Cancel
 
             // Modal for selecting weapon class and weapon (Shared)
             .modal#weaponModal

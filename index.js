@@ -224,6 +224,21 @@ app.delete("/api/loadouts/:id", async (req, res) => {
   }
 });
 
+const attachmentNames = {
+  "infiltrator-stock": "Infiltrator Stock",
+  "steady-aim-laser": "Steady Aim Laser",
+  "jason-armory-2x": "Jason Armory 2x",
+  "kepler-microflex": "Kepler Microflex",
+  "otero-micro-dot": "Otero Micro Dot",
+  suppressor: "Suppressor",
+  "extended-mag-1": "Extended Mag I",
+  "extended-mag-2": "Extended Mag II",
+  "vertical-foregrip": "Vertical Foregrip",
+  "ranger-foregrip": "Ranger Foregrip",
+  // 🔧 Add more mappings as needed...
+};
+
+// Get loadout by ID for viewing
 app.get("/loadout/:id", async (req, res) => {
   const loadoutId = req.params.id;
 
@@ -234,10 +249,39 @@ app.get("/loadout/:id", async (req, res) => {
       return res.status(404).send("Loadout not found");
     }
 
-    res.render("loadout", { loadout });
+    // Convert attachment keys into readable names
+    const formatAttachments = (attachments) =>
+      attachments.map((att) => attachmentNames[att] || att);
+
+    res.render("loadout", {
+      loadout,
+      primaryAttachmentsList: formatAttachments(
+        loadout.primaryAttachments || []
+      ),
+      secondaryAttachmentsList: formatAttachments(
+        loadout.secondaryAttachments || []
+      ),
+    });
   } catch (error) {
     console.error("Error fetching loadout:", error);
     res.status(500).send("Internal Server Error");
+  }
+});
+
+// Get loadout by ID for editing
+app.get("/edit-loadout/:id", async (req, res) => {
+  try {
+    const loadoutId = req.params.id;
+    const loadout = await getLoadoutById(loadoutId); // Fetch the loadout from DB
+
+    if (!loadout) {
+      return res.status(404).send("Loadout not found");
+    }
+
+    res.render("edit-loadout", { loadout });
+  } catch (error) {
+    console.error("Error loading loadout:", error);
+    res.status(500).send("Error loading loadout");
   }
 });
 

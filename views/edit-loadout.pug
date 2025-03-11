@@ -1,0 +1,46 @@
+extends layouts/layout
+
+block title
+    title Loadout Lab - Edit Loadout
+
+block content
+    .container.create-loadout
+        h1 Edit Loadout
+
+        form#editLoadoutForm(style='margin-top: 15px; background-color: #f5f5f5; max-width: 1570px;')
+            h2 Loadout Name
+            input#loadoutName(type='text' name='loadoutName' required)
+
+            // Primary Weapon Section
+            .form-group.weapons
+                h2 Primary Weapon
+                .weapon-selection-container
+                    .selected-weapon#primaryWeaponContainer
+                        p#primaryWeaponName 
+                        img#primaryWeaponImage(src='' alt='Selected Primary Weapon')
+                    .attachments-container#primaryAttachments
+                        .attachments-grid
+                            each attachment in ["optic", "muzzle", "barrel", "underbarrel", "magazine", "reargrip", "stock", "laser", "firemods"]
+                                select.attachment(name="primaryAttachments[]")
+                                    option(value='' disabled selected) #{attachment}
+
+                button#openPrimaryWeaponModal(type='button' class='plus-button') +
+
+            // Secondary Weapon Section
+            .form-group.weapons
+                h2 Secondary Weapon
+                .weapon-selection-container
+                    .selected-weapon#secondaryWeaponContainer
+                        p#secondaryWeaponName 
+                        img#secondaryWeaponImage(src='' alt='Selected Secondary Weapon')
+                    .attachments-container#secondaryAttachments
+                        .attachments-grid
+                            each attachment in ["optic", "muzzle", "barrel", "underbarrel", "magazine", "reargrip", "stock", "laser", "firemods"]
+                                select.attachment(name="secondaryAttachments[]")
+                                    option(value='' disabled selected) #{attachment}
+
+                button#openSecondaryWeaponModal(type='button' class='plus-button') +
+
+            button#updateLoadoutButton(type='submit') Update Loadout
+
+    script(src='/js/edit-loadout.js')

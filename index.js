@@ -286,6 +286,36 @@ const attachmentNames = {
   "recoil-springs": "Recoil Springs",
 };
 
+// Get loadout by ID for viewing explore page loadout
+app.get("/explore-loadout/:id", async (req, res) => {
+  const loadoutId = req.params.id;
+
+  try {
+    const loadout = await getLoadoutById(loadoutId);
+
+    if (!loadout) {
+      return res.status(404).send("Loadout not found");
+    }
+
+    // Convert attachment keys into readable names
+    const formatAttachments = (attachments) =>
+      attachments.map((att) => attachmentNames[att] || att);
+
+    res.render("explore-loadout", {
+      loadout,
+      primaryAttachmentsList: formatAttachments(
+        loadout.primaryAttachments || []
+      ),
+      secondaryAttachmentsList: formatAttachments(
+        loadout.secondaryAttachments || []
+      ),
+    });
+  } catch (error) {
+    console.error("Error fetching loadout:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 // Get loadout by ID for viewing
 app.get("/loadout/:id", async (req, res) => {
   const loadoutId = req.params.id;

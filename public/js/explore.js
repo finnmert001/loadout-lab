@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".view-loadout").forEach((button) => {
       button.addEventListener("click", (event) => {
         const loadoutId = event.target.dataset.id;
-        window.location.href = `/loadout/${loadoutId}`;
+        window.location.href = `/explore-loadout/${loadoutId}`;
       });
     });
   } catch (error) {

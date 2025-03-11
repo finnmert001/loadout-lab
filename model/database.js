@@ -1,7 +1,7 @@
 import axios from "axios";
 import "dotenv/config";
 
-const USE_MOCK_DATA = false; // Set to false to use real API calls
+const USE_MOCK_DATA = true; // Set to false to use real API calls
 
 const mockLoadouts = [
   {
@@ -43,14 +43,14 @@ const mockLoadouts = [
       "Jason Armory 2x",
       "Suppressor",
       "Balanced Stock",
-      "Extended Mag II",
+      "Ranger Foregrip",
       "Extended Mag II",
     ],
     secondaryAttachments: [
-      "Suppressor",
-      "Suppressor",
+      "Kepler Microflex",
+      "Compensator",
       "Balanced Stock",
-      "Extended Mag II",
+      "Ranger Foregrip",
       "Extended Mag II",
     ],
     userId: "67c716644ac1175d00008199",

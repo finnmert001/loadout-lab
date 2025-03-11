@@ -199,7 +199,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       primaryWeaponContainer.style.display = "block";
       openPrimaryWeaponModal.style.display = "none";
       removePrimaryWeaponButton.style.display = "block";
+      resetPrimaryAttachmentsButton.style.display = "block";
       selectedPrimaryClass = selectedClass;
+      resetAttachments("primary");
     } else {
       if (selectedWeapon.name === primaryWeaponName.textContent) {
         alert("This weapon is already selected as primary!");
@@ -212,7 +214,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       secondaryWeaponContainer.style.display = "block";
       openSecondaryWeaponModal.style.display = "none";
       removeSecondaryWeaponButton.style.display = "block";
+      resetSecondaryAttachmentsButton.style.display = "block";
       selectedSecondaryClass = selectedClass;
+      resetAttachments("secondary");
       secondaryAttachments.style.display = "grid";
     }
 
@@ -227,6 +231,104 @@ document.addEventListener("DOMContentLoaded", async () => {
       .filter((select) => select.value !== "")
       .map((select) => select.value);
   }
+
+  try {
+    const response = await fetch(`/api/loadouts/${loadoutId}`);
+    if (!response.ok) throw new Error("Failed to fetch loadout");
+    const loadout = await response.json();
+
+    document.getElementById("loadoutName").value = loadout.loadoutName;
+
+    // ✅ Set primary weapon if it exists
+    if (loadout.primaryWeapon.name) {
+      primaryWeaponContainer.style.display = "block";
+      openPrimaryWeaponModal.style.display = "none"; // Hide "+"
+      removePrimaryWeaponButton.style.display = "block";
+      resetPrimaryAttachmentsButton.style.display = "block";
+      primaryAttachments.style.display = "grid"; // Show attachments
+
+      primaryWeaponName.textContent = loadout.primaryWeapon.name;
+      primaryWeaponImage.src = loadout.primaryWeapon.image;
+    }
+
+    // ✅ Set secondary weapon if it exists
+    if (loadout.secondaryWeapon.name) {
+      secondaryWeaponContainer.style.display = "block";
+      openSecondaryWeaponModal.style.display = "none"; // Hide "+"
+      removeSecondaryWeaponButton.style.display = "block";
+      resetSecondaryAttachmentsButton.style.display = "block";
+      secondaryAttachments.style.display = "grid"; // Show attachments
+
+      secondaryWeaponName.textContent = loadout.secondaryWeapon.name;
+      secondaryWeaponImage.src = loadout.secondaryWeapon.image;
+    }
+
+    // ✅ Pre-select existing primary attachments
+    document
+      .querySelectorAll("#primaryAttachments select")
+      .forEach((select) => {
+        if (loadout.primaryAttachments.includes(select.value)) {
+          select.value = loadout.primaryAttachments.find(
+            (a) => a === select.value
+          );
+        }
+      });
+
+    // ✅ Pre-select existing secondary attachments
+    document
+      .querySelectorAll("#secondaryAttachments select")
+      .forEach((select) => {
+        if (loadout.secondaryAttachments.includes(select.value)) {
+          select.value = loadout.secondaryAttachments.find(
+            (a) => a === select.value
+          );
+        }
+      });
+  } catch (error) {
+    console.error("Error loading loadout:", error);
+  }
+
+  // Handle updating the loadout
+  document
+    .getElementById("editLoadoutForm")
+    .addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const updatedLoadout = {
+        loadoutName: document.getElementById("loadoutName").value,
+        primaryWeapon: {
+          name: document.getElementById("primaryWeaponName").textContent,
+          image: document.getElementById("primaryWeaponImage").src,
+        },
+        primaryAttachments: Array.from(
+          document.querySelectorAll("#primaryAttachments select")
+        ).map((select) => select.value),
+        secondaryWeapon: {
+          name: document.getElementById("secondaryWeaponName").textContent,
+          image: document.getElementById("secondaryWeaponImage").src,
+        },
+        secondaryAttachments: Array.from(
+          document.querySelectorAll("#secondaryAttachments select")
+        ).map((select) => select.value),
+      };
+
+      try {
+        const response = await fetch(`/api/loadouts/${loadoutId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedLoadout),
+        });
+
+        if (response.ok) {
+          window.location.href = "/my-loadouts";
+        } else {
+          const errorData = await response.json();
+          alert(`Error updating loadout: ${errorData.message}`);
+        }
+      } catch (error) {
+        alert("An error occurred while updating.");
+      }
+    });
 
   function checkAttachmentLimit() {
     const isPrimaryRestricted =
@@ -303,6 +405,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     primaryWeaponContainer.style.display = "none";
     openPrimaryWeaponModal.style.display = "inline-block";
     removePrimaryWeaponButton.style.display = "none";
+    resetPrimaryAttachmentsButton.style.display = "none";
     primaryAttachments.style.display = "none";
   });
 
@@ -313,7 +416,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     secondaryWeaponContainer.style.display = "none";
     openSecondaryWeaponModal.style.display = "inline-block";
     removeSecondaryWeaponButton.style.display = "none";
+    resetSecondaryAttachmentsButton.style.display = "none";
     secondaryAttachments.style.display = "none";
+  });
+
+  resetPrimaryAttachmentsButton.addEventListener("click", () => {
+    resetAttachments("primary");
+  });
+
+  resetSecondaryAttachmentsButton.addEventListener("click", () => {
+    resetAttachments("secondary");
+    secondaryAttachments.style.display = "block";
   });
 
   window.addEventListener("click", (event) => {
@@ -321,100 +434,4 @@ document.addEventListener("DOMContentLoaded", async () => {
       weaponModal.style.display = "none";
     }
   });
-
-  try {
-    const response = await fetch(`/api/loadouts/${loadoutId}`);
-    if (!response.ok) throw new Error("Failed to fetch loadout");
-    const loadout = await response.json();
-
-    document.getElementById("loadoutName").value = loadout.loadoutName;
-
-    // ✅ Set primary weapon if it exists
-    if (loadout.primaryWeapon.name) {
-      primaryWeaponContainer.style.display = "block";
-      openPrimaryWeaponModal.style.display = "none"; // Hide "+"
-      removePrimaryWeaponButton.style.display = "block";
-      primaryAttachments.style.display = "grid"; // Show attachments
-
-      primaryWeaponName.textContent = loadout.primaryWeapon.name;
-      primaryWeaponImage.src = loadout.primaryWeapon.image;
-    }
-
-    // ✅ Set secondary weapon if it exists
-    if (loadout.secondaryWeapon.name) {
-      secondaryWeaponContainer.style.display = "block";
-      openSecondaryWeaponModal.style.display = "none"; // Hide "+"
-      removeSecondaryWeaponButton.style.display = "block";
-      secondaryAttachments.style.display = "grid"; // Show attachments
-
-      secondaryWeaponName.textContent = loadout.secondaryWeapon.name;
-      secondaryWeaponImage.src = loadout.secondaryWeapon.image;
-    }
-
-    // ✅ Pre-select existing primary attachments
-    document
-      .querySelectorAll("#primaryAttachments select")
-      .forEach((select) => {
-        if (loadout.primaryAttachments.includes(select.value)) {
-          select.value = loadout.primaryAttachments.find(
-            (a) => a === select.value
-          );
-        }
-      });
-
-    // ✅ Pre-select existing secondary attachments
-    document
-      .querySelectorAll("#secondaryAttachments select")
-      .forEach((select) => {
-        if (loadout.secondaryAttachments.includes(select.value)) {
-          select.value = loadout.secondaryAttachments.find(
-            (a) => a === select.value
-          );
-        }
-      });
-  } catch (error) {
-    console.error("Error loading loadout:", error);
-  }
-
-  // Handle updating the loadout
-  document
-    .getElementById("editLoadoutForm")
-    .addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const updatedLoadout = {
-        loadoutName: document.getElementById("loadoutName").value,
-        primaryWeapon: {
-          name: document.getElementById("primaryWeaponName").textContent,
-          image: document.getElementById("primaryWeaponImage").src,
-        },
-        primaryAttachments: Array.from(
-          document.querySelectorAll("#primaryAttachments select")
-        ).map((select) => select.value),
-        secondaryWeapon: {
-          name: document.getElementById("secondaryWeaponName").textContent,
-          image: document.getElementById("secondaryWeaponImage").src,
-        },
-        secondaryAttachments: Array.from(
-          document.querySelectorAll("#secondaryAttachments select")
-        ).map((select) => select.value),
-      };
-
-      try {
-        const response = await fetch(`/api/loadouts/${loadoutId}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedLoadout),
-        });
-
-        if (response.ok) {
-          window.location.href = "/my-loadouts";
-        } else {
-          const errorData = await response.json();
-          alert(`Error updating loadout: ${errorData.message}`);
-        }
-      } catch (error) {
-        alert("An error occurred while updating.");
-      }
-    });
 });

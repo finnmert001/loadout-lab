@@ -1,7 +1,7 @@
 import axios from "axios";
 import "dotenv/config";
 
-const USE_MOCK_DATA = true; // Set to false to use real API calls
+const USE_MOCK_DATA = false; // Set to false to use real API calls
 
 const mockLoadouts = [
   {
@@ -171,14 +171,19 @@ const getLoadoutsByUserId = async (userId) => {
 // Update a loadout
 const updateLoadout = async (id, updateData) => {
   try {
+    console.log("Updating Loadout ID:", id);
+    console.log("Payload:", JSON.stringify(updateData, null, 2));
+
     const response = await axios.put(
       `${loadoutAPI.url}/${id}`,
       updateData,
       loadoutAPI.config
     );
+
+    console.log("Update Response:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error updating loadout:", error);
+    console.error("Error updating loadout:", error.response?.data || error);
     throw error;
   }
 };
@@ -200,6 +205,8 @@ const deleteLoadout = async (id) => {
     throw error;
   }
 };
+
+export default loadoutAPI;
 
 export {
   deleteLoadout,

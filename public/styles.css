@@ -1206,6 +1206,113 @@ p.sign-up-text a:hover {
         background-color: lightcoral;
       }
 
+    .loadout-page-view {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 40px;
+    }
+    
+    .loadout-title-view {
+        margin-bottom: 20px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .weapon-container-view {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 180px;
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    
+    .weapon-section-view {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .weapon-image-view {
+        width: 300px;
+        height: auto;
+        margin-bottom: 10px;
+    }
+    
+    .attachment-section-view {
+        background-color: #2a3b4d;
+        padding: 15px;
+        border-radius: 8px;
+        min-width: 200px;
+        min-height: 130px;
+        text-align: center;
+        margin-top: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    .attachment-section-view h3 {
+        font-size: 16px;
+        margin-bottom: 8px;
+        margin-top: 0px;
+        color: white;
+    }
+    
+    .attachment-section-view p {
+        color: white;
+    }
+
+    .attachment-list-view {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .attachment-item-view {
+        color: white;
+        padding: 5px;
+        margin-bottom: 2px;
+        border-radius: 5px;
+        text-align: center;
+    }
+    
+    .button-container-view {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        margin-top: 50px;
+    }
+    
+    .edit-button-view {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+    .edit-button-view:hover {
+        background-color: #2980b9;
+    }
+    
+    .back-button-view {
+        background-color: #f44336;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .back-button-view:hover {
+        background-color: #d32f2f;
+    }
+
 /* Cookie Modal */
 .modal-cookie {
     position: fixed;

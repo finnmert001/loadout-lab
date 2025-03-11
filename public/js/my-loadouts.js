@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       throw new Error(loadouts.error || "Failed to load loadouts.");
     }
 
+    console.log("🔍 Loadouts API Response:", loadouts);
+
     if (loadouts.length === 0) {
       loadoutsContainer.innerHTML = `<p>No loadouts found. Create one using the button below!</p>`;
       return;
@@ -71,6 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
   } catch (error) {
+    console.error("Error fetching loadouts:", error);
     loadoutsContainer.innerHTML = "<p>Error loading loadouts.</p>";
   }
 });

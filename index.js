@@ -224,6 +224,23 @@ app.delete("/api/loadouts/:id", async (req, res) => {
   }
 });
 
+app.get("/loadout/:id", async (req, res) => {
+  const loadoutId = req.params.id;
+
+  try {
+    const loadout = await getLoadoutById(loadoutId);
+
+    if (!loadout) {
+      return res.status(404).send("Loadout not found");
+    }
+
+    res.render("loadout", { loadout });
+  } catch (error) {
+    console.error("Error fetching loadout:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 // ------------------ HELPER FUNCTIONS ------------------
 
 // Redirect to login if not authenticated

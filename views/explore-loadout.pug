@@ -1,0 +1,34 @@
+extends layouts/layout
+
+block content
+    .loadout-page-view
+        h1.loadout-title-view #{loadout.loadoutName}
+
+        .weapon-container-view
+            .weapon-section-view
+                h2 Primary Weapon
+                img.weapon-image-view(src=loadout.primaryWeapon.image, alt=loadout.primaryWeapon.name)
+                p#primaryWeaponName #{loadout.primaryWeapon.name}
+
+            .attachment-section-view
+                h3 Attachments
+                each attachment in primaryAttachmentsList
+                    p= attachment 
+                else
+                    p No attachments selected.
+
+        .weapon-container-view
+            .weapon-section-view
+                h2 Secondary Weapon
+                img.weapon-image-view(src=loadout.secondaryWeapon.image, alt=loadout.secondaryWeapon.name)
+                p#secondaryWeaponName #{loadout.secondaryWeapon.name}
+
+            .attachment-section-view
+                h3 Attachments
+                each attachment in secondaryAttachmentsList
+                    p= attachment
+                else
+                    p No attachments selected.
+
+        .button-container-view
+            button.back-button-view(onclick="history.back()") Back

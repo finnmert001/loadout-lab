@@ -182,12 +182,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const selectedClass = weaponClassDropdown.value;
 
     if (selectingPrimary) {
-      primaryAttachments.style.display = "grid"; // ✅ Ensure primary attachments appear
-    } else {
-      secondaryAttachments.style.display = "grid"; // ✅ Ensure secondary attachments appear
-    }
-
-    if (selectingPrimary) {
       if (selectedWeapon.name === secondaryWeaponName.textContent) {
         alert("This weapon is already selected as secondary!");
         return;
@@ -201,6 +195,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       removePrimaryWeaponButton.style.display = "block";
       resetPrimaryAttachmentsButton.style.display = "block";
       selectedPrimaryClass = selectedClass;
+      console.log(`Primary weapon class set to: ${selectedPrimaryClass}`);
       resetAttachments("primary");
     } else {
       if (selectedWeapon.name === primaryWeaponName.textContent) {
@@ -208,6 +203,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
+      let previousSecondaryClass = selectedSecondaryClass || "";
       secondaryWeaponImage.src = selectedWeapon.image;
       secondaryWeaponImage.setAttribute("data-image", selectedWeapon.image);
       secondaryWeaponName.textContent = selectedWeapon.name;
@@ -216,11 +212,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       removeSecondaryWeaponButton.style.display = "block";
       resetSecondaryAttachmentsButton.style.display = "block";
       selectedSecondaryClass = selectedClass;
+      console.log(`Secondary weapon class set to: ${selectedSecondaryClass}`);
       resetAttachments("secondary");
       secondaryAttachments.style.display = "grid";
+
+      if (
+        secondaryOnlyTypes.includes(previousSecondaryClass) &&
+        restrictedWeaponTypes.includes(selectedSecondaryClass)
+      ) {
+        resetAttachments("primary");
+        enforceAttachmentLimit("primary", 5);
+      }
     }
 
     checkAttachmentLimit();
+    console.log("Attachment limit updated");
+
     weaponModal.style.display = "none";
   });
 
@@ -239,31 +246,42 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("loadoutName").value = loadout.loadoutName;
 
-    // ✅ Set primary weapon if it exists
     if (loadout.primaryWeapon.name) {
       primaryWeaponContainer.style.display = "block";
-      openPrimaryWeaponModal.style.display = "none"; // Hide "+"
+      openPrimaryWeaponModal.style.display = "none";
       removePrimaryWeaponButton.style.display = "block";
       resetPrimaryAttachmentsButton.style.display = "block";
-      primaryAttachments.style.display = "grid"; // Show attachments
+      primaryAttachments.style.display = "grid";
 
       primaryWeaponName.textContent = loadout.primaryWeapon.name;
       primaryWeaponImage.src = loadout.primaryWeapon.image;
+
+      selectedPrimaryClass =
+        Object.keys(weapons).find((weaponClass) =>
+          weapons[weaponClass].some(
+            (weapon) => weapon.name === loadout.primaryWeapon.name
+          )
+        ) || "";
     }
 
-    // ✅ Set secondary weapon if it exists
     if (loadout.secondaryWeapon.name) {
       secondaryWeaponContainer.style.display = "block";
-      openSecondaryWeaponModal.style.display = "none"; // Hide "+"
+      openSecondaryWeaponModal.style.display = "none";
       removeSecondaryWeaponButton.style.display = "block";
       resetSecondaryAttachmentsButton.style.display = "block";
-      secondaryAttachments.style.display = "grid"; // Show attachments
+      secondaryAttachments.style.display = "grid";
 
       secondaryWeaponName.textContent = loadout.secondaryWeapon.name;
       secondaryWeaponImage.src = loadout.secondaryWeapon.image;
+
+      selectedSecondaryClass =
+        Object.keys(weapons).find((weaponClass) =>
+          weapons[weaponClass].some(
+            (weapon) => weapon.name === loadout.secondaryWeapon.name
+          )
+        ) || "";
     }
 
-    // ✅ Pre-select existing primary attachments
     document
       .querySelectorAll("#primaryAttachments select")
       .forEach((select) => {
@@ -274,7 +292,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
 
-    // ✅ Pre-select existing secondary attachments
     document
       .querySelectorAll("#secondaryAttachments select")
       .forEach((select) => {
@@ -284,6 +301,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           );
         }
       });
+
+    checkAttachmentLimit();
   } catch (error) {
     console.error("Error loading loadout:", error);
   }
@@ -331,6 +350,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
   function checkAttachmentLimit() {
+    console.log("Checking attachment limits...");
+    console.log(`Primary Class: ${selectedPrimaryClass}`);
+    console.log(`Secondary Class: ${selectedSecondaryClass}`);
+
     const isPrimaryRestricted =
       restrictedWeaponTypes.includes(selectedPrimaryClass);
     const isSecondaryLimited = secondaryOnlyTypes.includes(
@@ -341,14 +364,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       secondaryAttachments.style.display = "grid";
     }
 
-    enforceAttachmentLimit("secondary", 5);
     enforceAttachmentLimit("primary", 5);
+    enforceAttachmentLimit("secondary", 5);
 
     if (isPrimaryRestricted && isSecondaryLimited) {
-      resetAttachments("primary");
       enforceAttachmentLimit("primary", 8);
-    } else {
-      resetAttachments("primary");
     }
 
     enableAttachments();
@@ -358,20 +378,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById(`${type}Attachments`);
     const attachmentDropdowns = container.querySelectorAll("select.attachment");
 
-    attachmentDropdowns.forEach((dropdown) => {
-      dropdown.addEventListener("change", function () {
-        const selectedCount = Array.from(attachmentDropdowns).filter(
-          (select) => select.value !== ""
-        ).length;
+    function updateDisabledState() {
+      const selectedCount = Array.from(attachmentDropdowns).filter(
+        (select) => select.value !== ""
+      ).length;
 
-        if (selectedCount >= limit) {
-          attachmentDropdowns.forEach((select) => {
-            if (select.value === "") select.disabled = true;
-          });
+      // Disable empty dropdowns if the limit is reached
+      attachmentDropdowns.forEach((select) => {
+        if (selectedCount >= limit && select.value === "") {
+          select.disabled = true;
         } else {
-          attachmentDropdowns.forEach((select) => (select.disabled = false));
+          select.disabled = false;
         }
       });
+    }
+
+    // Apply the limit immediately on load
+    updateDisabledState();
+
+    // Reapply limit when an attachment is selected
+    attachmentDropdowns.forEach((dropdown) => {
+      dropdown.addEventListener("change", updateDisabledState);
     });
   }
 

@@ -44,11 +44,11 @@ block content
                     .attachments-container#secondaryAttachments
                         .attachments-grid(style='margin-left: 75px;')
                             each category in Object.keys(attachmentOptions)
-                                select.attachment(name="primaryAttachments[]")
-                                    option(value='' disabled selected=(loadout.primaryAttachments && !loadout.primaryAttachments.includes(category))) #{category}
+                                select.attachment(name="secondaryAttachments[]")
+                                    option(value='' disabled selected=(loadout.secondaryAttachments && !loadout.secondaryAttachments.includes(category))) #{category}
 
                                     each option in attachmentOptions[category]
-                                        - var isSelected = loadout.primaryAttachments && loadout.primaryAttachments.includes(option);
+                                        - var isSelected = loadout.secondaryAttachments && loadout.secondaryAttachments.includes(option);
                                         option(value=option selected=isSelected) #{option}
 
                 button#openSecondaryWeaponModal(type='button' class='plus-button') +

@@ -326,12 +326,23 @@ app.get("/edit-loadout/:id", async (req, res) => {
       return res.status(404).send("Loadout not found");
     }
 
-    // Debugging output
-    console.log("Loadout found:", loadout);
+    const formattedPrimaryAttachments = loadout.primaryAttachments.map(
+      (attachment) => attachmentNames[attachment] || attachment
+    );
+
+    const formattedSecondaryAttachments = loadout.secondaryAttachments.map(
+      (attachment) => attachmentNames[attachment] || attachment
+    );
 
     // Define attachment categories and options
     const attachmentOptions = {
-      Optic: ["Accu-Spot Reflex", "Kepler Microflex", "Otero Micro Dot"],
+      Optic: [
+        "Accu-Spot Reflex",
+        "Kepler Microflex",
+        "Otero Micro Dot",
+        "Jason Armory 2x",
+        "Willis 3x",
+      ],
       Muzzle: [
         "Suppressor",
         "Compensator",
@@ -348,6 +359,8 @@ app.get("/edit-loadout/:id", async (req, res) => {
         "Vertical Foregrip",
         "Ranger Foregrip",
         "Precision Foregrip",
+        "Marksman Foregrip",
+        "Lightweight Foregrip",
       ],
       Magazine: [
         "Flip Mag",
@@ -380,10 +393,12 @@ app.get("/edit-loadout/:id", async (req, res) => {
       "Fire Mods": ["FMJ", "Overpressured", "Rapid Fire", "Recoil Springs"],
     };
 
-    console.log("Attachment Options:", attachmentOptions); // Debugging
-
     res.render("edit-loadout", {
-      loadout,
+      loadout: {
+        ...loadout,
+        primaryAttachments: formattedPrimaryAttachments,
+        secondaryAttachments: formattedSecondaryAttachments,
+      },
       attachmentOptions,
     });
   } catch (error) {

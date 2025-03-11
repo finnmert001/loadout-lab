@@ -225,17 +225,65 @@ app.delete("/api/loadouts/:id", async (req, res) => {
 });
 
 const attachmentNames = {
-  "infiltrator-stock": "Infiltrator Stock",
-  "steady-aim-laser": "Steady Aim Laser",
-  "jason-armory-2x": "Jason Armory 2x",
+  // Optic
+  "accu-spot-reflex": "Accu-Spot Reflex",
   "kepler-microflex": "Kepler Microflex",
   "otero-micro-dot": "Otero Micro Dot",
+  "jason-armory-2x": "Jason Armory 2x",
+  "willis-3x": "Willis 3x",
+
+  // Muzzle
   suppressor: "Suppressor",
-  "extended-mag-1": "Extended Mag I",
-  "extended-mag-2": "Extended Mag II",
+  compensator: "Compensator",
+  "ported-compensator": "Ported Compensator",
+  "muzzle-brake": "Muzzle Brake",
+
+  // Barrel
+  "chf-barrel": "CHF Barrel",
+  "long-barrel": "Long Barrel",
+  "gain-twist-barrel": "Gain-Twist Barrel",
+  "reinforced-barrel": "Reinforced Barrel",
+
+  // Underbarrel
   "vertical-foregrip": "Vertical Foregrip",
   "ranger-foregrip": "Ranger Foregrip",
-  // 🔧 Add more mappings as needed...
+  "precision-foregrip": "Precision Foregrip",
+  "marksman-foregrip": "Marksman Foregrip",
+  "lightweight-foregrip": "Lightweight Foregrip",
+
+  // Magazine
+  "flip-mag": "Flip Mag",
+  "fast-mag-1": "Fast Mag I",
+  "fast-mag-2": "Fast Mag II",
+  "extended-mag-1": "Extended Mag I",
+  "extended-mag-2": "Extended Mag II",
+
+  // Rear Grip
+  "assault-grip": "Assault Grip",
+  "commando-grip": "Commando Grip",
+  "cqb-grip": "CQB Grip",
+  "ergonomic-grip": "Ergonomic Grip",
+  "quickdraw-grip": "Quickdraw Grip",
+
+  // Stock
+  "light-stock": "Light Stock",
+  "infiltrator-stock": "Infiltrator Stock",
+  "no-stock": "No Stock",
+  "agility-stock": "Agility Stock",
+  "balanced-stock": "Balanced Stock",
+
+  // Laser
+  "fast-motion-laser": "Fast Motion Laser",
+  "steady-aim-laser": "Steady Aim Laser",
+  "strelok-laser": "Strelok Laser",
+  "tactical-laser": "Tactical Laser",
+  "target-laser": "Target Laser",
+
+  // Fire Mods
+  fmj: "FMJ",
+  overpressured: "Overpressured",
+  "rapid-fire": "Rapid Fire",
+  "recoil-springs": "Recoil Springs",
 };
 
 // Get loadout by ID for viewing
@@ -272,16 +320,75 @@ app.get("/loadout/:id", async (req, res) => {
 app.get("/edit-loadout/:id", async (req, res) => {
   try {
     const loadoutId = req.params.id;
-    const loadout = await getLoadoutById(loadoutId); // Fetch the loadout from DB
+    const loadout = await getLoadoutById(loadoutId);
 
     if (!loadout) {
       return res.status(404).send("Loadout not found");
     }
 
-    res.render("edit-loadout", { loadout });
+    // Debugging output
+    console.log("Loadout found:", loadout);
+
+    // Define attachment categories and options
+    const attachmentOptions = {
+      Optic: ["Accu-Spot Reflex", "Kepler Microflex", "Otero Micro Dot"],
+      Muzzle: [
+        "Suppressor",
+        "Compensator",
+        "Ported Compensator",
+        "Muzzle Brake",
+      ],
+      Barrel: [
+        "CHF Barrel",
+        "Long Barrel",
+        "Gain-Twist Barrel",
+        "Reinforced Barrel",
+      ],
+      Underbarrel: [
+        "Vertical Foregrip",
+        "Ranger Foregrip",
+        "Precision Foregrip",
+      ],
+      Magazine: [
+        "Flip Mag",
+        "Fast Mag I",
+        "Fast Mag II",
+        "Extended Mag I",
+        "Extended Mag II",
+      ],
+      "Rear Grip": [
+        "Assault Grip",
+        "Commando Grip",
+        "CQB Grip",
+        "Ergonomic Grip",
+        "Quickdraw Grip",
+      ],
+      Stock: [
+        "Light Stock",
+        "Infiltrator Stock",
+        "No Stock",
+        "Agility Stock",
+        "Balanced Stock",
+      ],
+      Laser: [
+        "Fast Motion Laser",
+        "Steady Aim Laser",
+        "Strelok Laser",
+        "Tactical Laser",
+        "Target Laser",
+      ],
+      "Fire Mods": ["FMJ", "Overpressured", "Rapid Fire", "Recoil Springs"],
+    };
+
+    console.log("Attachment Options:", attachmentOptions); // Debugging
+
+    res.render("edit-loadout", {
+      loadout,
+      attachmentOptions,
+    });
   } catch (error) {
-    console.error("Error loading loadout:", error);
-    res.status(500).send("Error loading loadout");
+    console.error("Error fetching loadout:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 

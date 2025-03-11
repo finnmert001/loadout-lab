@@ -7,40 +7,75 @@ block content
     .container.create-loadout
         h1 Edit Loadout
 
-        form#editLoadoutForm(style='margin-top: 15px; background-color: #f5f5f5; max-width: 1570px;')
+        form#editLoadoutForm
             h2 Loadout Name
             input#loadoutName(type='text' name='loadoutName' required)
 
             // Primary Weapon Section
             .form-group.weapons
-                h2 Primary Weapon
-                .weapon-selection-container
+                h2 Primary
+                .weapon-selection-container-edit
                     .selected-weapon#primaryWeaponContainer
                         p#primaryWeaponName 
                         img#primaryWeaponImage(src='' alt='Selected Primary Weapon')
                     .attachments-container#primaryAttachments
-                        .attachments-grid
-                            each attachment in ["optic", "muzzle", "barrel", "underbarrel", "magazine", "reargrip", "stock", "laser", "firemods"]
+                        .attachments-grid(style='margin-left: 75px;')
+                            each category in Object.keys(attachmentOptions)
                                 select.attachment(name="primaryAttachments[]")
-                                    option(value='' disabled selected) #{attachment}
+                                    option(value='' disabled selected=(loadout.primaryAttachments && !loadout.primaryAttachments.includes(category))) #{category}
+
+                                    each option in attachmentOptions[category]
+                                        - var isSelected = loadout.primaryAttachments && loadout.primaryAttachments.includes(option);
+                                        option(value=option selected=isSelected) #{option}
 
                 button#openPrimaryWeaponModal(type='button' class='plus-button') +
 
+                .loadout-buttons
+                    button#removePrimaryWeaponButton(type='button', style='display:none') Remove Weapon
+
             // Secondary Weapon Section
             .form-group.weapons
-                h2 Secondary Weapon
-                .weapon-selection-container
+                h2 Secondary
+                .weapon-selection-container-edit
                     .selected-weapon#secondaryWeaponContainer
                         p#secondaryWeaponName 
                         img#secondaryWeaponImage(src='' alt='Selected Secondary Weapon')
                     .attachments-container#secondaryAttachments
-                        .attachments-grid
-                            each attachment in ["optic", "muzzle", "barrel", "underbarrel", "magazine", "reargrip", "stock", "laser", "firemods"]
-                                select.attachment(name="secondaryAttachments[]")
-                                    option(value='' disabled selected) #{attachment}
+                        .attachments-grid(style='margin-left: 75px;')
+                            each category in Object.keys(attachmentOptions)
+                                select.attachment(name="primaryAttachments[]")
+                                    option(value='' disabled selected=(loadout.primaryAttachments && !loadout.primaryAttachments.includes(category))) #{category}
+
+                                    each option in attachmentOptions[category]
+                                        - var isSelected = loadout.primaryAttachments && loadout.primaryAttachments.includes(option);
+                                        option(value=option selected=isSelected) #{option}
 
                 button#openSecondaryWeaponModal(type='button' class='plus-button') +
 
+                .loadout-buttons
+                    button#removeSecondaryWeaponButton(type='button', style='display:none') Remove Weapon
+
             button#updateLoadoutButton(type='submit') Update Loadout
+
+            // Modal for selecting weapon class and weapon (Shared)
+            .modal#weaponModal
+                .modal-content
+                    span.close#closeWeaponModal &times;
+                    h2(style='margin-top: 5px;') Select a Weapon
+                    
+                    select#weaponClassDropdown
+                        option(value='' disabled selected) Select a weapon class
+                        option(value='assault-rifle') Assault Rifle
+                        option(value='smg') SMG
+                        option(value='shotgun') Shotgun
+                        option(value='lmg') LMG
+                        option(value='marksman-rifle') Marksman Rifle
+                        option(value='sniper-rifle') Sniper Rifle
+                        option(value='pistol') Pistol
+                        option(value='special') Special
+
+                    .weapon-list#weaponList
+
+                    button#confirmWeaponSelection(type='button') Select Weapon
 
     script(src='/js/edit-loadout.js')

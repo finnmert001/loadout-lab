@@ -436,7 +436,7 @@ p.loadout-attachment {
     font-size: 16px;
     text-align: center;
     border: none;
-    border-radius: 8px;
+    border-radius: 4px;
     width: 40%;
     padding-top: 8px;
     padding-bottom: 8px;
@@ -710,7 +710,8 @@ button.btn:focus {
     outline: none;
 }
 
-button#saveLoadoutButton {
+button#saveLoadoutButton,
+button#updateLoadoutButton {
     width: 10%;
     padding: 10px;
     font-size: 16px;
@@ -723,7 +724,8 @@ button#saveLoadoutButton {
     transition: background-color 0.3s ease;
 }
 
-button#saveLoadoutButton:hover {
+button#saveLoadoutButton:hover,
+button#updateLoadoutButton:hover {
     background-color: #2980b9;
 }
 
@@ -1169,7 +1171,7 @@ p.sign-up-text a:hover {
       .delete-loadout {
         padding: 8px 15px;
         border: none;
-        border-radius: 8px;
+        border-radius: 4px;
         cursor: pointer;
         font-size: 14px;
       }
@@ -1279,7 +1281,7 @@ p.sign-up-text a:hover {
         color: white;
         padding: 10px 15px;
         border: none;
-        border-radius: 8px;
+        border-radius: 4px;
         cursor: pointer;
         text-decoration: none;
     }

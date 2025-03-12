@@ -12,7 +12,7 @@ const mockLoadouts = [
     primaryAttachments: [],
     secondaryAttachments: [],
     userId: "12345",
-    createdAt: "2024-06-12T15:30:00.000Z", //first
+    createdAt: "2024-06-12T15:30:00.000Z",
   },
   {
     _id: "2",
@@ -22,7 +22,7 @@ const mockLoadouts = [
     primaryAttachments: [],
     secondaryAttachments: [],
     userId: "67890",
-    createdAt: "2024-06-12T10:15:00.000Z", // second
+    createdAt: "2024-06-12T10:15:00.000Z",
   },
   {
     _id: "3",
@@ -32,7 +32,7 @@ const mockLoadouts = [
     primaryAttachments: [],
     secondaryAttachments: [],
     userId: "67c716644ac1175d00008199",
-    createdAt: "2024-06-12T06:15:00.000Z", //fourth
+    createdAt: "2024-06-12T06:15:00.000Z",
   },
   {
     _id: "4",
@@ -54,7 +54,7 @@ const mockLoadouts = [
       "Extended Mag II",
     ],
     userId: "67c716644ac1175d00008199",
-    createdAt: "2024-06-12T08:15:00.000Z", //third
+    createdAt: "2024-06-12T08:15:00.000Z",
   },
 ];
 
@@ -149,8 +149,8 @@ const getLoadoutsByUserId = async (userId) => {
   if (USE_MOCK_DATA) {
     console.log("⚠️ Using mock loadouts for user:", userId);
     return mockLoadouts
-      .filter((loadout) => loadout.userId === userId) // ✅ Only return loadouts for the user
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // ✅ Sort newest first
+      .filter((loadout) => loadout.userId === userId)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
 
   try {

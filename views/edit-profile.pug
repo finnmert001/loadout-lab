@@ -61,7 +61,7 @@ block content
         .then(data => {
           if (data.success) {
             alert("Your account has been deleted.");
-            window.location.href = "/login"; // Redirect to login page after deletion
+            window.location.href = "/login";
           } else {
             alert("Error: " + data.message);
           }

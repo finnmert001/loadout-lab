@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const secondaryWeaponName = document.getElementById("secondaryWeaponName");
   const secondaryAttachments = document.getElementById("secondaryAttachments");
 
-  const updateLoadoutButton = document.getElementById("updateLoadoutButton");
   const weaponModal = document.getElementById("weaponModal");
   const closeWeaponModal = document.getElementById("closeWeaponModal");
   const weaponClassDropdown = document.getElementById("weaponClassDropdown");
@@ -46,7 +45,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let selectedPrimaryClass = "";
   let selectedSecondaryClass = "";
 
-  // Weapon restrictions
   const restrictedWeaponTypes = [
     "assault-rifle",
     "smg",
@@ -380,7 +378,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         (select) => select.value !== ""
       ).length;
 
-      // Disable empty dropdowns if the limit is reached
       attachmentDropdowns.forEach((select) => {
         if (selectedCount >= limit && select.value === "") {
           select.disabled = true;
@@ -390,10 +387,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    // Apply the limit immediately on load
     updateDisabledState();
 
-    // Reapply limit when an attachment is selected
     attachmentDropdowns.forEach((dropdown) => {
       dropdown.addEventListener("change", updateDisabledState);
     });
@@ -422,7 +417,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Function to remove the primary weapon
   removePrimaryWeaponButton.addEventListener("click", () => {
     primaryWeaponImage.src = "";
     primaryWeaponName.textContent = "";
@@ -433,7 +427,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     primaryAttachments.style.display = "none";
   });
 
-  // Function to remove the secondary weapon
   removeSecondaryWeaponButton.addEventListener("click", () => {
     secondaryWeaponImage.src = "";
     secondaryWeaponName.textContent = "";

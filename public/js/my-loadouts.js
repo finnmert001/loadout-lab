@@ -9,8 +9,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       throw new Error(loadouts.error || "Failed to load loadouts.");
     }
 
-    console.log("🔍 Loadouts API Response:", loadouts);
-
     if (loadouts.length === 0) {
       loadoutsContainer.innerHTML = `<p>No loadouts found. Create one using the button below!</p>`;
       return;
@@ -19,11 +17,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadoutsContainer.innerHTML = "";
 
     loadouts.forEach((loadout) => {
-      // Ensure `primaryWeapon` exists and has `name` and `image`
       const primaryWeapon = loadout.primaryWeapon?.name || "Unknown Primary";
       const primaryWeaponImage = loadout.primaryWeapon?.image;
 
-      // Ensure `secondaryWeapon` exists and has `name` and `image`
       const secondaryWeapon =
         loadout.secondaryWeapon?.name || "Unknown Secondary";
       const secondaryWeaponImage = loadout.secondaryWeapon?.image;
@@ -55,7 +51,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       loadoutsContainer.appendChild(loadoutElement);
     });
 
-    // Attach event listeners to buttons
     document.querySelectorAll(".view-loadout").forEach((button) => {
       button.addEventListener("click", (event) => {
         const loadoutId = event.target.dataset.id;

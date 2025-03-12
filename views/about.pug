@@ -1,0 +1,29 @@
+extends layouts/layout
+
+block title
+    title Loadout Lab - About
+
+block content
+    .container.home-page
+        h1 About Us
+
+        form(action='/index' style='margin-top: 40px; background-color: #f5f5f5; text-align: left; padding: 20px;')
+            p We're passionate Warzone players just like you, dedicated to bringing clarity and efficiency to your gaming experience. This site is designed to help you stay ahead of the competition by identifying and exploring the most effective meta weapons, creating powerful loadouts, and sharing your favorite builds with the Warzone community.
+            h2 Here, you can:
+            ul
+            li
+                strong Discover the Meta:
+                |  Stay updated with the latest meta weapons dominating the battlefield, thoroughly analysed and frequently refreshed.
+            br
+            li
+                strong Build and Customise:
+                |  Effortlessly create and optimise your loadouts, fine-tuning every attachment to suit your playstyle.
+            br
+            li
+                strong Explore Community Loadouts:
+                |  Browse through a curated collection of loadouts shared by fellow players, offering fresh ideas and powerful strategies.
+            p Our mission is simple: Equip every Warzone player with the insights and tools they need to dominate Verdansk, Caldera, and beyond.
+            p Jump in, find your edge, and share your expertise with the community!
+
+            .submit-button
+                button.send(type='submit' style='width: 10%;') Return to Home

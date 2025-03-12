@@ -11,7 +11,7 @@ import {
   getLoadoutsByUserId,
   saveLoadout,
   updateLoadout,
-} from "./model/database.js"; // Import loadout database functions
+} from "./model/database.js";
 import loginAPI from "./model/login.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,7 +24,7 @@ const port = process.env.PORT || 3000;
 app.set("view engine", "pug");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors()); // Allow frontend requests
+app.use(cors());
 app.use(express.static("public"));
 
 app.use(
@@ -32,7 +32,7 @@ app.use(
     secret: "asecretkey",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, // Change to true if using HTTPS
+    cookie: { secure: true }, // Change to true if using HTTPS
   })
 );
 
@@ -61,16 +61,32 @@ app.post("/sign-up", signUpUser);
 // Edit profile
 app.post("/edit-profile/:id", updateProfile);
 
+app.get("/about", (req, res) => {
+  res.render("about");
+});
+
+app.get("/contact", (req, res) => {
+  res.render("contact");
+});
+
+app.get("/terms", (req, res) => {
+  res.render("terms");
+});
+
+app.get("/privacy", (req, res) => {
+  res.render("privacy");
+});
+
 app.get("/explore", (req, res) => {
-  res.render("explore"); // Render the explore.pug template
+  res.render("explore");
 });
 
 app.get("/my-loadouts", (req, res) => {
-  res.render("my-loadouts"); // Render the explore.pug template
+  res.render("my-loadouts");
 });
 
 app.get("/create-loadout", (req, res) => {
-  res.render("create-loadout"); // Render the explore.pug template
+  res.render("create-loadout");
 });
 
 // Logout
@@ -101,7 +117,6 @@ app.get("/check-username", async (req, res) => {
 
 // Delete user
 app.delete("/delete-account", async (req, res) => {
-  // Ensure the user is logged in
   if (!req.session.user) {
     return res
       .status(401)
@@ -111,7 +126,6 @@ app.delete("/delete-account", async (req, res) => {
   try {
     const userId = req.session.user._id;
 
-    // Fetch the user using the userId from session
     const user = await loginAPI.findUserById(userId);
 
     if (!user) {
@@ -120,10 +134,8 @@ app.delete("/delete-account", async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    // Delete the user account (this can be a DB delete action)
     await loginAPI.deleteUserById(userId);
 
-    // Destroy the session after successful deletion
     req.session.destroy((err) => {
       if (err) {
         return res
@@ -286,7 +298,7 @@ const attachmentNames = {
   "recoil-springs": "Recoil Springs",
 };
 
-// Get loadout by ID for viewing explore page loadout
+// Get loadout by ID (for Explore page)
 app.get("/explore-loadout/:id", async (req, res) => {
   const loadoutId = req.params.id;
 
@@ -364,7 +376,6 @@ app.get("/edit-loadout/:id", async (req, res) => {
       (attachment) => attachmentNames[attachment] || attachment
     );
 
-    // Define attachment categories and options
     const attachmentOptions = {
       Optic: [
         "Accu-Spot Reflex",
@@ -462,7 +473,6 @@ export async function loginUser(req, res) {
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (passwordMatch) {
-        // Store user data in the session
         req.session.user = {
           _id: user._id,
           username: user.username,
@@ -471,7 +481,7 @@ export async function loginUser(req, res) {
           lastName: user.lastName,
         };
 
-        return res.redirect("/index"); // Redirect to profile page after successful login
+        return res.redirect("/index");
       } else {
         renderLoginWithError(res, "Incorrect Username or Password", {
           hideNavbar: true,
@@ -533,16 +543,15 @@ export async function signUpUser(req, res) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new user with only the username and password
     const newUser = {
       username,
       password: hashedPassword,
-      firstName: "", // Leave first name empty for now
-      lastName: "", // Leave last name empty for now
-      email: "", // Leave email empty for now
+      firstName: "",
+      lastName: "",
+      email: "",
     };
 
-    await loginAPI.createUser(newUser); // Send the new user data to RestDB
+    await loginAPI.createUser(newUser);
     res.redirect("/login");
   } catch (error) {
     renderSignUpWithError(res, "An error occurred during registration");
@@ -550,10 +559,10 @@ export async function signUpUser(req, res) {
 }
 
 export async function updateProfile(req, res) {
-  const userId = req.session.user._id; // Use _id from session or get it from DB if necessary
+  const userId = req.session.user._id;
 
   if (!req.session.user) {
-    return res.redirect("/login"); // Ensure user is logged in
+    return res.redirect("/login");
   }
 
   const { username, firstName, lastName, email } = req.body;
@@ -569,22 +578,19 @@ export async function updateProfile(req, res) {
 
   const updatedProfileData = {
     username: username,
-    firstName: firstName, // Ensure it's a string
-    lastName: lastName, // Ensure it's a string
+    firstName: firstName,
+    lastName: lastName,
     email: email,
   };
 
   try {
-    // Use userId in the update API call
-    await loginAPI.updateUserById(userId, updatedProfileData); // Use _id for RestDB update
+    await loginAPI.updateUserById(userId, updatedProfileData);
 
-    // After updating in DB, also update session data
     req.session.user.username = username;
     req.session.user.firstName = firstName;
     req.session.user.lastName = lastName;
     req.session.user.email = email;
 
-    // Redirect to profile page with updated session data
     res.redirect("/profile");
   } catch (error) {
     handleProfileError(res, error, "Error updating profile");
@@ -677,15 +683,14 @@ export function handleProfileError(res, error, message) {
 }
 
 export function renderEditProfileWithError(res, userId, errorMessage) {
-  // Fetch the user's data based on userId to populate the form
   loginAPI
     .findUserById(userId)
     .then((user) => {
-      res.render("edit-profile", { error: errorMessage, user }); // Pass 'user' to the template
+      res.render("edit-profile", { error: errorMessage, user });
     })
     .catch((err) => {
       console.error("Error fetching user:", err);
-      res.redirect("/profile"); // Redirect to profile in case of error fetching user
+      res.redirect("/profile");
     });
 }
 

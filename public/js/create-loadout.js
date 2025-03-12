@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let selectedPrimaryClass = "";
   let selectedSecondaryClass = "";
 
-  // Weapon restrictions
   const restrictedWeaponTypes = [
     "assault-rifle",
     "smg",

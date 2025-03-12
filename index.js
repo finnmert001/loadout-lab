@@ -32,7 +32,7 @@ app.use(
     secret: "asecretkey",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true }, // Change to true if using HTTPS
+    cookie: { secure: false }, // Change to true if using HTTPS
   })
 );
 

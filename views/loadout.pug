@@ -31,5 +31,6 @@ block content
                     p No attachments selected.
 
         .button-container-view
-            a.edit-button-view(href=`/edit-loadout/${loadout._id}`) Edit Loadout
+            if user && user.id === loadout.userId
+                a.edit-button-view(href=`/edit-loadout/${loadout._id}`) Edit Loadout
             button.back-button-view(onclick="history.back()") Back

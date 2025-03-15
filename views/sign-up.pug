@@ -7,42 +7,28 @@ block content
     .container(style='margin-bottom: 112px;')
         img(src='/images/LoadoutLabLogo.svg', alt='Site Logo', class='logo')
         h2 User Registration
-        form(method='POST' action='/sign-up' id='signup-form')
+        form(id='signup-form')
             .form-group
                 h4 Username:
                 input(type='text' class='usernameInput' id='username' name='username' required)
                 br
-                if error
-                    p#password-error= error
+                p#username-error.error-message(style='display: none; color: red;')
 
             .form-group
                 h4(style='padding-top: 14px') Password:
-                input(type='password' id='password' name='password' style='margin-bottom: 0px;' required)
+                input(type='password' id='password' name='password' required)
+                p#password-error.error-message(style='display: none; color: red;')
+                p#confirm-password-error.error-message(style='display: none; color: red;')
 
             .form-group
                 h4(style='padding-top: 14px') Confirm Password:
-                input(type='password' id='confirmPassword' name='confirmPassword' style='margin-bottom: 0px;' required)
-                
-            p#capsLockWarning(style='display: none; margin-top: -10px;') Warning: Caps Lock is on!
+                input(type='password' id='confirmPassword' name='confirmPassword' required)
+
+            p#capsLockWarning(style='margin-top: -10px;') Warning: Caps Lock is on!
 
             button.btn(type='submit') Register
 
             p.sign-up-text
                 a(href='/login') Back to Login
 
-        script.
-            document.addEventListener('DOMContentLoaded', function() {
-                const form = document.getElementById('signup-form');
-                const passwordInput = document.getElementById('password');
-                const confirmPasswordInput = document.getElementById('confirmPassword');
-                const capsLockWarning = document.getElementById('capsLockWarning');
-
-                // Caps Lock Warning
-                passwordInput.addEventListener('keyup', function(event) {
-                    capsLockWarning.style.display = event.getModifierState('CapsLock') ? 'block' : 'none';
-                });
-
-                confirmPasswordInput.addEventListener('keyup', function(event) {
-                    capsLockWarning.style.display = event.getModifierState('CapsLock') ? 'block' : 'none';
-                });
-            });
+    script(src='/js/signup.js')

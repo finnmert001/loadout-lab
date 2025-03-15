@@ -11,9 +11,10 @@ block content
             .form-group
                 h4 Username:
                 input(type='text' class='usernameInput' id='username' name='username' required)
-
+                br
+            
             if error
-                p.error= error
+                p#login-error.error-message(style='display: block; margin-top: -10px;')= error
       
             .form-group
                 h4(style='padding-top: 4px') Password:
@@ -27,14 +28,4 @@ block content
                 | Don't have an account? 
                 a(href='/sign-up') Sign Up here
 
-        script.
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('password').addEventListener('keyup', function(event) {
-                    const capsLockWarning = document.getElementById('capsLockWarning');
-                    if (event.getModifierState('CapsLock')) {
-                    capsLockWarning.style.display = 'block';
-                    } else {
-                        capsLockWarning.style.display = 'none';
-                    }
-                });
-            });
+        script(src='/js/login.js')

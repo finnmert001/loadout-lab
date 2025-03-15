@@ -7,20 +7,28 @@ block content
   .container
     h1 My Profile
     
-    if user
-      .profile-info
-        p
-          strong Username: 
-          | #{user.username}
-        p
-          strong First Name: 
-          | #{user.firstName || "Your account doesn't have a first name yet."}
-        p
-          strong Last Name: 
-          | #{user.lastName || "Your account doesn't have a last name yet."}
-        p
-          strong Email: 
-          | #{user.email || "Your account doesn't have an email yet."}
+    .profile-info
+      p
+        strong Username:
+        |  
+        span#username N/A
 
-        .form-group
+      p
+        strong First Name:
+        |  
+        span#firstName Your account doesn't have a first name yet.
+
+      p
+        strong Last Name:
+        |  
+        span#lastName Your account doesn't have a last name yet.
+
+      p
+        strong Email:
+        |  
+        span#email Your account doesn't have an email yet.
+
+      .form-group
         button.btn(type='button', onclick="window.location.href='/edit-profile'") Edit Profile
+      
+  script(src='/js/profile.js')

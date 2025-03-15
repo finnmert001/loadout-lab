@@ -1,8 +1,26 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const loadoutsContainer = document.getElementById("loadoutsContainer");
 
+  // Retrieve JWT token from cookies
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
+
+  if (!token) {
+    loadoutsContainer.innerHTML = `<p>You must be logged in to view your loadouts.</p>`;
+    return;
+  }
+
   try {
-    const response = await fetch("/api/my-loadouts");
+    const response = await fetch("/api/my-loadouts", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
     const loadouts = await response.json();
 
     if (!response.ok) {
@@ -18,11 +36,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     loadouts.forEach((loadout) => {
       const primaryWeapon = loadout.primaryWeapon?.name || "Unknown Primary";
-      const primaryWeaponImage = loadout.primaryWeapon?.image;
+      const primaryWeaponImage =
+        loadout.primaryWeapon?.image || "/images/default-primary.png";
 
       const secondaryWeapon =
         loadout.secondaryWeapon?.name || "Unknown Secondary";
-      const secondaryWeaponImage = loadout.secondaryWeapon?.image;
+      const secondaryWeaponImage =
+        loadout.secondaryWeapon?.image || "/images/default-secondary.png";
 
       const loadoutElement = document.createElement("div");
       loadoutElement.classList.add("loadout-item");
@@ -51,6 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       loadoutsContainer.appendChild(loadoutElement);
     });
 
+    // View Loadout button
     document.querySelectorAll(".view-loadout").forEach((button) => {
       button.addEventListener("click", (event) => {
         const loadoutId = event.target.dataset.id;
@@ -58,12 +79,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
 
+    // Delete Loadout button
     document.querySelectorAll(".delete-loadout").forEach((button) => {
       button.addEventListener("click", async (event) => {
         const loadoutId = event.target.dataset.id;
         if (confirm("Are you sure you want to delete this loadout?")) {
-          await fetch(`/api/loadouts/${loadoutId}`, { method: "DELETE" });
-          window.location.reload();
+          try {
+            const deleteResponse = await fetch(`/api/loadouts/${loadoutId}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            });
+
+            const deleteData = await deleteResponse.json();
+
+            if (!deleteResponse.ok) {
+              throw new Error(deleteData.error || "Failed to delete loadout.");
+            }
+
+            window.location.reload();
+          } catch (error) {
+            alert("Error deleting loadout: " + error.message);
+          }
         }
       });
     });

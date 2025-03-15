@@ -1,9 +1,12 @@
 import bcrypt from "bcryptjs";
+import cookieParser from "cookie-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
-import session from "express-session";
+import jwt from "jsonwebtoken";
 import path from "path";
 import { fileURLToPath } from "url";
+import { authenticateJWT } from "./middleware/auth-jwt.js";
 import {
   deleteLoadout,
   getLoadoutById,
@@ -13,296 +16,429 @@ import {
   updateLoadout,
 } from "./model/database.js";
 import loginAPI from "./model/login.js";
+import { attachmentNames } from "./utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+const router = express.Router();
 const port = process.env.PORT || 3000;
+
+dotenv.config();
 
 // Middleware Setup
 app.set("view engine", "pug");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 app.use(express.static("public"));
-
-app.use(
-  session({
-    secret: "asecretkey",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }, // Change to true if using HTTPS
-  })
-);
-
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 // ------------------ AUTH ROUTES ------------------
 
-// Redirect to login if not authenticated
+// Authentication & User Management
 app.get("/", redirectToLogin);
-
-// Render index
 app.get("/index", renderIndex);
-
-// Render login page
 app.get("/login", renderLogin);
-
-// Handle login
 app.post("/login", loginUser);
-
-// Render sign-up page
 app.get("/sign-up", renderSignUp);
-
-// Handle sign-up
 app.post("/sign-up", signUpUser);
+app.get("/logout", logoutUser);
 
-// Edit profile
-app.post("/edit-profile/:id", updateProfile);
+// User Profile & Settings
+app.get("/profile", authenticateJWT, renderProfile);
+app.get("/api/profile", authenticateJWT, getUserProfile);
+app.get("/edit-profile", authenticateJWT, renderEditProfile);
+app.put("/api/edit-profile", authenticateJWT, updateUserProfile);
+app.post("/edit-profile/:id", authenticateJWT, updateProfile);
+app.get("/update-password", authenticateJWT, renderUpdatePassword);
+app.post("/update-password", authenticateJWT, updatePassword);
+app.delete("/delete-account", authenticateJWT, deleteUser);
 
-app.get("/about", (req, res) => {
-  res.render("about");
-});
-
-app.get("/contact", (req, res) => {
-  res.render("contact");
-});
-
-app.get("/terms", (req, res) => {
-  res.render("terms");
-});
-
-app.get("/privacy", (req, res) => {
-  res.render("privacy");
-});
-
-app.get("/explore", (req, res) => {
-  res.render("explore");
-});
-
-app.get("/my-loadouts", (req, res) => {
-  res.render("my-loadouts");
-});
-
-app.get("/create-loadout", (req, res) => {
-  res.render("create-loadout");
-});
-
-// Logout
-app.get("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) return res.status(500).send("Error logging out");
-    res.redirect("/login");
-  });
-});
-
-// Profile and password management
-app.get("/profile", ensureAuthenticated, renderProfile);
-app.get("/edit-profile", ensureAuthenticated, renderEditProfile);
-app.get("/update-password", ensureAuthenticated, renderUpdatePassword);
-app.post("/update-password", ensureAuthenticated, updatePassword);
-
-// Check username availability (AJAX)
-app.get("/check-username", async (req, res) => {
-  const { username } = req.query;
-  try {
-    const existingUser = await loginAPI.findUserByUsername(username);
-    res.json({ exists: !!existingUser });
-  } catch (error) {
-    console.error("Error checking username:", error);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-// Delete user
-app.delete("/delete-account", async (req, res) => {
-  if (!req.session.user) {
-    return res
-      .status(401)
-      .json({ success: false, message: "User not logged in" });
-  }
-
-  try {
-    const userId = req.session.user._id;
-
-    const user = await loginAPI.findUserById(userId);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
-
-    await loginAPI.deleteUserById(userId);
-
-    req.session.destroy((err) => {
-      if (err) {
-        return res
-          .status(500)
-          .json({ success: false, message: "Error ending session" });
-      }
-
-      res.json({ success: true, message: "Account deleted successfully" });
-    });
-  } catch (error) {
-    console.error("Error deleting account:", error);
-    res.status(500).json({ success: false, message: "Error deleting account" });
-  }
-});
+// Static Pages
+app.get("/about", (req, res) => res.render("about"));
+app.get("/contact", (req, res) => res.render("contact"));
+app.get("/terms", (req, res) => res.render("terms"));
+app.get("/privacy", (req, res) => res.render("privacy"));
+app.get("/explore", (req, res) => res.render("explore"));
+app.get("/my-loadouts", authenticateJWT, (req, res) =>
+  res.render("my-loadouts")
+);
+app.get("/create-loadout", authenticateJWT, (req, res) =>
+  res.render("create-loadout")
+);
 
 // ------------------ LOADOUT API ROUTES ------------------
 
-// Create a new loadout
-app.post("/api/loadouts", async (req, res) => {
-  if (!req.session || !req.session.user) {
-    return res
-      .status(401)
-      .json({ error: "Unauthorized: Please log in to save a loadout." });
-  }
+app.post("/api/loadouts", authenticateJWT, createLoadout);
+app.get("/api/loadouts", getAllLoadouts);
+app.get("/api/my-loadouts", authenticateJWT, getUserLoadouts);
+// app.get("/api/loadouts/:id", getLoadout);
+app.get("/loadout/:id", authenticateJWT, renderLoadoutPage);
+app.get("/explore-loadout/:id", authenticateJWT, renderExploreLoadoutPage);
+app.put("/api/loadouts/:id", authenticateJWT, updateLoadoutData);
+app.delete("/api/loadouts/:id", authenticateJWT, removeLoadout);
 
-  const userId = req.session.user._id;
+// ------------------ ROUTE HANDLER FUNCTIONS ------------------
+
+// Redirect to login page
+function redirectToLogin(req, res) {
+  res.redirect("/login");
+}
+
+// Render Pages
+function renderIndex(req, res) {
+  res.render("index");
+}
+function renderLogin(req, res) {
+  res.render("login", { hideNavbar: true });
+}
+function renderSignUp(req, res) {
+  res.render("sign-up", { hideNavbar: true });
+}
+function renderProfile(req, res) {
+  res.render("profile", { user: req.user });
+}
+function renderEditProfile(req, res) {
+  res.render("edit-profile", { user: req.user });
+}
+function renderUpdatePassword(req, res) {
+  res.render("update-password", { user: req.user });
+}
+
+// ------------------ AUTH FUNCTIONS ------------------
+
+// Handle user login
+export async function loginUser(req, res) {
+  const { username, password } = req.body;
 
   try {
-    const loadoutData = {
-      ...req.body,
-      userId: userId,
+    const user = await loginAPI.findUserByUsername(username);
+    if (!user) {
+      return res.render("login", { error: "Incorrect username or password" });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.render("login", { error: "Incorrect username or password" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, username: user.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    // Store token in cookies
+    res.cookie("token", token, {
+      httpOnly: false,
+      secure: true,
+      sameSite: "Strict",
+    });
+
+    // Redirect after successful login
+    res.redirect("/index");
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.render("login", { error: "An error occurred during login." });
+  }
+}
+
+// Handle user signup
+export async function signUpUser(req, res) {
+  const { username, password, confirmPassword } = req.body;
+
+  if (!username || username.length < 4 || username.length > 20) {
+    return sendSignUpError(req, res, "Username must be 4-20 characters long.");
+  }
+
+  if (password.length < 8) {
+    return sendSignUpError(
+      req,
+      res,
+      "Password must be at least 8 characters long."
+    );
+  }
+
+  if (password !== confirmPassword) {
+    return sendSignUpError(req, res, "Passwords do not match.");
+  }
+
+  try {
+    // Check if username already exists
+    const existingUser = await loginAPI.findUserByUsername(username);
+    if (existingUser) {
+      return sendSignUpError(req, res, "Username is already taken.");
+    }
+
+    // Hash password and create new user
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = {
+      username,
+      password: hashedPassword,
+      firstName: "",
+      lastName: "",
+      email: "",
     };
 
-    const newLoadout = await saveLoadout(loadoutData);
+    await loginAPI.createUser(newUser);
+
+    if (req.headers["content-type"] === "application/json") {
+      return res.json({ success: true });
+    }
+
+    res.redirect("/login");
+  } catch (error) {
+    console.error("Error during sign-up:", error);
+    return sendSignUpError(req, res, "An error occurred during sign-up.");
+  }
+}
+
+// Helper function for handling errors
+function sendSignUpError(req, res, message) {
+  if (req.headers["content-type"] === "application/json") {
+    return res.json({ success: false, error: message });
+  } else {
+    return res.render("sign-up", { error: message });
+  }
+}
+
+// Logout user
+function logoutUser(req, res) {
+  res.clearCookie("token");
+  res.redirect("/login");
+}
+
+// ------------------ USER MANAGEMENT FUNCTIONS ------------------
+
+// Function to fetch user profile
+async function getUserProfile(req, res) {
+  try {
+    const userId = req.user.id;
+    const user = await loginAPI.findUserById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    });
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+// Function to update user profile
+async function updateUserProfile(req, res) {
+  try {
+    const userId = req.user.id;
+    const { username, firstName, lastName, email } = req.body;
+
+    // Check if username is already taken
+    const existingUser = await loginAPI.findUserByUsername(username);
+    if (existingUser && existingUser._id.toString() !== userId) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Username is already taken." });
+    }
+
+    // Update user data
+    await loginAPI.updateUserById(userId, {
+      username,
+      firstName,
+      lastName,
+      email,
+    });
+
+    res.json({ success: true, message: "Profile updated successfully!" });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ success: false, error: "Error updating profile." });
+  }
+}
+
+// Update user profile
+async function updateProfile(req, res) {
+  const userId = req.user.id;
+  const { username, firstName, lastName, email } = req.body;
+
+  try {
+    await loginAPI.updateUserById(userId, {
+      username,
+      firstName,
+      lastName,
+      email,
+    });
+    res.redirect("/profile");
+  } catch (error) {
+    res.status(500).json({ error: "Error updating profile" });
+  }
+}
+
+// Update password
+async function updatePassword(req, res) {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    // Get user from database
+    const user = await loginAPI.findUserById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found." });
+    }
+
+    // Validate current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res
+        .status(401)
+        .json({ success: false, error: "Incorrect current password." });
+    }
+
+    // Validate new password
+    if (newPassword !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Passwords do not match." });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        success: false,
+        error: "Password must be at least 8 characters long.",
+      });
+    }
+
+    if (currentPassword === newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: "New password must be different from the current password.",
+      });
+    }
+
+    // Hash and update password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await loginAPI.updateUserById(req.user.id, { password: hashedPassword });
+
+    // Clear JWT token (force re-login)
+    res.clearCookie("token");
+
+    res.json({
+      success: true,
+      message: "Password updated successfully. Please log in again.",
+    });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.status(500).json({ success: false, error: "Error updating password." });
+  }
+}
+
+// Delete user account
+async function deleteUser(req, res) {
+  try {
+    await loginAPI.deleteUserById(req.user.id);
+
+    // Clear JWT token from cookies
+    res.clearCookie("token");
+
+    // Respond with JSON success message
+    res.json({ success: true, message: "Account deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    res.status(500).json({ error: "Account deletion failed" });
+  }
+}
+
+// ------------------ LOADOUT FUNCTIONS ------------------
+
+async function createLoadout(req, res) {
+  try {
+    const userId = req.user.id; // Extract user ID from JWT
+    const newLoadout = await saveLoadout({ ...req.body, userId });
+
     res.status(201).json(newLoadout);
   } catch (error) {
+    console.error("Error creating loadout:", error);
     res.status(500).json({ error: "Failed to create loadout" });
   }
-});
+}
 
-// Get all loadouts
-app.get("/api/loadouts", async (req, res) => {
+async function getAllLoadouts(req, res) {
   try {
     const loadouts = await getLoadouts();
-    res.status(200).json(loadouts);
+    res.json(loadouts);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch loadouts" });
   }
-});
+}
 
-// Get loadouts for the logged-in user (for My Loadouts page)
-app.get("/api/my-loadouts", async (req, res) => {
+// Function to get user's loadouts
+async function getUserLoadouts(req, res) {
   try {
-    if (!req.session.user || !req.session.user._id) {
-      return res.status(401).json({ error: "Unauthorized. Please log in." });
-    }
-
-    const userId = req.session.user._id;
-
+    const userId = req.user.id;
     const loadouts = await getLoadoutsByUserId(userId);
 
-    res.status(200).json(loadouts);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch user loadouts." });
-  }
-});
-
-// Get a single loadout by ID
-app.get("/api/loadouts/:id", async (req, res) => {
-  try {
-    const loadout = await getLoadoutById(req.params.id);
-    if (!loadout) {
-      return res.status(404).json({ error: "Loadout not found" });
+    if (!loadouts || loadouts.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, error: "No loadouts found." });
     }
-    res.status(200).json(loadout);
+
+    res.json(loadouts);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch loadout" });
+    console.error("Error fetching loadouts:", error);
+    res.status(500).json({ success: false, error: "Error fetching loadouts." });
   }
-});
+}
 
-// Update a loadout
-app.put("/api/loadouts/:id", async (req, res) => {
+async function renderLoadoutPage(req, res) {
   try {
-    const updatedLoadout = await updateLoadout(req.params.id, req.body);
-    res.status(200).json(updatedLoadout);
+    const loadoutId = req.params.id;
+    const loadout = await getLoadoutById(loadoutId);
+
+    if (!loadout) {
+      return res.status(404).send("Loadout not found");
+    }
+
+    // Convert attachment keys into readable names
+    const formatAttachments = (attachments) =>
+      attachments.map((att) => attachmentNames[att] || att);
+
+    res.render("loadout", {
+      user: req.user,
+      loadout,
+      primaryAttachmentsList: formatAttachments(
+        loadout.primaryAttachments || []
+      ),
+      secondaryAttachmentsList: formatAttachments(
+        loadout.secondaryAttachments || []
+      ),
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to update loadout" });
+    console.error("Error rendering loadout page:", error);
+    res.status(500).send("Internal Server Error");
   }
-});
+}
 
-// Delete a loadout
-app.delete("/api/loadouts/:id", async (req, res) => {
+// async function getLoadout(req, res) {
+//   try {
+//     const loadout = await getLoadoutById(req.params.id);
+//     res.json(loadout || { error: "Loadout not found" });
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to fetch loadout" });
+//   }
+// }
+
+async function renderExploreLoadoutPage(req, res) {
   try {
-    await deleteLoadout(req.params.id);
-    res.status(200).json({ message: "Loadout deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete loadout" });
-  }
-});
-
-const attachmentNames = {
-  // Optic
-  "accu-spot-reflex": "Accu-Spot Reflex",
-  "kepler-microflex": "Kepler Microflex",
-  "otero-micro-dot": "Otero Micro Dot",
-  "jason-armory-2x": "Jason Armory 2x",
-  "willis-3x": "Willis 3x",
-
-  // Muzzle
-  suppressor: "Suppressor",
-  compensator: "Compensator",
-  "ported-compensator": "Ported Compensator",
-  "muzzle-brake": "Muzzle Brake",
-
-  // Barrel
-  "chf-barrel": "CHF Barrel",
-  "long-barrel": "Long Barrel",
-  "gain-twist-barrel": "Gain-Twist Barrel",
-  "reinforced-barrel": "Reinforced Barrel",
-
-  // Underbarrel
-  "vertical-foregrip": "Vertical Foregrip",
-  "ranger-foregrip": "Ranger Foregrip",
-  "precision-foregrip": "Precision Foregrip",
-  "marksman-foregrip": "Marksman Foregrip",
-  "lightweight-foregrip": "Lightweight Foregrip",
-
-  // Magazine
-  "flip-mag": "Flip Mag",
-  "fast-mag-1": "Fast Mag I",
-  "fast-mag-2": "Fast Mag II",
-  "extended-mag-1": "Extended Mag I",
-  "extended-mag-2": "Extended Mag II",
-
-  // Rear Grip
-  "assault-grip": "Assault Grip",
-  "commando-grip": "Commando Grip",
-  "cqb-grip": "CQB Grip",
-  "ergonomic-grip": "Ergonomic Grip",
-  "quickdraw-grip": "Quickdraw Grip",
-
-  // Stock
-  "light-stock": "Light Stock",
-  "infiltrator-stock": "Infiltrator Stock",
-  "no-stock": "No Stock",
-  "agility-stock": "Agility Stock",
-  "balanced-stock": "Balanced Stock",
-
-  // Laser
-  "fast-motion-laser": "Fast Motion Laser",
-  "steady-aim-laser": "Steady Aim Laser",
-  "strelok-laser": "Strelok Laser",
-  "tactical-laser": "Tactical Laser",
-  "target-laser": "Target Laser",
-
-  // Fire Mods
-  fmj: "FMJ",
-  overpressured: "Overpressured",
-  "rapid-fire": "Rapid Fire",
-  "recoil-springs": "Recoil Springs",
-};
-
-// Get loadout by ID (for Explore page)
-app.get("/explore-loadout/:id", async (req, res) => {
-  const loadoutId = req.params.id;
-
-  try {
+    const loadoutId = req.params.id;
     const loadout = await getLoadoutById(loadoutId);
 
     if (!loadout) {
@@ -323,379 +459,72 @@ app.get("/explore-loadout/:id", async (req, res) => {
       ),
     });
   } catch (error) {
-    console.error("Error fetching loadout:", error);
+    console.error("Error fetching explore loadout:", error);
     res.status(500).send("Internal Server Error");
   }
-});
+}
 
-// Get loadout by ID for viewing
-app.get("/loadout/:id", async (req, res) => {
-  const loadoutId = req.params.id;
-
-  try {
-    const loadout = await getLoadoutById(loadoutId);
-
-    if (!loadout) {
-      return res.status(404).send("Loadout not found");
-    }
-
-    // Convert attachment keys into readable names
-    const formatAttachments = (attachments) =>
-      attachments.map((att) => attachmentNames[att] || att);
-
-    res.render("loadout", {
-      loadout,
-      primaryAttachmentsList: formatAttachments(
-        loadout.primaryAttachments || []
-      ),
-      secondaryAttachmentsList: formatAttachments(
-        loadout.secondaryAttachments || []
-      ),
-    });
-  } catch (error) {
-    console.error("Error fetching loadout:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-// Get loadout by ID for editing
-app.get("/edit-loadout/:id", async (req, res) => {
+async function updateLoadoutData(req, res) {
   try {
     const loadoutId = req.params.id;
+    const userId = req.user.id; // Get user ID from JWT
+
+    // Fetch the loadout
+    const existingLoadout = await getLoadoutById(loadoutId);
+    if (!existingLoadout) {
+      return res.status(404).json({ error: "Loadout not found" });
+    }
+
+    // Ensure only the owner can update
+    if (existingLoadout.userId.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized to edit this loadout" });
+    }
+
+    // Update loadout
+    const updatedLoadout = await updateLoadout(loadoutId, req.body);
+
+    res.json({
+      success: true,
+      message: "Loadout updated successfully",
+      updatedLoadout,
+    });
+  } catch (error) {
+    console.error("Error updating loadout:", error);
+    res.status(500).json({ error: "Failed to update loadout" });
+  }
+}
+
+async function removeLoadout(req, res) {
+  try {
+    const userId = req.user.id;
+    const loadoutId = req.params.id;
+
     const loadout = await getLoadoutById(loadoutId);
 
     if (!loadout) {
-      return res.status(404).send("Loadout not found");
+      return res
+        .status(404)
+        .json({ success: false, error: "Loadout not found." });
     }
 
-    const formattedPrimaryAttachments = loadout.primaryAttachments.map(
-      (attachment) => attachmentNames[attachment] || attachment
-    );
-
-    const formattedSecondaryAttachments = loadout.secondaryAttachments.map(
-      (attachment) => attachmentNames[attachment] || attachment
-    );
-
-    const attachmentOptions = {
-      Optic: [
-        "Accu-Spot Reflex",
-        "Kepler Microflex",
-        "Otero Micro Dot",
-        "Jason Armory 2x",
-        "Willis 3x",
-      ],
-      Muzzle: [
-        "Suppressor",
-        "Compensator",
-        "Ported Compensator",
-        "Muzzle Brake",
-      ],
-      Barrel: [
-        "CHF Barrel",
-        "Long Barrel",
-        "Gain-Twist Barrel",
-        "Reinforced Barrel",
-      ],
-      Underbarrel: [
-        "Vertical Foregrip",
-        "Ranger Foregrip",
-        "Precision Foregrip",
-        "Marksman Foregrip",
-        "Lightweight Foregrip",
-      ],
-      Magazine: [
-        "Flip Mag",
-        "Fast Mag I",
-        "Fast Mag II",
-        "Extended Mag I",
-        "Extended Mag II",
-      ],
-      "Rear Grip": [
-        "Assault Grip",
-        "Commando Grip",
-        "CQB Grip",
-        "Ergonomic Grip",
-        "Quickdraw Grip",
-      ],
-      Stock: [
-        "Light Stock",
-        "Infiltrator Stock",
-        "No Stock",
-        "Agility Stock",
-        "Balanced Stock",
-      ],
-      Laser: [
-        "Fast Motion Laser",
-        "Steady Aim Laser",
-        "Strelok Laser",
-        "Tactical Laser",
-        "Target Laser",
-      ],
-      "Fire Mods": ["FMJ", "Overpressured", "Rapid Fire", "Recoil Springs"],
-    };
-
-    res.render("edit-loadout", {
-      loadout: {
-        ...loadout,
-        primaryAttachments: formattedPrimaryAttachments,
-        secondaryAttachments: formattedSecondaryAttachments,
-      },
-      attachmentOptions,
-    });
-  } catch (error) {
-    console.error("Error fetching loadout:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-// ------------------ HELPER FUNCTIONS ------------------
-
-// Redirect to login if not authenticated
-export function redirectToLogin(req, res) {
-  res.redirect("/login");
-}
-
-export function renderIndex(req, res) {
-  res.render("index", { hideNavbar: false });
-}
-
-export function renderLogin(req, res) {
-  res.render("login", { hideNavbar: true });
-}
-
-export async function loginUser(req, res) {
-  const { username, password } = req.body;
-
-  try {
-    const user = await loginAPI.findUserByUsername(username);
-
-    if (user) {
-      const passwordMatch = await bcrypt.compare(password, user.password);
-
-      if (passwordMatch) {
-        req.session.user = {
-          _id: user._id,
-          username: user.username,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        };
-
-        return res.redirect("/index");
-      } else {
-        renderLoginWithError(res, "Incorrect Username or Password", {
-          hideNavbar: true,
-        });
-        console.log("Incorrect Password");
-      }
-    } else {
-      renderLoginWithError(res, "Incorrect Username or Password", {
-        hideNavbar: true,
+    if (loadout.userId.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        error: "Unauthorised to delete this loadout.",
       });
-      console.log("User not found");
-    }
-  } catch (error) {
-    renderLoginWithError(res, "An error occurred while authenticating", {
-      hideNavbar: true,
-    });
-    console.error("Error during login:", error);
-  }
-}
-
-export function renderSignUp(req, res) {
-  res.render("sign-up", { hideNavbar: true });
-}
-
-export async function signUpUser(req, res) {
-  const { username, password, confirmPassword } = req.body;
-
-  if (
-    !username ||
-    username.length < 4 ||
-    username.length > 20 ||
-    /[!@#$%^&*(),.?":{}|<>]/.test(username)
-  ) {
-    return renderSignUpWithError(
-      res,
-      "Username must be between 4 and 20 characters and should not contain symbols."
-    );
-  }
-
-  if (password.length < 8) {
-    return renderSignUpWithError(
-      res,
-      "Password must be at least 8 characters long"
-    );
-  }
-
-  if (password !== confirmPassword) {
-    return renderSignUpWithError(
-      res,
-      "Please ensure password and confirm password match."
-    );
-  }
-
-  try {
-    const existingUser = await loginAPI.findUserByUsername(username);
-    if (existingUser) {
-      return renderSignUpWithError(res, "Username is already taken.");
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    await deleteLoadout(loadoutId);
 
-    const newUser = {
-      username,
-      password: hashedPassword,
-      firstName: "",
-      lastName: "",
-      email: "",
-    };
-
-    await loginAPI.createUser(newUser);
-    res.redirect("/login");
+    res.json({ success: true, message: "Loadout deleted successfully!" });
   } catch (error) {
-    renderSignUpWithError(res, "An error occurred during registration");
+    console.error("Error deleting loadout:", error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to delete loadout." });
   }
-}
-
-export async function updateProfile(req, res) {
-  const userId = req.session.user._id;
-
-  if (!req.session.user) {
-    return res.redirect("/login");
-  }
-
-  const { username, firstName, lastName, email } = req.body;
-
-  const existingUser = await loginAPI.findUserByUsername(username);
-  if (existingUser && existingUser._id !== userId) {
-    return renderEditProfileWithError(
-      res,
-      userId,
-      "Username is already taken. Please choose another."
-    );
-  }
-
-  const updatedProfileData = {
-    username: username,
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-  };
-
-  try {
-    await loginAPI.updateUserById(userId, updatedProfileData);
-
-    req.session.user.username = username;
-    req.session.user.firstName = firstName;
-    req.session.user.lastName = lastName;
-    req.session.user.email = email;
-
-    res.redirect("/profile");
-  } catch (error) {
-    handleProfileError(res, error, "Error updating profile");
-  }
-}
-
-// Middleware to ensure user is authenticated
-function ensureAuthenticated(req, res, next) {
-  if (!req.session.user) return res.redirect("/login");
-  next();
-}
-
-// Render profile page
-function renderProfile(req, res) {
-  res.render("profile", { user: req.session.user });
-}
-
-// Render edit profile page
-function renderEditProfile(req, res) {
-  res.render("edit-profile", { user: req.session.user });
-}
-
-// Render update password page
-function renderUpdatePassword(req, res) {
-  res.render("update-password", { user: req.session.user });
-}
-
-// Handle password update
-async function updatePassword(req, res) {
-  const { currentPassword, newPassword, confirmPassword } = req.body;
-
-  if (!req.session.user) {
-    return res.render("update-password", {
-      errorMessage: "User not logged in",
-    });
-  }
-
-  const user = await loginAPI.findUserById(req.session.user._id);
-  if (!user)
-    return res.render("update-password", { errorMessage: "User not found" });
-
-  const isMatch = await bcrypt.compare(currentPassword, user.password);
-  if (!isMatch) {
-    return renderUpdatePasswordWithError(res, "Current password is incorrect.");
-  }
-
-  if (newPassword.length < 8) {
-    return renderUpdatePasswordWithError(
-      res,
-      "Password must be at least 8 characters long."
-    );
-  }
-
-  if (newPassword !== confirmPassword) {
-    return renderUpdatePasswordWithError(
-      res,
-      "Please ensure new and confirm password match."
-    );
-  }
-
-  if (currentPassword === newPassword) {
-    return renderUpdatePasswordWithError(
-      res,
-      "Your new password must be different from your current password."
-    );
-  }
-
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-  await loginAPI.updateUserById(req.session.user._id, {
-    password: hashedPassword,
-  });
-
-  res.redirect("/profile");
-}
-
-// ----------------- ERROR HANDLING -----------------
-
-// Error handling functions
-function renderLoginWithError(res, errorMessage, options = {}) {
-  res.render("login", { error: errorMessage, hideNavbar: true, ...options });
-}
-
-export function renderSignUpWithError(res, errorMessage, options = {}) {
-  res.render("sign-up", { error: errorMessage, hideNavbar: true, ...options });
-}
-
-export function handleProfileError(res, error, message) {
-  console.error(message + ":", error.message);
-  res.status(500).send(message);
-}
-
-export function renderEditProfileWithError(res, userId, errorMessage) {
-  loginAPI
-    .findUserById(userId)
-    .then((user) => {
-      res.render("edit-profile", { error: errorMessage, user });
-    })
-    .catch((err) => {
-      console.error("Error fetching user:", err);
-      res.redirect("/profile");
-    });
-}
-
-export function renderUpdatePasswordWithError(res, errorMessage) {
-  res.render("update-password", { error: errorMessage });
 }
 
 // ------------------ START SERVER ------------------

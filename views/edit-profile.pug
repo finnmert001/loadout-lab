@@ -4,75 +4,46 @@ block title
   title Loadout Lab - Edit Profile
 
 block content
-    .container.edit-profile
-        h1 Edit Profile
-        form(style='margin-top: 40px;' method='POST' action=`/edit-profile/${user._id}`)
-            .form-group
-                h4 Username:
-                input(type='text' id='username' name='username' value=user.username)
-                br
-                if error
-                  p#password-error= error
+  .container.edit-profile
+    h1 Edit Profile
 
-            .form-group
-                h4 First Name:
-                input(type='text' id='firstName' name='firstName' value=user.firstName placeholder="Enter your first name")
+    form(style='margin-top: 40px;' id="editProfileForm")
+      .form-group
+        h4 Username:
+        input(type='text' id='username' name='username')
+        br
+        p#username-error.error-message(style='display: none;')
 
-            .form-group
-                h4 Last Name:
-                input(type='text' id='lastName' name='lastName' value=user.lastName placeholder="Enter your last name")
+      .form-group
+        h4 First Name:
+        input(type='text' id='firstName' name='firstName' placeholder="Enter your first name")
 
-            .form-group
-                h4 Email Address:
-                input(type='email' id='email' name='email' value=user.email placeholder="Enter your email address")
+      .form-group
+        h4 Last Name:
+        input(type='text' id='lastName' name='lastName' placeholder="Enter your last name")
 
-            .form-group
-                button.btn(type='submit') Update Profile
+      .form-group
+        h4 Email Address:
+        input(type='email' id='email' name='email' placeholder="Enter your email address")
 
-        .form-group
-            button.btn(type='button', onclick="window.location.href='/update-password'") Change Password
+      .form-group
+        button.btn(type='submit') Update Profile
 
-        p.sign-up-text(style='margin-bottom: 120px;')
-            a(style='color: red;' href='/profile') Cancel
+    .form-group
+      button.btn(type='button', onclick="window.location.href='/update-password'") Change Password
 
-        .form-group
-            button.btn-cancel(type='button', id="deleteAccountBtn") DELETE ACCOUNT
+    p.sign-up-text(style='margin-bottom: 120px;')
+      a(style='color: red;' href='/profile') Cancel
 
-    // Confirmation Modal for Account Deletion
-    div#confirmationModal.modal-overlay
-      div.modal-content
-        h2 Warning!
-        p Are you sure you want to delete your account? This action <strong>cannot be undone</strong>.
-        div.modal-buttons
-          button.btn-danger(type="button" onclick="confirmDeleteAccount()") Yes, Delete
-          button.btn-cancel(type="button" onclick="cancelDeleteAccount()") Cancel
+    .form-group
+      button.btn-cancel(type='button', id="deleteAccountBtn") DELETE ACCOUNT
 
-    script.
-      document.getElementById('deleteAccountBtn').addEventListener('click', function() {
-        document.getElementById('confirmationModal').style.display = 'flex';
-      });
+  div#confirmationModal.modal-overlay
+    div.modal-content
+      h2 Warning!
+      p Are you sure you want to delete your account? This action <strong>cannot be undone</strong>.
+      div.modal-buttons
+        button.btn-danger(type="button" onclick="confirmDeleteAccount()") Yes, Delete
+        button.btn-cancel(type="button" onclick="cancelDeleteAccount()") Cancel
 
-      function confirmDeleteAccount() {
-        fetch('/delete-account', {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' }
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert("Your account has been deleted.");
-            window.location.href = "/login";
-          } else {
-            alert("Error: " + data.message);
-          }
-        })
-        .catch(error => {
-          console.error("Error deleting account:", error);
-        });
-
-        cancelDeleteAccount();
-      }
-
-      function cancelDeleteAccount() {
-        document.getElementById('confirmationModal').style.display = 'none';
-      }
+  script(src='/js/editProfile.js')

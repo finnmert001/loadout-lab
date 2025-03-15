@@ -25,7 +25,7 @@ block content
                 | Start building today!
 
             button.btn-intro-home(style='margin-right: 150px;' type='button', onclick="window.location.href='/explore'") View All Loadouts
-            button.btn-intro-home(type='button', onclick="window.location.href='/create-loadout'") Create Loadout
+            button.btn-intro-home#createLoadoutBtn(type='button', onclick="window.location.href='/create-loadout'") Create Loadout
 
             p(style='margin-top: 40px;')
                 | Below are some classes us at Loadout Lab have created and ranked. Trust us on this one!
@@ -942,4 +942,12 @@ block content
 
     script(src='/js/cookies.js')
     script(src='/js/attachmentsToggle.js')
+    script(src='/js/auth.js')
+    script.
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = getAuthToken();
+            if (token) {
+                document.getElementById("createLoadoutBtn").style.display = "inline";
+            }
+        });
 

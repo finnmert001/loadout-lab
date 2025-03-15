@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Function to retrieve JWT token from cookies
+  function getAuthToken() {
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
+    return token;
+  }
+
   const openPrimaryWeaponModal = document.getElementById(
     "openPrimaryWeaponModal"
   );
@@ -123,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function populateWeaponDropdown(allowSecondaryOnly) {
     weaponClassDropdown.innerHTML = "";
-
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.textContent = "Select a weapon class";
@@ -237,39 +245,38 @@ document.addEventListener("DOMContentLoaded", function () {
     const primaryAttachments = getAttachments("primaryAttachments");
     const secondaryAttachments = getAttachments("secondaryAttachments");
 
-    if (!loadoutName) {
-      alert("Please enter a loadout name.");
-      return;
-    }
-
-    if (!primaryWeapon) {
-      alert("Please select a primary weapon.");
-      return;
-    }
-
-    if (!secondaryWeapon) {
-      alert("Please select a secondary weapon.");
+    if (!loadoutName || !primaryWeapon || !secondaryWeapon) {
+      alert("Please complete your loadout before saving.");
       return;
     }
 
     const loadoutData = {
-      loadoutName: loadoutName,
+      loadoutName,
       primaryWeapon: {
         name: primaryWeapon,
         image: primaryWeaponImageSrc,
       },
-      primaryAttachments: primaryAttachments,
+      primaryAttachments,
       secondaryWeapon: {
         name: secondaryWeapon,
         image: secondaryWeaponImageSrc,
       },
-      secondaryAttachments: secondaryAttachments,
+      secondaryAttachments,
     };
+
+    const token = getAuthToken();
+    if (!token) {
+      alert("You need to be logged in to save a loadout.");
+      return;
+    }
 
     try {
       const response = await fetch("/api/loadouts", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(loadoutData),
       });
 

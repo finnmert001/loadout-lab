@@ -16,7 +16,7 @@ import {
   updateLoadout,
 } from "./model/database.js";
 import loginAPI from "./model/login.js";
-import { attachmentNames } from "./utils.js";
+import { attachmentNames, attachmentOptions } from "./utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -75,9 +75,10 @@ app.get("/create-loadout", authenticateJWT, (req, res) =>
 app.post("/api/loadouts", authenticateJWT, createLoadout);
 app.get("/api/loadouts", getAllLoadouts);
 app.get("/api/my-loadouts", authenticateJWT, getUserLoadouts);
-// app.get("/api/loadouts/:id", getLoadout);
+app.get("/api/loadouts/:id", getLoadout);
 app.get("/loadout/:id", authenticateJWT, renderLoadoutPage);
 app.get("/explore-loadout/:id", authenticateJWT, renderExploreLoadoutPage);
+app.get("/edit-loadout/:id", authenticateJWT, renderEditLoadout);
 app.put("/api/loadouts/:id", authenticateJWT, updateLoadoutData);
 app.delete("/api/loadouts/:id", authenticateJWT, removeLoadout);
 
@@ -427,14 +428,14 @@ async function renderLoadoutPage(req, res) {
   }
 }
 
-// async function getLoadout(req, res) {
-//   try {
-//     const loadout = await getLoadoutById(req.params.id);
-//     res.json(loadout || { error: "Loadout not found" });
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to fetch loadout" });
-//   }
-// }
+async function getLoadout(req, res) {
+  try {
+    const loadout = await getLoadoutById(req.params.id);
+    res.json(loadout || { error: "Loadout not found" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch loadout" });
+  }
+}
 
 async function renderExploreLoadoutPage(req, res) {
   try {
@@ -460,6 +461,41 @@ async function renderExploreLoadoutPage(req, res) {
     });
   } catch (error) {
     console.error("Error fetching explore loadout:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+async function renderEditLoadout(req, res) {
+  try {
+    const loadoutId = req.params.id;
+    const userId = req.user.id; // Get user ID from JWT
+
+    const loadout = await getLoadoutById(loadoutId);
+    if (!loadout) return res.status(404).send("Loadout not found");
+
+    // Ensure the user owns the loadout
+    if (String(loadout.userId) !== String(userId)) {
+      return res.status(403).send("Unauthorized to edit this loadout");
+    }
+
+    const formattedPrimaryAttachments = (loadout.primaryAttachments || []).map(
+      (attachment) => attachmentNames[attachment] || attachment
+    );
+
+    const formattedSecondaryAttachments = (
+      loadout.secondaryAttachments || []
+    ).map((attachment) => attachmentNames[attachment] || attachment);
+
+    res.render("edit-loadout", {
+      loadout: {
+        ...loadout,
+        primaryAttachments: formattedPrimaryAttachments,
+        secondaryAttachments: formattedSecondaryAttachments,
+      },
+      attachmentOptions,
+    });
+  } catch (error) {
+    console.error("Error fetching loadout:", error);
     res.status(500).send("Internal Server Error");
   }
 }

@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // Function to retrieve JWT token from cookies
+  function getAuthToken() {
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
+    return token;
+  }
+
   const openPrimaryWeaponModal = document.getElementById(
     "openPrimaryWeaponModal"
   );
@@ -326,10 +335,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         ).map((select) => select.value),
       };
 
+      // Get JWT token from cookies
+      const token = getAuthToken();
+      if (!token) {
+        alert("You must be logged in to update this loadout.");
+        return;
+      }
+
       try {
         const response = await fetch(`/api/loadouts/${loadoutId}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include JWT in headers
+          },
           body: JSON.stringify(updatedLoadout),
         });
 

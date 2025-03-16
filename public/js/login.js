@@ -1,6 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
 
+  // Caps Lock warning
+  document
+    .getElementById("password")
+    .addEventListener("keyup", function (event) {
+      document.getElementById("capsLockWarning").style.display =
+        event.getModifierState("CapsLock") ? "block" : "none";
+    });
+
   if (loginForm) {
     loginForm.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -38,13 +46,5 @@ document.addEventListener("DOMContentLoaded", function () {
         loginError.style.display = "block";
       }
     });
-
-    // Caps Lock warning
-    document
-      .getElementById("password")
-      .addEventListener("keyup", function (event) {
-        document.getElementById("capsLockWarning").style.display =
-          event.getModifierState("CapsLock") ? "block" : "none";
-      });
   }
 });

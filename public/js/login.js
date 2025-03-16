@@ -3,13 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (loginForm) {
     loginForm.addEventListener("submit", async (event) => {
-      event.preventDefault(); // Prevent page reload
+      event.preventDefault();
 
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value;
       const loginError = document.getElementById("login-error");
 
-      // Reset error display
       loginError.style.display = "none";
 
       try {
@@ -28,12 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        // Store JWT in cookies
         if (data.token) {
           document.cookie = `token=${data.token}; path=/; Secure; SameSite=Strict`;
         }
 
-        // Redirect to index after successful login
         window.location.href = "/index";
       } catch (error) {
         console.error("Login error:", error);

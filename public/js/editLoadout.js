@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  // Function to retrieve JWT token from cookies
   function getAuthToken() {
     const token = document.cookie
       .split("; ")
@@ -47,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const confirmWeaponSelection = document.getElementById(
     "confirmWeaponSelection"
   );
-  const loadoutId = window.location.pathname.split("/").pop(); // Get ID from URL
+  const loadoutId = window.location.pathname.split("/").pop();
 
   let selectedWeapon = null;
   let selectingPrimary = true;
@@ -335,7 +334,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         ).map((select) => select.value),
       };
 
-      // Get JWT token from cookies
       const token = getAuthToken();
       if (!token) {
         alert("You must be logged in to update this loadout.");
@@ -347,7 +345,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include JWT in headers
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(updatedLoadout),
         });

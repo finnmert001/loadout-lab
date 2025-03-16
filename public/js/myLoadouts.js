@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const loadoutsContainer = document.getElementById("loadoutsContainer");
 
-  // Retrieve JWT token from cookies
   const token = document.cookie
     .split("; ")
     .find((row) => row.startsWith("token="))
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       throw new Error(loadouts.error || "Failed to load loadouts.");
     }
 
-    if (loadouts.length === 0) {
+    if (!loadouts || loadouts.length === 0) {
       loadoutsContainer.innerHTML = `<p>No loadouts found. Create one using the button below!</p>`;
       return;
     }
@@ -108,6 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   } catch (error) {
     console.error("Error fetching loadouts:", error);
-    loadoutsContainer.innerHTML = "<p>Error loading loadouts.</p>";
+    loadoutsContainer.innerHTML =
+      "<p>Error loading loadouts. Please try again later.</p>";
   }
 });

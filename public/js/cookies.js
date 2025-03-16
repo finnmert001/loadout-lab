@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const acceptButton = document.getElementById("acceptCookies");
   const declineButton = document.getElementById("declineCookies");
 
-  // Function to set a cookie
   function setCookie(name, value, days) {
     let expires = "";
     if (days) {
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.cookie = name + "=" + value + "; path=/" + expires;
   }
 
-  // Function to get a cookie
   function getCookie(name) {
     const match = document.cookie.match(
       new RegExp("(^| )" + name + "=([^;]+)")
@@ -22,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return match ? match[2] : null;
   }
 
-  // Check if the user has already made a choice
   if (!getCookie("cookiesAccepted")) {
     cookieModal.classList.add("show");
   }
@@ -40,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
     cookieModal.classList.remove("show");
     setTimeout(() => (cookieModal.style.display = "none"), 500);
 
-    // Optionally, remove tracking scripts
     disableTracking();
   });
 });

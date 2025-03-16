@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    // Fetch user data
     const response = await fetch("/api/profile", {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
@@ -19,7 +18,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const user = await response.json();
 
-    // Populate form fields
     document.getElementById("username").value = user.username || "";
     document.getElementById("firstName").value = user.firstName || "";
     document.getElementById("lastName").value = user.lastName || "";
@@ -32,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document
     .getElementById("editProfileForm")
     .addEventListener("submit", async (event) => {
-      event.preventDefault(); // Prevent default form submission
+      event.preventDefault();
 
       const updatedData = {
         username: document.getElementById("username").value.trim(),
@@ -100,7 +98,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 });
 
-// Function to get JWT token from cookies
 function getAuthToken() {
   const token = document.cookie
     .split("; ")

@@ -1,10 +1,8 @@
-// Function to retrieve JWT token from cookies
 function getAuthToken() {
   const tokenMatch = document.cookie.match(/(?:^|;\s*)token=([^;]+)/);
   return tokenMatch ? tokenMatch[1] : null;
 }
 
-// Function to update the navbar based on authentication status
 function updateNavbar() {
   const token = getAuthToken();
 
@@ -13,7 +11,6 @@ function updateNavbar() {
   }
 }
 
-// Run updateNavbar on page load
 document.addEventListener("DOMContentLoaded", () => {
   updateNavbar();
 
@@ -36,8 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
 
         if (!data.success) {
-          updateNavbar(); // Update navbar when logged in
-          window.location.href = "/index"; // Redirect user to index page
+          updateNavbar();
+          window.location.href = "/index";
         } else {
           alert("Login failed: " + data.error);
         }

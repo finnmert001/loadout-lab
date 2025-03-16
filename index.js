@@ -126,21 +126,18 @@ export async function loginUser(req, res) {
       return res.render("login", { error: "Incorrect username or password" });
     }
 
-    // Generate JWT token
     const token = jwt.sign(
       { id: user._id, username: user.username },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    // Store token in cookies
     res.cookie("token", token, {
       httpOnly: false,
       secure: true,
       sameSite: "Strict",
     });
 
-    // Redirect after successful login
     res.redirect("/index");
   } catch (error) {
     console.error("Error during login:", error);
@@ -169,13 +166,11 @@ export async function signUpUser(req, res) {
   }
 
   try {
-    // Check if username already exists
     const existingUser = await loginAPI.findUserByUsername(username);
     if (existingUser) {
       return sendSignUpError(req, res, "Username is already taken.");
     }
 
-    // Hash password and create new user
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = {
       username,
@@ -243,7 +238,6 @@ async function updateUserProfile(req, res) {
     const userId = req.user.id;
     const { username, firstName, lastName, email } = req.body;
 
-    // Check if username is already taken
     const existingUser = await loginAPI.findUserByUsername(username);
     if (existingUser && existingUser._id.toString() !== userId) {
       return res
@@ -251,7 +245,6 @@ async function updateUserProfile(req, res) {
         .json({ success: false, error: "Username is already taken." });
     }
 
-    // Update user data
     await loginAPI.updateUserById(userId, {
       username,
       firstName,
@@ -289,13 +282,11 @@ async function updatePassword(req, res) {
   try {
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
-    // Get user from database
     const user = await loginAPI.findUserById(req.user.id);
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found." });
     }
 
-    // Validate current password
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
       return res
@@ -303,7 +294,6 @@ async function updatePassword(req, res) {
         .json({ success: false, error: "Incorrect current password." });
     }
 
-    // Validate new password
     if (newPassword !== confirmPassword) {
       return res
         .status(400)
@@ -320,11 +310,10 @@ async function updatePassword(req, res) {
     if (currentPassword === newPassword) {
       return res.status(400).json({
         success: false,
-        error: "New password must be different from the current password.",
+        error: "New password cannot match current password.",
       });
     }
 
-    // Hash and update password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await loginAPI.updateUserById(req.user.id, { password: hashedPassword });
 
@@ -346,10 +335,8 @@ async function deleteUser(req, res) {
   try {
     await loginAPI.deleteUserById(req.user.id);
 
-    // Clear JWT token from cookies
     res.clearCookie("token");
 
-    // Respond with JSON success message
     res.json({ success: true, message: "Account deleted successfully" });
   } catch (error) {
     console.error("Error deleting account:", error);
@@ -361,7 +348,7 @@ async function deleteUser(req, res) {
 
 async function createLoadout(req, res) {
   try {
-    const userId = req.user.id; // Extract user ID from JWT
+    const userId = req.user.id;
     const newLoadout = await saveLoadout({ ...req.body, userId });
 
     res.status(201).json(newLoadout);
@@ -385,12 +372,6 @@ async function getUserLoadouts(req, res) {
   try {
     const userId = req.user.id;
     const loadouts = await getLoadoutsByUserId(userId);
-
-    if (!loadouts || loadouts.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, error: "No loadouts found." });
-    }
 
     res.json(loadouts);
   } catch (error) {
@@ -468,14 +449,14 @@ async function renderExploreLoadoutPage(req, res) {
 async function renderEditLoadout(req, res) {
   try {
     const loadoutId = req.params.id;
-    const userId = req.user.id; // Get user ID from JWT
+    const userId = req.user.id;
 
     const loadout = await getLoadoutById(loadoutId);
     if (!loadout) return res.status(404).send("Loadout not found");
 
     // Ensure the user owns the loadout
     if (String(loadout.userId) !== String(userId)) {
-      return res.status(403).send("Unauthorized to edit this loadout");
+      return res.status(403).send("Unauthorised to edit this loadout");
     }
 
     const formattedPrimaryAttachments = (loadout.primaryAttachments || []).map(
@@ -503,9 +484,8 @@ async function renderEditLoadout(req, res) {
 async function updateLoadoutData(req, res) {
   try {
     const loadoutId = req.params.id;
-    const userId = req.user.id; // Get user ID from JWT
+    const userId = req.user.id;
 
-    // Fetch the loadout
     const existingLoadout = await getLoadoutById(loadoutId);
     if (!existingLoadout) {
       return res.status(404).json({ error: "Loadout not found" });
@@ -515,10 +495,9 @@ async function updateLoadoutData(req, res) {
     if (existingLoadout.userId.toString() !== userId) {
       return res
         .status(403)
-        .json({ error: "Unauthorized to edit this loadout" });
+        .json({ error: "Unauthorised to edit this loadout" });
     }
 
-    // Update loadout
     const updatedLoadout = await updateLoadout(loadoutId, req.body);
 
     res.json({

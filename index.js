@@ -94,10 +94,10 @@ function renderIndex(req, res) {
   res.render("index");
 }
 function renderLogin(req, res) {
-  res.render("login", { hideNavbar: true });
+  res.render("login");
 }
 function renderSignUp(req, res) {
-  res.render("sign-up", { hideNavbar: true });
+  res.render("sign-up");
 }
 function renderProfile(req, res) {
   res.render("profile", { user: req.user });

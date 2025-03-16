@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch("/api/profile", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${getAuthToken()}`, // Ensure getAuthToken() exists
+        Authorization: `Bearer ${getAuthToken()}`,
       },
     });
 
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const user = await response.json();
 
-    // ✅ Update the UI with user data
+    // Update the UI with user data
     document.getElementById("username").textContent = user.username || "N/A";
     document.getElementById("firstName").textContent =
       user.firstName || "Your account doesn't have a first name yet.";

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (signupForm) {
     signupForm.addEventListener("submit", async (event) => {
-      event.preventDefault(); // Prevent default form submission
+      event.preventDefault();
 
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value;
@@ -15,12 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
         "confirm-password-error"
       );
 
-      // Reset errors
       usernameError.style.display = "none";
       passwordError.style.display = "none";
       confirmPasswordError.style.display = "none";
 
-      // Basic frontend validation
+      // Frontend validation
       if (!username || username.length < 4 || username.length > 20) {
         usernameError.textContent = "Username must be 4-20 characters long.";
         usernameError.style.display = "block";
@@ -41,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       try {
-        // Send sign-up request
         const response = await fetch("/sign-up", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -51,13 +49,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await response.json();
 
         if (!data.success) {
-          // Show error message if sign-up fails
           usernameError.textContent = data.error || "Sign-up failed.";
           usernameError.style.display = "block";
           return;
         }
 
-        // Redirect to index after successful sign-up
         window.location.href = "/login";
       } catch (error) {
         console.error("Signup error:", error);

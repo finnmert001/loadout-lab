@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Function to retrieve JWT token from cookies
   function getAuthToken() {
     const token = document.cookie
       .split("; ")

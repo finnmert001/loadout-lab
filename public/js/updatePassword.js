@@ -10,17 +10,16 @@ document.addEventListener("DOMContentLoaded", function () {
       const confirmPassword = document.getElementById("confirmPassword").value;
       const passwordError = document.getElementById("password-error");
 
-      // Reset error display
       passwordError.style.display = "none";
       passwordError.textContent = "";
 
+      // Frontend validation
       if (newPassword !== confirmPassword) {
         passwordError.textContent = "Passwords do not match.";
         passwordError.style.display = "block";
         return;
       }
 
-      // Retrieve JWT token from cookies
       const token = document.cookie
         .split("; ")
         .find((row) => row.startsWith("token="))
@@ -32,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       try {
-        // Send API request
         const response = await fetch("/update-password", {
           method: "POST",
           headers: {
@@ -55,11 +53,10 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        // Notify success and redirect
         alert("Password updated successfully! Please log in again.");
         document.cookie =
           "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = "/login"; // Redirect to login after logout
+        window.location.href = "/login";
       } catch (error) {
         console.error("Error updating password:", error);
         passwordError.textContent = "An error occurred.";

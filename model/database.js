@@ -3,6 +3,7 @@ import "dotenv/config";
 
 const USE_MOCK_DATA = false; // Set to false to use real API calls
 
+// Mock data for testing
 const mockLoadouts = [
   {
     _id: "1",

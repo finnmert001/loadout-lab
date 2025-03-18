@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("update-password-form");
 
+  const csrfToken = document.querySelector("input[name='_csrf']").value;
+
   if (form) {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -36,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": csrfToken,
           },
           body: JSON.stringify({
             currentPassword,

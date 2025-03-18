@@ -8,6 +8,7 @@ block content
         h1 Edit Loadout
 
         form#editLoadoutForm
+            input(type="hidden" name="_csrf" value=csrfToken)
             h2 Loadout Name
             input#loadoutName(type='text' name='loadoutName' required)
 

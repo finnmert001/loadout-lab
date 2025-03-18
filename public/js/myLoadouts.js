@@ -1,6 +1,16 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const loadoutsContainer = document.getElementById("loadoutsContainer");
 
+  const csrfTokenElement = document.querySelector("input[name='_csrf']");
+  const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+
+  if (!csrfToken) {
+    console.error(
+      "🚨 CSRF token not found. Ensure it is being passed from the server."
+    );
+    return;
+  }
+
   const token = document.cookie
     .split("; ")
     .find((row) => row.startsWith("token="))
@@ -89,6 +99,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
+                "X-CSRF-Token": csrfToken,
               },
             });
 

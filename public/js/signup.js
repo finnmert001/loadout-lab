@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const signupForm = document.getElementById("signup-form");
 
+  const csrfToken = document.querySelector("input[name='_csrf']").value;
+
   if (signupForm) {
     signupForm.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -42,7 +44,10 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const response = await fetch("/sign-up", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": csrfToken,
+          },
           body: JSON.stringify({ username, password, confirmPassword }),
         });
 

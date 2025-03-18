@@ -36,6 +36,7 @@ block content
 
         .container.weapon-types
             .form-group.weapons 
+                input(type="hidden" name="_csrf" value=csrfToken)
                 h2.class-title Loadout Name
                 input(style='width: 20%; text-align: center;' type='text' id='loadoutName' name='loadoutName' placeholder='Enter a name for your loadout' required)
 

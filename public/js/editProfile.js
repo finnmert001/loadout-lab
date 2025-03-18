@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const token = getAuthToken();
 
+  const csrfToken = document.querySelector("input[name='_csrf']").value;
+
   if (!token) {
     window.location.href = "/login";
     return;
@@ -45,6 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": csrfToken,
           },
           body: JSON.stringify(updatedData),
         });
@@ -75,7 +78,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await fetch("/delete-account", {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "X-CSRF-Token": csrfToken,
+        },
       });
 
       const data = await response.json();

@@ -8,6 +8,7 @@ block content
     h1 Edit Profile
 
     form(style='margin-top: 40px;' id="editProfileForm")
+      input(type="hidden" name="_csrf" value=csrfToken)
       .form-group
         h4 Username:
         input(type='text' id='username' name='username')

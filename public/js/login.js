@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
 
+  const csrfToken = document.querySelector("input[name='_csrf']").value;
+
   // Caps Lock warning
   document
     .getElementById("password")
@@ -22,7 +24,10 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const response = await fetch("/login", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": csrfToken,
+          },
           body: JSON.stringify({ username, password }),
         });
 

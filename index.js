@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import csurf from "csurf";
 import dotenv from "dotenv";
 import express from "express";
 import jwt from "jsonwebtoken";
@@ -23,6 +24,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const router = express.Router();
+const csrfProtection = csurf({ cookie: true });
 const port = process.env.PORT || 3000;
 
 dotenv.config();
@@ -33,6 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+app.use(csrfProtection);
 app.use(express.static("public"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
@@ -63,11 +66,11 @@ app.get("/contact", (req, res) => res.render("contact"));
 app.get("/terms", (req, res) => res.render("terms"));
 app.get("/privacy", (req, res) => res.render("privacy"));
 app.get("/explore", (req, res) => res.render("explore"));
-app.get("/my-loadouts", authenticateJWT, (req, res) =>
-  res.render("my-loadouts")
+app.get("/my-loadouts", authenticateJWT, csrfProtection, (req, res) =>
+  res.render("my-loadouts", { csrfToken: req.csrfToken() })
 );
 app.get("/create-loadout", authenticateJWT, (req, res) =>
-  res.render("create-loadout")
+  res.render("create-loadout", { csrfToken: req.csrfToken() })
 );
 
 // ------------------ LOADOUT API ROUTES ------------------
@@ -80,7 +83,7 @@ app.get("/loadout/:id", authenticateJWT, renderLoadoutPage);
 app.get("/explore-loadout/:id", authenticateJWT, renderExploreLoadoutPage);
 app.get("/edit-loadout/:id", authenticateJWT, renderEditLoadout);
 app.put("/api/loadouts/:id", authenticateJWT, updateLoadoutData);
-app.delete("/api/loadouts/:id", authenticateJWT, removeLoadout);
+app.delete("/api/loadouts/:id", authenticateJWT, csrfProtection, removeLoadout);
 
 // ------------------ ROUTE HANDLER FUNCTIONS ------------------
 
@@ -94,19 +97,19 @@ function renderIndex(req, res) {
   res.render("index");
 }
 function renderLogin(req, res) {
-  res.render("login");
+  res.render("login", { csrfToken: req.csrfToken() });
 }
 function renderSignUp(req, res) {
-  res.render("sign-up");
+  res.render("sign-up", { csrfToken: req.csrfToken() });
 }
 function renderProfile(req, res) {
   res.render("profile", { user: req.user });
 }
 function renderEditProfile(req, res) {
-  res.render("edit-profile", { user: req.user });
+  res.render("edit-profile", { user: req.user, csrfToken: req.csrfToken() });
 }
 function renderUpdatePassword(req, res) {
-  res.render("update-password", { user: req.user });
+  res.render("update-password", { user: req.user, csrfToken: req.csrfToken() });
 }
 
 // ------------------ AUTH FUNCTIONS ------------------
@@ -474,6 +477,7 @@ async function renderEditLoadout(req, res) {
         secondaryAttachments: formattedSecondaryAttachments,
       },
       attachmentOptions,
+      csrfToken: req.csrfToken(),
     });
   } catch (error) {
     console.error("Error fetching loadout:", error);

@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     return token;
   }
 
+  const csrfToken = document.querySelector("input[name='_csrf']").value;
+
   const openPrimaryWeaponModal = document.getElementById(
     "openPrimaryWeaponModal"
   );
@@ -346,6 +348,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": csrfToken,
           },
           body: JSON.stringify(updatedLoadout),
         });

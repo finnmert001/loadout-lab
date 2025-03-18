@@ -8,6 +8,7 @@ block content
         img(src='/images/LoadoutLabLogo.svg', alt='Site Logo', class='logo')
         h2 User Registration
         form(id='signup-form')
+            input(type="hidden" name="_csrf" value=csrfToken)
             .form-group
                 h4 Username:
                 input(type='text' class='usernameInput' id='username' name='username' required)

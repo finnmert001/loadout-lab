@@ -81,7 +81,7 @@ Loadout Lab incorporates multiple security measures:
 
 ### Deployment
 
-The application is deployed on **[Loadout Lab on Render](https://your-deployment-url.onrender.com/)**, with continuous deployment configured from the GitHub repository. Commits to the main branch automatically trigger production updates.
+The application is deployed on **[Loadout Lab on Render](https://loadout-lab.onrender.com/login)**, with continuous deployment configured from the GitHub repository. Commits to the main branch automatically trigger production updates.
 
 ---
 

@@ -2,7 +2,7 @@
 
 Loadout Lab is a web application that allows users to create and manage custom weapon loadouts for _Call of Duty: Warzone_. The application provides an interactive and user-friendly interface for selecting weapons and attachments, while ensuring secure user authentication and reliable data storage. Built with scalability, usability, and security in mind, Loadout Lab empowers players to preserve their custom loadouts even after prestige resets.
 
-The GitHub repository can be found **[here](https://github.com/finnmert001/loadout-lab)**.
+The demonstration of the Loadout Lab application can be found **[here](https://drive.google.com/file/d/1GRnE4BS19Dy05jBvtp0w9PL2PBhMyKVr/view?usp=sharing)**.
 
 ---
 
